@@ -13,6 +13,7 @@
 #pragma once
 
 // Integer Types ///////////////////////////////////////////////////////////////
+typedef size_t PtrSize;
 typedef char Int8;
 typedef short int Int16;
 typedef int Int32;
