@@ -32,6 +32,20 @@ namespace Soul
 		ByteCount uiBytes; // Bytes stored in this allocation, including this header.
 	};
 
+	////////////////////////////////////////////////////////////////////////////
+	// A singleton MemoryManager for the Soul engine. This works by creating a 
+	// memory arena that can have memory allocated in it through separate
+	// allocator objects. This first needs to be initialized by calling
+	// StartUp() (usually done by the engine) and cleaned up via Shutdown().
+	//
+	// To partition memory, use the Allocate(...) function and provide the
+	// needed number of bytes. With the returned pointer, you can deallocate the
+	// same memory block by called Deallocate(...).
+	//
+	// For debugging purposes, the GetTotalAllocatedBytes() and
+	// GetTotalFreeBytes() functions can be used to query the current usage
+	// of the memory arena's memory.
+	////////////////////////////////////////////////////////////////////////////
 	class MemoryManager
 	{
 	public:
@@ -109,7 +123,7 @@ namespace Soul
 		// Last Modified:   Dec 16 2020
 		//
 		// Input:           uiNodeCount   The number of memory nodes to attempt
-		//                                to defragment
+		//                                to defragment.
 		//
 		// Notes:           Shifts the first N nodes up to the highest memory
 		//                  address possible to avoid fragmentation.
@@ -121,8 +135,8 @@ namespace Soul
 		MemoryManager() = delete;
 
 	private:
-		static Byte* _pMemoryStart;
-		static Byte* _pMemoryEnd;
-		static ByteCount _uiByteSize;
+		static Byte* _pMemoryStart; // The location of the start of the memory arena.
+		static Byte* _pMemoryEnd; // The location of the end of the memory arena.
+		static ByteCount _uiByteSize; // The size of this memory arena in bytes.
 	};
 }
