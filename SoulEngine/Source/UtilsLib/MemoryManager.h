@@ -13,139 +13,116 @@
 
 #pragma once
 
-// Includes ////////////////////////////////////////////////////////////////////
 #include "CommonTypes.h"
 
-// Structs /////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-// Struct:          MemoryNode
-//
-// Last Modified:   Dec 16 2020
-//
-// Purpose:         Placed at the start of each block of free memory in the
-//                  memory arena.
-////////////////////////////////////////////////////////////////////////////////
-struct MemoryNode
+typedef PtrSize ByteCount;
+
+namespace Soul
 {
-	UInt64 BlockSize; // Size of the free memory block including this node
-	MemoryNode* poNextNode; // Location of the following node in memory
-};
+	// Placed at the start of each block of free memory in the memory arena.
+	struct MemoryNode
+	{
+		ByteCount uiBlockSize; // Size of the free memory block, including this node.
+		MemoryNode* opNextNode; // Location of the following node in memory.
+	};
 
-////////////////////////////////////////////////////////////////////////////////
-// Struct:          MemoryNode
-//
-// Last Modified:   Dec 16 2020
-//
-// Purpose:         Placed at the start of each allocation to track how many
-//                  bytes are stored.
-////////////////////////////////////////////////////////////////////////////////
-struct PartitionHeader
-{
-	UInt64 Bytes; // Bytes stored in this partition, including this header
-	UInt16 Count; // Objects store in this partition
-};
+	// Placed at the start of each allocation to track how many bytes are stored.
+	struct AllocationHeader
+	{
+		ByteCount uiBytes; // Bytes stored in this allocation, including this header.
+	};
 
-// Classes /////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-// Class:           MemoryManager
-//
-// Last Modified:   Dec 16 2020
-//
-// Purpose:         Reserves an initial amount of memory for the engine to be
-//                  used by allocators.
-////////////////////////////////////////////////////////////////////////////////
-class MemoryManager
-{
-public:
-	////////////////////////////////////////////////////////////////////////////
-	// Function:        GetSingleton
-	//
-	// Last Modified:   Dec 16 2020
-	//
-	// Returns:         A reference a singleton instance of the MemoryManager.
-	//
-	// Notes:           If StartUp() has not been called first before this,
-	//                  StartUp() will be called.
-	////////////////////////////////////////////////////////////////////////////
-	static MemoryManager& GetSingleton();
-	
-	////////////////////////////////////////////////////////////////////////////
-	// Function:        GetTotalPartitionedBytes
-	//
-	// Last Modified:   Dec 16 2020
-	//
-	// Returns:         UInt64 containing the current number of allocated bytes.
-	////////////////////////////////////////////////////////////////////////////
-	UInt64 GetTotalAllocatedBytes();
+	class MemoryManager
+	{
+	public:
+		////////////////////////////////////////////////////////////////////////
+		// Function:        GetTotalPartitionedBytes
+		//
+		// Last Modified:   Dec 16 2020
+		//
+		// Returns:         UInt64 containing the current number of allocated
+		//                  bytes.
+		////////////////////////////////////////////////////////////////////////
+		static UInt64 GetTotalAllocatedBytes();
 
-	////////////////////////////////////////////////////////////////////////////
-	// Function:        GetTotalFreeBytes
-	//
-	// Last Modified:   Dec 16 2020
-	//
-	// Returns:         UInt64 containing the current number of free bytes.
-	////////////////////////////////////////////////////////////////////////////
-	UInt64 GetTotalFreeBytes();
+		////////////////////////////////////////////////////////////////////////
+		// Function:        GetTotalFreeBytes
+		//
+		// Last Modified:   Dec 16 2020
+		//
+		// Returns:         UInt64 containing the current number of free bytes.
+		////////////////////////////////////////////////////////////////////////
+		static UInt64 GetTotalFreeBytes();
 
-	////////////////////////////////////////////////////////////////////////////
-	// Function:        StartUp
-	//
-	// Last Modified:   Dec 16 2020
-	//
-	// Input:           uiByteSize   Total amount of bytes to partition for this
-	//                               MemoryManager.
-	//
-	// Notes:           This should be initialized first by the engine.
-	////////////////////////////////////////////////////////////////////////////
-	void StartUp(UInt64 uiByteSize);
+		////////////////////////////////////////////////////////////////////////
+		// Function:        StartUp
+		//
+		// Last Modified:   Dec 16 2020
+		//
+		// Input:           uiByteSize   Total amount of bytes to partition for
+		//                               this MemoryManager.
+		//
+		// Notes:           This should be initialized first by the engine.
+		////////////////////////////////////////////////////////////////////////
+		static void StartUp(ByteCount uiByteSize);
 
-	////////////////////////////////////////////////////////////////////////////
-	// Function:        Shutdown
-	//
-	// Last Modified:   Dec 16 2020
-	//
-	// Notes:           This should be called last by the engine after all other
-	//                  systems are shut down.
-	////////////////////////////////////////////////////////////////////////////
-	void Shutdown();
+		////////////////////////////////////////////////////////////////////////
+		// Function:        Shutdown
+		//
+		// Last Modified:   Dec 16 2020
+		//
+		// Notes:           This should be called last by the engine after all
+		//                  other systems are shut down.
+		////////////////////////////////////////////////////////////////////////
+		static void Shutdown();
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Function:        GetSingleton
-    //
-    // Last Modified:   Dec 16 2020
-    //
-    // Input:           iSize   Size of allocation.
-    //
-    // Returns:         Pointer to allocated memory.
-    //
-    // Notes:           Used to allocate a specific chunk of memory from the
-	//                  memory arena. Typically used by memory allocators.
-    ////////////////////////////////////////////////////////////////////////////
-	void* Allocate(UInt64 uiBytes);
+		////////////////////////////////////////////////////////////////////////
+		// Function:        Allocate
+		//
+		// Last Modified:   Dec 16 2020
+		//
+		// Input:           iSize   Size of allocation.
+		//
+		// Returns:         Pointer to allocated memory.
+		//
+		// Notes:           Used to allocate a specific chunk of memory from the
+		//                  memory arena. Typically used by memory allocators.
+		////////////////////////////////////////////////////////////////////////
+		static void* Allocate(ByteCount uiBytes);
 
-	////////////////////////////////////////////////////////////////////////////
-	// Function:        Deallocate
-	//
-	// Last Modified:   Dec 16 2020
-	//
-	// Input:           pBlockLocation   
-	//
-	// Returns:         Pointer to allocated memory.
-	//
-	// Notes:           Used to allocate a specific chunk of memory from the
-	//                  memory arena. Typically used by memory allocators.
-	////////////////////////////////////////////////////////////////////////////
-	void Deallocate(void* pBlockLocation);
+		////////////////////////////////////////////////////////////////////////
+		// Function:        Deallocate
+		//
+		// Last Modified:   Dec 16 2020
+		//
+		// Input:           pBlockLocation   The location of the block of memory
+		//                                   to deallocate.
+		//
+		// Notes:           Deallocates the allocated block of memory at the
+		//                  provided location.
+		////////////////////////////////////////////////////////////////////////
+		static void Deallocate(AllocationHeader* opBlockLocation);
 
-	void Defragment(UInt8 uiNodeCount);
+		////////////////////////////////////////////////////////////////////////
+		// Function:        Defragment
+		//
+		// Last Modified:   Dec 16 2020
+		//
+		// Input:           uiNodeCount   The number of memory nodes to attempt
+		//                                to defragment
+		//
+		// Notes:           Shifts the first N nodes up to the highest memory
+		//                  address possible to avoid fragmentation.
+		////////////////////////////////////////////////////////////////////////
+		static void Defragment(UInt8 uiNodeCount);
 
-private:
-	MemoryManager();
+		// Deleted Functions ///////////////////////////////////////////////////
+		
+		MemoryManager() = delete;
 
-	void AddNode(void* pLocation, UInt64 uiSize);
-	void RemoveNode(void* pLocation);
-
-private:
-	Byte* _pMemoryStart;
-	Byte* _pMemoryEnd;
-};
+	private:
+		static Byte* _pMemoryStart;
+		static Byte* _pMemoryEnd;
+		static ByteCount _uiByteSize;
+	};
+}
