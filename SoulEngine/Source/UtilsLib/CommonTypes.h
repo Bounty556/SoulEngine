@@ -28,3 +28,4 @@ typedef unsigned long long int UInt64;
 // Floating-Point Types ////////////////////////////////////////////////////////
 typedef float Float32;
 typedef double Float64;
+typedef long double Float128;
