@@ -1,16 +1,9 @@
-////////////////////////////////////////////////////////////////////////////////
-// File:            Main.cpp
-//
-// Author:          Peterson, Jacob
-//
-// Last Modified:   Date:   Dec 16 2020
-//	                By:     Peterson, Jacob
-//					Exp:    Initial implementation
-//
-// Purpose:         Entry point for the Client side of this app
-////////////////////////////////////////////////////////////////////////////////
-
-// Includes ////////////////////////////////////////////////////////////////////
+/*
+Entry point for the Client side of this app.
+@file Main.cpp
+@author Jacob Peterson
+@version 1 12/16/20
+*/
 
 int main()
 {
