@@ -7,9 +7,9 @@ Contains commonly used macros.
 
 #pragma once
 
-#define Kilobytes(x) (x * 1024)
-#define Megabytes(x) (Kilobytes(x) * 1024)
-#define Gigabytes(x) (Megabytes(x) * 1024)
+#define Kilobytes(x) (x * 1024LL)
+#define Megabytes(x) (Kilobytes(x) * 1024LL)
+#define Gigabytes(x) (Megabytes(x) * 1024LL)
 
 #define Assert(x) \
 if (x) \

@@ -62,6 +62,7 @@ namespace Soul
 	{
 		_suipMemoryStart = (Byte*)malloc(uiByteSize);
 		_suipMemoryEnd = _suipMemoryStart + uiByteSize;
+		_suiByteSize = uiByteSize;
 		_sbIsSetup = true;
 
 		/*
@@ -147,6 +148,37 @@ namespace Soul
 			SoulLogError("Error allocating %d bytes of memory.", uiBytes);
 			Assert(false);
 		}
+	}
+
+	/*
+	Prints a small summary of the current memory arena usage to the console.
+	*/
+	void MemoryManager::PrintMemory()
+	{
+		Assert(_sbIsSetup);
+
+		SoulLogInfo("Nodes: %d\nFree Bytes: %lld\nAllocated Bytes: %lld",
+			        CountNodes(), GetTotalFreeBytes(), GetTotalAllocatedBytes());
+	}
+
+	// Private Functions ///////////////////////////////////////////////////////
+
+	/*
+	Returns a count of how many MemoryNodes exist in the memory arena.
+	*/
+	UInt16 MemoryManager::CountNodes()
+	{
+		Assert(_sbIsSetup);
+
+		UInt16 uiNodeCount = 0;
+		MemoryNode* opCurrentNode = (MemoryNode*)_suipMemoryStart;
+		while (opCurrentNode)
+		{
+			uiNodeCount++;
+			opCurrentNode = opCurrentNode->opNextNode;
+		}
+
+		return uiNodeCount;
 	}
 
 	/*

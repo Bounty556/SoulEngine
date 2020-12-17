@@ -7,6 +7,8 @@ Reserves an initial amount of memory for the engine to be used by allocators.
 
 #pragma once
 
+#include <new>
+
 #include <UtilsLib/CommonTypes.h>
 #include <UtilsLib/Macros.h>
 
@@ -100,12 +102,22 @@ namespace Soul
 		template <class T>
 		static void Deallocate(T* pLocation);
 
+		/*
+		Prints a small summary of the current memory arena usage to the console.
+		*/
+		static void PrintMemory();
+
 		// Deleted Functions //////////////////////////////////////////////////
 	
 		MemoryManager() = delete;
 
 	private:
 		
+		/*
+		Returns a count of how many MemoryNodes exist in the memory arena.
+		*/
+		static UInt16 CountNodes();
+
 		/*
 		Removes the memory node at the provided location, and connects the
 		previous and next memory nodes together to repair the list.
@@ -137,6 +149,7 @@ namespace Soul
 	template <class T>
 	void MemoryManager::Deallocate(T* pLocation)
 	{
+		Assert(_sbIsSetup);
 		Assert(pLocation);
 
 		// Check to see if this is an array we're freeing
