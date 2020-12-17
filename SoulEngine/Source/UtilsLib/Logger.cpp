@@ -1,3 +1,10 @@
+/*
+Prints info to the console using three different logging levels.
+@file Logger.h
+@author Jacob Peterson
+@version 1 12/17/20
+*/
+
 #include "Logger.h"
 
 #include <iostream>
@@ -7,6 +14,9 @@ namespace Soul
 {
 	LogLevel Logger::_seLogLevel = LogLevel::Info;
 
+	/*
+	Logs an error to the console, with red text for distinguishability.
+	*/
 	void Logger::LogError(const char* message, ...)
 	{
 		if (_seLogLevel >= LogLevel::Error)
@@ -24,6 +34,9 @@ namespace Soul
 		}
 	}
 
+	/*
+	Logs an error to the console, with yellow text for distinguishability.
+	*/
 	void Logger::LogWarning(const char* message, ...)
 	{
 		if (_seLogLevel >= LogLevel::Warning)
@@ -41,6 +54,9 @@ namespace Soul
 		}
 	}
 
+	/*
+	Logs an error to the console, with white text for distinguishability.
+	*/
 	void Logger::LogInfo(const char* message, ...)
 	{
 		if (_seLogLevel >= LogLevel::Info)

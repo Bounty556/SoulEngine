@@ -7,7 +7,7 @@ Reserves an initial amount of memory for the engine to be used by allocators.
 
 #pragma once
 
-#include "CommonTypes.h"
+#include <UtilsLib/CommonTypes.h>
 
 typedef PtrSize ByteCount;
 
@@ -86,7 +86,7 @@ namespace Soul
 		@return MemoryAllocator* pointing to the start of the newly allocated
 		        block of memory to be used by a MemoryAllocator.
 		*/
-		static MemoryAllocator* Allocate(ByteCount uiBytes);
+		static void* Allocate(ByteCount uiBytes);
 
 		/*
 		Deallocates the allocated block of memory at the provided location.
@@ -109,8 +109,14 @@ namespace Soul
 		MemoryManager() = delete;
 
 	private:
+		static void RemoveMemoryNode(MemoryNode* opLocation);
+
+		static void TryAddingMemoryNode(void* opLocation);
+
+	private:
 		static Byte* _suipMemoryStart; // The location of the start of the memory arena.
 		static Byte* _suipMemoryEnd; // The location of the end of the memory arena.
 		static ByteCount _suiByteSize; // The size of this memory arena in bytes.
+		static bool _sbIsSetup; // Whether the MemoryManager has been initialized yet.
 	};
 }

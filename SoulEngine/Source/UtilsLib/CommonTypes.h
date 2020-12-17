@@ -1,14 +1,9 @@
-////////////////////////////////////////////////////////////////////////////////
-// File:			CommonTypes.h
-//
-// Author:			Peterson, Jacob
-//
-// Last Modified:	Date:	Dec 16 2020
-//					By:		Peterson, Jacob
-//					Exp:	Initial implementation
-//
-// Purpose:	        Contains commonly used typedefs for ease of reading
-////////////////////////////////////////////////////////////////////////////////
+/*
+Contains commonly used typedefs for ease of reading.
+@file CommonTypes.h
+@author Jacob Peterson
+@version 1 12/17/20
+*/
 
 #pragma once
 
