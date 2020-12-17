@@ -8,13 +8,15 @@ Reserves an initial amount of memory for the engine to be used by allocators.
 #pragma once
 
 #include <UtilsLib/CommonTypes.h>
+#include <UtilsLib/Macros.h>
+
+#define Partition(type, ...) (new (Soul::MemoryManager::Allocate(sizeof(type))) type(__VA_ARGS__))
+#define PartitionArray(type, count) ((type*)(Soul::MemoryManager::Allocate(sizeof(type), count)))
 
 typedef PtrSize ByteCount;
 
 namespace Soul
 {
-	class MemoryAllocator;
-	
 	// Placed at the start of each block of free memory in the memory arena.
 	struct MemoryNode
 	{
@@ -26,6 +28,7 @@ namespace Soul
 	struct AllocationHeader
 	{
 		ByteCount uiBytes; // Bytes stored in this allocation, including this header.
+		UInt16 uiCount; // Number of objects stored in this allocation.
 	};
 
 	/*
@@ -34,13 +37,12 @@ namespace Soul
 	allocator objects. This first needs to be initialized by calling
 	StartUp() (usually done by the engine) and cleaned up via Shutdown().
 	
-	To partition memory for use by an allocator, use the Allocate(...) function
-	and provide the needed number of bytes. With the returned pointer, you can
-	deallocate the same memory block via Deallocate(...).
+	To partition memory for use by an allocator, use the Partition(...) function
+	or PartitionArray(...) macros. With the returned pointer, you can deallocate
+	the same memory block via Deallocate(...).
 	
-	For debugging purposes, the GetTotalAllocatedBytes() and
-	GetTotalFreeBytes() functions can be used to query the current usage
-	of the memory arena's memory.
+	For debugging purposes, the GetTotalAllocatedBytes() and GetTotalFreeBytes()
+	functions can be used to query the current usage of the memory arena.
 	*/
 	class MemoryManager
 	{
@@ -83,26 +85,20 @@ namespace Soul
 
 		@param uiBytes - Size of the allocation in bytes.
 
-		@return MemoryAllocator* pointing to the start of the newly allocated
-		        block of memory to be used by a MemoryAllocator.
+		@param uiCount - The number of elements stored in this allocation.
+
+		@return Pointer pointing to the start of the newly allocated block of
+		memory to be used by a MemoryAllocator.
 		*/
-		static void* Allocate(ByteCount uiBytes);
+		static void* Allocate(ByteCount uiBytes, UInt16 uiCount = 1);
 
 		/*
 		Deallocates the allocated block of memory at the provided location.
 
-		@param opBlockLocation - The location of the block of memory to
-		                         deallocate.
+		@param pLocation - The location of the block of memory to deallocate.
 		*/
-		static void Deallocate(MemoryAllocator* opBlockLocation);
-
-		/*
-		Shifts the first N nodes up to the highest memory address possible to
-		avoid fragmentation.
-
-		@param uiNodeCount - The number of memory nodes to attempt to defrag.
-		*/
-		static void Defragment(UInt8 uiNodeCount);
+		template <class T>
+		static void Deallocate(T* pLocation);
 
 		// Deleted Functions //////////////////////////////////////////////////
 	
@@ -123,10 +119,10 @@ namespace Soul
 		connects with a previous MemoryNode, it will be absorbed. Otherwise, the
 		MemoryNode list will be corrected appropriately.
 
-		@param opLocation - Pointer to the location to create the new MemoryNode
+		@param pLocation - Pointer to the location to create the new MemoryNode
 		                    at.
 		*/
-		static void TryAddingMemoryNode(void* opLocation);
+		static void TryAddingMemoryNode(void* pLocation);
 
 	private:
 		static Byte* _suipMemoryStart; // The location of the start of the memory arena.
@@ -134,4 +130,25 @@ namespace Soul
 		static ByteCount _suiByteSize; // The size of this memory arena in bytes.
 		static bool _sbIsSetup; // Whether the MemoryManager has been initialized yet.
 	};
+
+	/*
+	Calls the destructor on this memory block and marks it as free.
+	*/
+	template <class T>
+	void MemoryManager::Deallocate(T* pLocation)
+	{
+		Assert(pLocation);
+
+		// Check to see if this is an array we're freeing
+		AllocationHeader* opHeader = (AllocationHeader*)((Byte*)pLocation -
+			                         sizeof(AllocationHeader));
+
+		int timesToLoop = opHeader->uiCount;
+		for (int i = 0; i < timesToLoop; ++i)
+		{
+			pLocation[i].~T();
+		}
+
+		TryAddingMemoryNode(pLocation);
+	}
 }

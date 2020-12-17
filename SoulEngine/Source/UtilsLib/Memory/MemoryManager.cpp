@@ -10,7 +10,6 @@ Reserves an initial amount of memory for the engine to be used by allocators.
 #include <memory>
 
 #include <UtilsLib/Logger.h>
-#include <UtilsLib/Macros.h>
 
 namespace Soul
 {
@@ -86,7 +85,7 @@ namespace Soul
 	Attempt to allocate a block of memory with the given size in the memory
 	arena.
 	*/
-	void* MemoryManager::Allocate(ByteCount uiBytes)
+	void* MemoryManager::Allocate(ByteCount uiBytes, UInt16 uiCount /*= 1*/)
 	{
 		Assert(_sbIsSetup);
 
@@ -95,7 +94,8 @@ namespace Soul
 		Find the earliest block of memory with enough size to accomodate this
 		allocation.
 		*/
-		ByteCount uiActualStoredBytes = uiBytes + sizeof(AllocationHeader);
+		ByteCount uiActualStoredBytes =
+			uiBytes * uiCount + sizeof(AllocationHeader);
 		MemoryNode* opCurrentNode = (MemoryNode*)_suipMemoryStart;
 		while (opCurrentNode && opCurrentNode->uiBlockSize < uiActualStoredBytes)
 		{
@@ -122,6 +122,7 @@ namespace Soul
 			AllocationHeader* opHeader = (AllocationHeader*)uipBlockLocation;
 			memset(opHeader, 0, uiActualStoredBytes);
 			opHeader->uiBytes = uiActualStoredBytes;
+			opHeader->uiCount = uiCount;
 			uipBlockLocation += sizeof(AllocationHeader);
 
 			return uipBlockLocation;
@@ -137,6 +138,7 @@ namespace Soul
 
 			AllocationHeader* opHeader = (AllocationHeader*)opCurrentNode;
 			opHeader->uiBytes = uiBlockSize;
+			opHeader->uiCount = uiCount;
 			Byte* uipBlockLocation = (Byte*)opHeader + sizeof(AllocationHeader);
 			return uipBlockLocation;
 		}
@@ -145,29 +147,6 @@ namespace Soul
 			SoulLogError("Error allocating %d bytes of memory.", uiBytes);
 			Assert(false);
 		}
-	}
-
-	/*
-	Calls the destructor on this memory block and marks it as free.
-	*/
-	void MemoryManager::Deallocate(MemoryAllocator* opBlockLocation)
-	{
-		Assert(_sbIsSetup);
-
-		// TODO:
-		//opBlockLocation->~MemoryAllocator();
-		TryAddingMemoryNode(opBlockLocation);
-	}
-
-	/*
-	Shifts the first N nodes up to the highest memory address possible to avoid
-	fragmentation.
-	*/
-	void MemoryManager::Defragment(UInt8 uiNodeCount)
-	{
-		Assert(_sbIsSetup);
-
-		// TODO: Implement
 	}
 
 	/*
@@ -198,7 +177,7 @@ namespace Soul
 	with a previous MemoryNode, it will be absorbed. Otherwise, the MemoryNode
 	list will be corrected appropriately.
 	*/
-	void MemoryManager::TryAddingMemoryNode(void* opLocation)
+	void MemoryManager::TryAddingMemoryNode(void* pLocation)
 	{
 		Assert(_sbIsSetup);
 
@@ -207,7 +186,7 @@ namespace Soul
 		*/
 		MemoryNode* opPrevNode = (MemoryNode*)_suipMemoryStart;
 		MemoryNode* opNextNode = opPrevNode->opNextNode;
-		while (opNextNode && opNextNode < opLocation)
+		while (opNextNode && opNextNode < pLocation)
 		{
 			opPrevNode = opNextNode;
 			opNextNode = opNextNode->opNextNode;
@@ -217,7 +196,7 @@ namespace Soul
 		Create the node at opLocation, connected to opPrevNode and opNextNode.
 		*/
 		AllocationHeader* opPrevHeader =
-			(AllocationHeader*)((Byte*)opLocation - sizeof(AllocationHeader));
+			(AllocationHeader*)((Byte*)pLocation - sizeof(AllocationHeader));
 		ByteCount uiBlockSize = opPrevHeader->uiBytes;
 		MemoryNode* opNewNode = (MemoryNode*)opPrevHeader;
 		opNewNode->uiBlockSize = uiBlockSize;
