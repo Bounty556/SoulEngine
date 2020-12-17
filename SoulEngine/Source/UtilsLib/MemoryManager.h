@@ -109,8 +109,8 @@ namespace Soul
 		MemoryManager() = delete;
 
 	private:
-		static Byte* _pMemoryStart; // The location of the start of the memory arena.
-		static Byte* _pMemoryEnd; // The location of the end of the memory arena.
-		static ByteCount _uiByteSize; // The size of this memory arena in bytes.
+		static Byte* _spMemoryStart; // The location of the start of the memory arena.
+		static Byte* _spMemoryEnd; // The location of the end of the memory arena.
+		static ByteCount _suiByteSize; // The size of this memory arena in bytes.
 	};
 }
