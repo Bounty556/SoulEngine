@@ -2,7 +2,7 @@
 Reserves an initial amount of memory for the engine to be used by allocators.
 @file MemoryManager.h
 @author Jacob Peterson
-@version 2 12/17/20
+@version 3 12/17/20
 */
 
 #pragma once
@@ -12,156 +12,105 @@ Reserves an initial amount of memory for the engine to be used by allocators.
 #include <UtilsLib/CommonTypes.h>
 #include <UtilsLib/Macros.h>
 
-#define Partition(type, ...) (new (Soul::MemoryManager::Allocate(sizeof(type))) type(__VA_ARGS__))
-#define PartitionArray(type, count) ((type*)(Soul::MemoryManager::Allocate(sizeof(type), count)))
-
-typedef PtrSize ByteCount;
+typedef unsigned char ByteCount;
 
 namespace Soul
 {
-	// Placed at the start of each block of free memory in the memory arena.
-	struct MemoryNode
-	{
-		ByteCount uiBlockSize; // Size of the free memory block, including this node.
-		MemoryNode* opNextNode; // Location of the following node in memory.
-	};
+	template <class T>
+	class UniqueHandle;
 
-	// Placed at the start of each allocation to track how many bytes are stored.
-	struct AllocationHeader
+	/*
+	Returned when allocating memory. Should be used in a UniqueHandle object.
+	*/
+	struct Handle
 	{
-		ByteCount uiBytes; // Bytes stored in this allocation, including this header.
-		UInt16 uiCount; // Number of objects stored in this allocation.
+		Handle* opNextHandle; // The handle closest to this one.
+		Byte* uipLocation; // Location that this handle points to in the memory arena.
+		ByteCount uiByteSize; // Size of the memory block that this handle points to.
+		UInt32 uiElementCount; // Number of elements allocated in the memory block.
+		bool bIsUsed; // Whether this handle is currently in use.
 	};
 
 	/*
-	A singleton MemoryManager for the Soul engine. This works by creating a 
-	memory arena that can have memory allocated in it through separate
-	allocator objects. This first needs to be initialized by calling
-	StartUp() (usually done by the engine) and cleaned up via Shutdown().
-	
-	To partition memory for use by an allocator, use the Partition(...) function
-	or PartitionArray(...) macros. With the returned pointer, you can deallocate
-	the same memory block via Deallocate(...).
-	
+	A singleton MemoryManager for the Soul engine. This first needs to be
+	initialized by calling StartUp() (usually done by the engine) and cleaned up
+	via Shutdown().
+
+	To partition memory for use, call Allocate<T>(...) with the type desired
+	inserted into the template. This will return a new UniqueHandle which can
+	then be used to access the memory block that was allocated for the object.
+
 	For debugging purposes, the GetTotalAllocatedBytes() and GetTotalFreeBytes()
-	functions can be used to query the current usage of the memory arena.
+	functions can be used to query the current usage of the memory arena. The
+	PrintMemory() function also prints out a brief summary of the current memory
+	usage.
 	*/
 	class MemoryManager
 	{
 	public:
 
-		// Getters /////////////////////////////////////////////////////////////
-
 		/*
-		@return UInt64 containing the current number of allocated bytes in this
-		        memory arena.
+		Initializes the MemoryManager's memory and sets up the Handle table.
 		*/
-		static ByteCount GetTotalAllocatedBytes();
+		static void StartUp();
 
 		/*
-		@return UInt64 containing the current number of free bytes in this
-		        memory arena.
-		*/
-		static ByteCount GetTotalFreeBytes();
-
-		// Member Functions ////////////////////////////////////////////////////
-
-		/*
-		Initializes the MemoryManager. This should be called before any other
-		MemoryManager function.
-		
-		@param uiByteSize - The total amount of bytes to partition for this
-		                    MemoryManager.
-		*/
-		static void StartUp(ByteCount uiByteSize);
-
-		/*
-		Cleans up the MemoryManager. This should be called last, just before the
-		program shuts down.
+		Shuts down the MemoryManager and frees all its memory.
 		*/
 		static void Shutdown();
 
 		/*
-		Used to allocate a specific chunk of memory from the memory arena.
-		Only to be used by MemoryAllocators.
+		Attempts to allocate the provided amount of memory in the arena. The
+		total amount of memory reserved will be equal to uiBytes * uiCount.
 
-		@param uiBytes - Size of the allocation in bytes.
+		@param uiBytes - The number of bytes needed to reserve one element of
+						 the provided type.
 
-		@param uiCount - The number of elements stored in this allocation.
+		@param uiCount - The number of elements to reserve memory for.
 
-		@return Pointer pointing to the start of the newly allocated block of
-		memory to be used by a MemoryAllocator.
-		*/
-		static void* Allocate(ByteCount uiBytes, UInt16 uiCount = 1);
-
-		/*
-		Deallocates the allocated block of memory at the provided location.
-
-		@param pLocation - The location of the block of memory to deallocate.
+		@return UniqueHandle<T> containing the handle that points to the newly
+		                        allocated memory.
 		*/
 		template <class T>
-		static void Deallocate(T* pLocation);
+		static UniqueHandle<T> Allocate(ByteCount uiBytes, UInt32 uiCount);
 
 		/*
-		Prints a small summary of the current memory arena usage to the console.
-		*/
-		static void PrintMemory();
+		Calls the destructor and frees the memory for every object allocated to
+		the provided handle.
 
-		// Deleted Functions //////////////////////////////////////////////////
-	
+		@param oHandle - The handle whose memory needs to be freed.
+		*/
+		template <class T>
+		static void Deallocate(Handle& oHandle);
+
+		/*
+		Attempts to defragment the provided number of blocks to keep memory
+		contiguous and cache-friendly.
+
+		@param uiBlockCount - The number of memory blocks to attempt to defrag.
+		*/
+		static void Defragment(UInt8 uiBlockCount);
+
+		/*
+		Returns the total number of bytes that have been allocated by the
+		MemoryManager (this does not include the memory used by the Handle table)
+		*/
+		static void GetTotalAllocatedBytes();
+
+		/*
+		Returns the total number of bytes that are free in the MemoryManager.
+		*/
+		static void GetTotalFreeBytes();
+
+	private:
 		MemoryManager() = delete;
 
 	private:
-		
-		/*
-		Returns a count of how many MemoryNodes exist in the memory arena.
-		*/
-		static UInt16 CountNodes();
-
-		/*
-		Removes the memory node at the provided location, and connects the
-		previous and next memory nodes together to repair the list.
-
-		@param opLocation - Pointer to the MemoryNode to be removed.
-		*/
-		static void RemoveMemoryNode(MemoryNode* opLocation);
-
-		/*
-		Attempts to add a new MemoryNode at the location provided. If it
-		connects with a previous MemoryNode, it will be absorbed. Otherwise, the
-		MemoryNode list will be corrected appropriately.
-
-		@param pLocation - Pointer to the location to create the new MemoryNode
-		                    at.
-		*/
-		static void TryAddingMemoryNode(void* pLocation);
-
-	private:
-		static Byte* _suipMemoryStart; // The location of the start of the memory arena.
-		static Byte* _suipMemoryEnd; // The location of the end of the memory arena.
-		static ByteCount _suiByteSize; // The size of this memory arena in bytes.
-		static bool _sbIsSetup; // Whether the MemoryManager has been initialized yet.
+		static Byte* _suipMemoryStart; // Start of partitioned memory.
+		static Byte* _suipAddressableMemoryStart; // Start of memory that can be allocated to.
+		static Byte* _suipMemoryEnd; // End of addressable memory.
+		static UInt32 _uiHandleTableLength; // Maximum amount of handles that can be created.
+		static Handle* _opHandleTableStart; // Start address of handle table.
+		static bool _bIsSetup; // Whether this MemoryManager has been initialized yet.
 	};
-
-	/*
-	Calls the destructor on this memory block and marks it as free.
-	*/
-	template <class T>
-	void MemoryManager::Deallocate(T* pLocation)
-	{
-		Assert(_sbIsSetup);
-		Assert(pLocation);
-
-		// Check to see if this is an array we're freeing
-		AllocationHeader* opHeader = (AllocationHeader*)((Byte*)pLocation -
-			                         sizeof(AllocationHeader));
-
-		int timesToLoop = opHeader->uiCount;
-		for (int i = 0; i < timesToLoop; ++i)
-		{
-			pLocation[i].~T();
-		}
-
-		TryAddingMemoryNode(pLocation);
-	}
 }

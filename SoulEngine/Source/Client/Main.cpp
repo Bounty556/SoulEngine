@@ -2,7 +2,7 @@
 Entry point for the Client side of this app.
 @file Main.cpp
 @author Jacob Peterson
-@version 1 12/16/20
+@version 1 12/17/20
 */
 
 #include <UtilsLib/CommonTypes.h>
@@ -13,8 +13,6 @@ Entry point for the Client side of this app.
 int main()
 {
 	Soul::MemoryManager::StartUp(Gigabytes(1));
-
-
 
 	Assert(Soul::MemoryManager::GetTotalAllocatedBytes() == 0);
 	Soul::MemoryManager::Shutdown();
