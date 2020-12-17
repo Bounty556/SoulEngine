@@ -52,13 +52,13 @@ namespace Soul
 		@return UInt64 containing the current number of allocated bytes in this
 		        memory arena.
 		*/
-		static UInt64 GetTotalAllocatedBytes();
+		static ByteCount GetTotalAllocatedBytes();
 
 		/*
 		@return UInt64 containing the current number of free bytes in this
 		        memory arena.
 		*/
-		static UInt64 GetTotalFreeBytes();
+		static ByteCount GetTotalFreeBytes();
 
 		// Member Functions ////////////////////////////////////////////////////
 
