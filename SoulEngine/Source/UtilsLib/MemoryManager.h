@@ -2,7 +2,7 @@
 Reserves an initial amount of memory for the engine to be used by allocators.
 @file MemoryManager.h
 @author Jacob Peterson
-@version 1 12/16/20
+@version 2 12/17/20
 */
 
 #pragma once
@@ -109,8 +109,8 @@ namespace Soul
 		MemoryManager() = delete;
 
 	private:
-		static Byte* _spMemoryStart; // The location of the start of the memory arena.
-		static Byte* _spMemoryEnd; // The location of the end of the memory arena.
+		static Byte* _suipMemoryStart; // The location of the start of the memory arena.
+		static Byte* _suipMemoryEnd; // The location of the end of the memory arena.
 		static ByteCount _suiByteSize; // The size of this memory arena in bytes.
 	};
 }

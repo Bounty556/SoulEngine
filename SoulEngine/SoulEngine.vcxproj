@@ -12,10 +12,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Client\Main.cpp" />
+    <ClCompile Include="Source\UtilsLib\Logger.cpp" />
     <ClCompile Include="Source\UtilsLib\MemoryManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\UtilsLib\CommonTypes.h" />
+    <ClInclude Include="Source\UtilsLib\Logger.h" />
     <ClInclude Include="Source\UtilsLib\MemoryManager.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -55,13 +57,13 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)</OutDir>
     <IntDir>$(SolutionDir)bin-int\$(Configuration)-$(Platform)</IntDir>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Source\</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)SoulEngine\Source\</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)</OutDir>
     <IntDir>$(SolutionDir)bin-int\$(Configuration)-$(Platform)</IntDir>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Source\</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)SoulEngine\Source\</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)</OutDir>
