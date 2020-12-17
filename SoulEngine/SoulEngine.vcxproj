@@ -13,12 +13,13 @@
   <ItemGroup>
     <ClCompile Include="Source\Client\Main.cpp" />
     <ClCompile Include="Source\UtilsLib\Logger.cpp" />
-    <ClCompile Include="Source\UtilsLib\MemoryManager.cpp" />
+    <ClCompile Include="Source\UtilsLib\Memory\MemoryManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\UtilsLib\CommonTypes.h" />
     <ClInclude Include="Source\UtilsLib\Logger.h" />
-    <ClInclude Include="Source\UtilsLib\MemoryManager.h" />
+    <ClInclude Include="Source\UtilsLib\Macros.h" />
+    <ClInclude Include="Source\UtilsLib\Memory\MemoryManager.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

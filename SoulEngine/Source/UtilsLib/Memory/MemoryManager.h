@@ -109,8 +109,23 @@ namespace Soul
 		MemoryManager() = delete;
 
 	private:
+		
+		/*
+		Removes the memory node at the provided location, and connects the
+		previous and next memory nodes together to repair the list.
+
+		@param opLocation - Pointer to the MemoryNode to be removed.
+		*/
 		static void RemoveMemoryNode(MemoryNode* opLocation);
 
+		/*
+		Attempts to add a new MemoryNode at the location provided. If it
+		connects with a previous MemoryNode, it will be absorbed. Otherwise, the
+		MemoryNode list will be corrected appropriately.
+
+		@param opLocation - Pointer to the location to create the new MemoryNode
+		                    at.
+		*/
 		static void TryAddingMemoryNode(void* opLocation);
 
 	private:
