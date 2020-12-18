@@ -15,12 +15,14 @@ int main()
 {
 	Soul::MemoryManager::StartUp(Gigabytes(1));
 
-	Soul::UniqueHandle<int> oInt = Soul::MemoryManager::Allocate<int>();
+	{
+		Soul::UniqueHandle<int> i1 = Soul::MemoryManager::AllocateArray<int>(500);
+		Soul::MemoryManager::PrintMemory();
+	}
 
-	*oInt = 1;
-	SoulLogInfo("%d", *oInt);
+	Soul::MemoryManager::PrintMemory();
 
-	SoulLogInfo("Memory used: %d", Soul::MemoryManager::GetTotalAllocatedBytes());
+	Assert(Soul::MemoryManager::GetTotalAllocatedBytes() == 0);
 	Soul::MemoryManager::Shutdown();
 
 	return 0;

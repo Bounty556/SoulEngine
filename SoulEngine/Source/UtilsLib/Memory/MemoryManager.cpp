@@ -76,7 +76,7 @@ namespace Soul
 
 	void MemoryManager::PrintMemory()
 	{
-		SoulLogInfo("Nodes: %d\nFree Bytes: %lld\nAllocated Bytes: %lld",
+		SoulLogInfo("\n\tNodes: %d\n\tFree Bytes: %lld\n\tAllocated Bytes: %lld",
 			        GetNodeCount(), GetTotalFreeBytes(), GetTotalAllocatedBytes());
 	}
 
