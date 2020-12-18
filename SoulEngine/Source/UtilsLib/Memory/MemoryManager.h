@@ -8,11 +8,12 @@ Reserves an initial amount of memory for the engine to be allocated as needed.
 #pragma once
 
 #include <utility>
+#include <new>
 
 #include <UtilsLib/CommonTypes.h>
 #include <UtilsLib/Macros.h>
 
-typedef unsigned char ByteCount;
+typedef PtrSize ByteCount;
 
 namespace Soul
 {
@@ -71,7 +72,7 @@ namespace Soul
 		                        allocated memory.
 		*/
 		template <class T, class... Args>
-		static UniqueHandle<T> Allocate(Args&&... oArgs);
+		static void Allocate(Args&&... oArgs);
 
 		/*
 		Attempts to allocate the provided amount of memory in the arena.
@@ -136,14 +137,14 @@ namespace Soul
 		static Byte* _suipAddressableMemoryStart; // Start of memory that can be allocated to.
 		static Byte* _suipMemoryEnd; // End of addressable memory.
 		static ByteCount _suiMemorySize; // Size of total reserved memory.
-		static UInt32 _uiHandleTableLength; // Maximum amount of handles that can be created.
+		static UInt32 _suiHandleTableLength; // Maximum amount of handles that can be created.
 		static Handle* _sopHandleTableStart; // Start address of handle table.
-		static Handle* _sopFirstHandle; // Address fo the starting handle of the table.
+		static Handle* _sopFirstHandle; // Address to the starting handle of the table.
 		static bool _sbIsSetup; // Whether this MemoryManager has been initialized yet.
 	};
 
 	template <class T, class... Args>
-	UniqueHandle<T> MemoryManager::Allocate(Args&&... oArgs)
+	void MemoryManager::Allocate(Args&&... oArgs)
 	{
 		Assert(_sbIsSetup);
 
@@ -205,6 +206,11 @@ namespace Soul
 		{
 			opCurrentHandle->opNextHandle = opPreviousHandle->opNextHandle;
 			opPreviousHandle->opNextHandle = opCurrentHandle;
+		}
+		else
+		{
+			// This is the first handle of the table
+			_sopFirstHandle = opCurrentHandle;
 		}
 		opCurrentHandle->uipLocation = pAvailableBlock;
 		opCurrentHandle->uiByteSize = uiCount * sizeof(T);

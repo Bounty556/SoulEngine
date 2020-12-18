@@ -11,6 +11,8 @@ Contains commonly used macros.
 #define Megabytes(x) (Kilobytes(x) * 1024LL)
 #define Gigabytes(x) (Megabytes(x) * 1024LL)
 
+#define ByteDistance(x, y) ((size_t)((unsigned char*)y - (unsigned char*)x))
+
 #define Assert(x) \
 if (x) \
 	{} \

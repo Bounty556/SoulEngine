@@ -14,7 +14,7 @@ int main()
 {
 	Soul::MemoryManager::StartUp(Gigabytes(1));
 
-	Assert(Soul::MemoryManager::GetTotalAllocatedBytes() == 0);
+	SoulLogInfo("Memory used: %d", Soul::MemoryManager::GetTotalAllocatedBytes());
 	Soul::MemoryManager::Shutdown();
 
 	return 0;
