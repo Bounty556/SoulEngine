@@ -50,6 +50,8 @@ namespace Soul
 
 	void MemoryManager::Defragment(UInt8 uiBlockCount)
 	{
+		Assert(_sbIsSetup);
+
 		// TODO: Implement
 	}
 
