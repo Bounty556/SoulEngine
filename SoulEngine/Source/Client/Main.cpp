@@ -16,12 +16,15 @@ int main()
 	Soul::MemoryManager::StartUp(Gigabytes(1));
 
 	{
-		Soul::UniqueHandle<int> i1 = Soul::MemoryManager::AllocateArray<int>(500);
-		Soul::MemoryManager::PrintMemory();
+		Soul::UniqueHandle<int> int1 = Soul::MemoryManager::Allocate<int>();
+		Soul::UniqueHandle<int> int2 = Soul::MemoryManager::Allocate<int>();
+
+		int1 = std::move(int2);
+
+		Soul::MemoryManager::Defragment(1);
 	}
 
 	Soul::MemoryManager::PrintMemory();
-
 	Assert(Soul::MemoryManager::GetTotalAllocatedBytes() == 0);
 	Soul::MemoryManager::Shutdown();
 

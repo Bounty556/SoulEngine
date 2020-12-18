@@ -2,7 +2,7 @@
 Reserves an initial amount of memory for the engine to be allocated as needed.
 @file MemoryManager.cpp
 @author Jacob Peterson
-@version 3 12/17/20
+@version 3 12/18/20
 */
 
 #include "MemoryManager.h"
@@ -68,7 +68,7 @@ namespace Soul
 		while (opCurrentHandle && uiMovedBlocks < uiBlockCount)
 		{
 			ByteCount uiDistance =
-				ByteDistance(uipPreviousBlockEnd, opCurrentHandle->uipLocation);
+				ByteDistance(uipPreviousBlockEnd, opCurrentHandle->pLocation);
 			if (uiDistance > 0)
 			{
 				MoveHandle(opCurrentHandle, uipPreviousBlockEnd);
@@ -76,7 +76,7 @@ namespace Soul
 			}
 
 			uipPreviousBlockEnd =
-				(Byte*)opCurrentHandle->uipLocation + opCurrentHandle->uiByteSize;
+				(Byte*)opCurrentHandle->pLocation + opCurrentHandle->uiByteSize;
 			opCurrentHandle = opCurrentHandle->opNextHandle;
 		}
 	}
@@ -125,7 +125,7 @@ namespace Soul
 	{
 		if (opHandle == _sopFirstHandle)
 		{
-			_sopFirstHandle = nullptr;
+			_sopFirstHandle = opHandle->opNextHandle;
 		}
 		else
 		{
@@ -166,8 +166,8 @@ namespace Soul
 			Check the space between this handle and the next
 			*/
 			Byte* uipEndOfBlock =
-				(Byte*)opCurrentHandle->uipLocation + opCurrentHandle->uiByteSize;
-			if (ByteDistance(uipEndOfBlock, opNextHandle->uipLocation) >= uiRequestedSize)
+				(Byte*)opCurrentHandle->pLocation + opCurrentHandle->uiByteSize;
+			if (ByteDistance(uipEndOfBlock, opNextHandle->pLocation) >= uiRequestedSize)
 			{
 				(*opPreviousHandleOut) = opCurrentHandle;
 				return uipEndOfBlock;
@@ -184,7 +184,7 @@ namespace Soul
 		allocated memory, otherwise we have run out of memory and we will crash.
 		*/
 		Byte* uipEndOfBlock =
-			(Byte*)opCurrentHandle->uipLocation + opCurrentHandle->uiByteSize;
+			(Byte*)opCurrentHandle->pLocation + opCurrentHandle->uiByteSize;
 		if (ByteDistance(uipEndOfBlock, _suipMemoryEnd) >= uiRequestedSize)
 		{
 			(*opPreviousHandleOut) = opCurrentHandle;
@@ -196,5 +196,11 @@ namespace Soul
 			Assert(false);
 			return nullptr;
 		}
+	}
+
+	void MemoryManager::MoveHandle(Handle* opHandle, void* pNewLocation)
+	{
+		memcpy(pNewLocation, opHandle->pLocation, opHandle->uiByteSize);
+		opHandle->pLocation = pNewLocation;
 	}
 }

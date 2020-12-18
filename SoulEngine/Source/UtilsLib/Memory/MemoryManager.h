@@ -2,7 +2,7 @@
 Reserves an initial amount of memory for the engine to be allocated as needed.
 @file MemoryManager.h
 @author Jacob Peterson
-@version 3 12/17/20
+@version 3 12/18/20
 */
 
 #pragma once
@@ -26,7 +26,7 @@ namespace Soul
 	struct Handle
 	{
 		Handle* opNextHandle; // The handle closest to this one.
-		void* uipLocation; // Location that this handle points to in the memory arena.
+		void* pLocation; // Location that this handle points to in the memory arena.
 		ByteCount uiByteSize; // Size of the memory block that this handle points to.
 		UInt32 uiElementCount; // Number of elements allocated in the memory block.
 		bool bIsUsed; // Whether this handle is currently in use.
@@ -218,7 +218,7 @@ namespace Soul
 		/*
 		Destruct all elements at the given block
 		*/
-		T* pCurrentElement = (T*)oHandle.uipLocation;
+		T* pCurrentElement = (T*)oHandle.pLocation;
 
 		for (UInt32 i = 0; i < oHandle.uiElementCount; ++i)
 		{
@@ -268,7 +268,7 @@ namespace Soul
 			// This is the first handle of the table
 			_sopFirstHandle = opCurrentHandle;
 		}
-		opCurrentHandle->uipLocation = pAvailableBlock;
+		opCurrentHandle->pLocation = pAvailableBlock;
 		opCurrentHandle->uiByteSize = uiCount * sizeof(T);
 		opCurrentHandle->uiElementCount = uiCount;
 		opCurrentHandle->bIsUsed = true;

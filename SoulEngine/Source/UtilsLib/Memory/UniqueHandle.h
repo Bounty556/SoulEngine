@@ -68,17 +68,19 @@ namespace Soul
 
 		_opHandle = oOtherHandle._opHandle;
 		oOtherHandle._opHandle = nullptr;
+
+		return *this;
 	}
 
 	template <class T>
 	T* UniqueHandle<T>::operator->() const
 	{
-		return (T*)_opHandle->uipLocation;
+		return (T*)_opHandle->pLocation;
 	}
 
 	template <class T>
 	T& UniqueHandle<T>::operator*() const
 	{
-		return *((T*)(_opHandle->uipLocation));
+		return *((T*)(_opHandle->pLocation));
 	}
 }
