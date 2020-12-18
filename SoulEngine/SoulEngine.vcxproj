@@ -20,6 +20,7 @@
     <ClInclude Include="Source\UtilsLib\Logger.h" />
     <ClInclude Include="Source\UtilsLib\Macros.h" />
     <ClInclude Include="Source\UtilsLib\Memory\MemoryManager.h" />
+    <ClInclude Include="Source\UtilsLib\Memory\UniqueHandle.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

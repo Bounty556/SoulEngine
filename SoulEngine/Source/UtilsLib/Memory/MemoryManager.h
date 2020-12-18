@@ -72,7 +72,7 @@ namespace Soul
 		                        allocated memory.
 		*/
 		template <class T, class... Args>
-		static void Allocate(Args&&... oArgs);
+		static UniqueHandle<T> Allocate(Args&&... oArgs);
 
 		/*
 		Attempts to allocate the provided amount of memory in the arena.
@@ -144,7 +144,7 @@ namespace Soul
 	};
 
 	template <class T, class... Args>
-	void MemoryManager::Allocate(Args&&... oArgs)
+	UniqueHandle<T> MemoryManager::Allocate(Args&&... oArgs)
 	{
 		Assert(_sbIsSetup);
 
