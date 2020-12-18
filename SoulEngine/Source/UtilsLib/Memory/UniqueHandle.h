@@ -61,6 +61,11 @@ namespace Soul
 	template <class T>
 	UniqueHandle<T>& UniqueHandle<T>::operator=(UniqueHandle&& oOtherHandle)
 	{
+		if (_opHandle)
+		{
+			MemoryManager::Deallocate<T>(*_opHandle);
+		}
+
 		_opHandle = oOtherHandle._opHandle;
 		oOtherHandle._opHandle = nullptr;
 	}

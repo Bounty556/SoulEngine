@@ -18,7 +18,6 @@ int main()
 	Soul::UniqueHandle<int> oInt = Soul::MemoryManager::Allocate<int>();
 
 	*oInt = 1;
-
 	SoulLogInfo("%d", *oInt);
 
 	SoulLogInfo("Memory used: %d", Soul::MemoryManager::GetTotalAllocatedBytes());
