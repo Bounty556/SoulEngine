@@ -117,8 +117,26 @@ namespace Soul
 	private:
 		MemoryManager() = delete;
 
+		/*
+		Creates a new handle pointing to a memory block that can hold the
+		requested amount of memory. If this is not meant for an array, the
+		element can be constructed in place with the passed arguments.
+
+		@param uiCount - The number of elements to reserve space for at the
+		                 new block of memory.
+
+		@param oArgs - The arguments to be passed to the elements constructor
+		               if this is not an array allocation.
+		*/
 		template <class T, class... Args>
 		static Handle* SetupNewHandle(UInt32 uiCount, Args&&... oArgs);
+
+		/*
+		Deletes the provided handle and patches the handle table around it.
+
+		@param opHandle - Pointer to the handle to be deleted.
+		*/
+		static void DeleteHandle(Handle* opHandle);
 
 		/*
 		Finds the first available memory block that can accomodate the
@@ -168,7 +186,18 @@ namespace Soul
 	{
 		Assert(_sbIsSetup);
 
-		// TODO: Implement
+		/*
+		Destruct all elements at the given block
+		*/
+		T* pCurrentElement = (T*)oHandle.uipLocation;
+
+		for (UInt32 i = 0; i < oHandle.uiElementCount; ++i)
+		{
+			pCurrentElement->~T();
+			++pCurrentElement;
+		}
+
+		DeleteHandle(&oHandle);
 	}
 
 	template <class T, class... Args>

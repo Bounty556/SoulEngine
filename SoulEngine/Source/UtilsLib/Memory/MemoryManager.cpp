@@ -74,6 +74,31 @@ namespace Soul
 		return _suiMemorySize - GetTotalAllocatedBytes();
 	}
 
+	void MemoryManager::DeleteHandle(Handle* opHandle)
+	{
+		if (opHandle == _sopFirstHandle)
+		{
+			_sopFirstHandle = nullptr;
+		}
+		else
+		{
+			/*
+			Find the handle just before the provided handle.
+			*/
+			Handle* opCurrentHandle = _sopFirstHandle;
+
+			while (opCurrentHandle->opNextHandle != opHandle)
+			{
+				opCurrentHandle = opCurrentHandle->opNextHandle;
+			}
+
+			/*
+			Patch the list around the removed handle.
+			*/
+			opCurrentHandle->opNextHandle = opCurrentHandle->opNextHandle->opNextHandle;
+		}
+	}
+
 	void* MemoryManager::FindFirstFreeMemoryBlock(ByteCount uiRequestedSize,
 		Handle** opPreviousHandleOut)
 	{
