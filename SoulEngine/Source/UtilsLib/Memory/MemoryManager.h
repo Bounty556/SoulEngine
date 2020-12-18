@@ -149,9 +149,8 @@ namespace Soul
 		Assert(_sbIsSetup);
 
 		Handle* opNewHandle = SetupNewHandle<T>(1, std::forward<Args>(oArgs)...);
-		// TODO: 
-		// UniqueHandle<T> oUniqueHandle(*opNewHandle);
-		// return std::move(oUniqueHandle);
+		UniqueHandle<T> oUniqueHandle(opNewHandle);
+		return std::move(oUniqueHandle);
 	}
 
 	template <class T>
@@ -160,9 +159,8 @@ namespace Soul
 		Assert(_sbIsSetup);
 
 		Handle* opNewHandle = SetupNewHandle<T>(uiCount);
-		// TODO: 
-		// UniqueHandle<T> oUniqueHandle(*opNewHandle);
-		// return std::move(oUniqueHandle);
+		UniqueHandle<T> oUniqueHandle(opNewHandle);
+		return std::move(oUniqueHandle);
 	}
 
 	template <class T>

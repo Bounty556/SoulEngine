@@ -20,7 +20,7 @@ namespace Soul
 	class UniqueHandle
 	{
 	public:
-		UniqueHandle(Handle& oHandle);
+		UniqueHandle(Handle* oHandle);
 		UniqueHandle(UniqueHandle&& oOtherHandle);
 
 		~UniqueHandle();
@@ -38,7 +38,7 @@ namespace Soul
 	};
 
 	template <class T>
-	UniqueHandle<T>::UniqueHandle(Handle& oHandle) :
+	UniqueHandle<T>::UniqueHandle(Handle* oHandle) :
 		_opHandle(oHandle)
 	{ }
 
