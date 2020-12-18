@@ -169,6 +169,15 @@ namespace Soul
 		*/
 		static void* FindFirstFreeMemoryBlock(ByteCount uiRequestedSize,
 			Handle** opPreviousHandleOut);
+
+		/*
+		Moves the memory pointed to by the provided handle to the new location.
+
+		@param opHandle - The handle whose memory needs to be moved.
+
+		@param pNewLocation - Pointer to the new location to move the memory to.
+		*/
+		static void MoveHandle(Handle* opHandle, void* pNewLocation);
 	
 	private:
 		static Byte* _suipMemoryStart; // Start of partitioned memory.

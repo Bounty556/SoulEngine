@@ -46,13 +46,39 @@ namespace Soul
 	{
 		Assert(_sbIsSetup);
 		free(_suipMemoryStart);
+		_suipMemoryStart = nullptr;
+		_suipAddressableMemoryStart = nullptr;
+		_suipMemoryEnd = nullptr;
+		_suiMemorySize = 0;
+		_sopHandleTableStart = nullptr; 
+		_sopFirstHandle = nullptr;
+		_sbIsSetup = false;
 	}
 
 	void MemoryManager::Defragment(UInt8 uiBlockCount)
 	{
 		Assert(_sbIsSetup);
 
-		// TODO: Implement
+		/*
+		Find the first gap.
+		*/
+		Byte* uipPreviousBlockEnd = _suipAddressableMemoryStart;
+		Handle* opCurrentHandle = _sopFirstHandle;
+		UInt8 uiMovedBlocks = 0;
+		while (opCurrentHandle && uiMovedBlocks < uiBlockCount)
+		{
+			ByteCount uiDistance =
+				ByteDistance(uipPreviousBlockEnd, opCurrentHandle->uipLocation);
+			if (uiDistance > 0)
+			{
+				MoveHandle(opCurrentHandle, uipPreviousBlockEnd);
+				++uiMovedBlocks;
+			}
+
+			uipPreviousBlockEnd =
+				(Byte*)opCurrentHandle->uipLocation + opCurrentHandle->uiByteSize;
+			opCurrentHandle = opCurrentHandle->opNextHandle;
+		}
 	}
 
 	ByteCount MemoryManager::GetTotalAllocatedBytes()
