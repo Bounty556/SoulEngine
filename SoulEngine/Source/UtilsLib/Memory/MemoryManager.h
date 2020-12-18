@@ -106,16 +106,36 @@ namespace Soul
 		/*
 		Returns the total number of bytes that have been allocated by the
 		MemoryManager (this does not include the memory used by the Handle table)
+
+		@return ByteCount containing the number of allocated bytes in this
+		        MemoryManager.
 		*/
 		static ByteCount GetTotalAllocatedBytes();
 
 		/*
 		Returns the total number of bytes that are free in the MemoryManager.
+
+		@return ByteCount containing the number of free bytes in this
+		        MemoryManager.
 		*/
 		static ByteCount GetTotalFreeBytes();
 
+		/*
+		Prints a brief summary of the current memory usage.
+		*/
+		static void PrintMemory();
+
 	private:
 		MemoryManager() = delete;
+
+		/*
+		Returns the total number of allocated memory blocks (handles) in this
+		MemoryManager.
+
+		@return UInt32 containing the number of allocated memory blocks (handles)
+		        in this MemoryManager.
+		*/
+		static UInt32 GetNodeCount();
 
 		/*
 		Creates a new handle pointing to a memory block that can hold the

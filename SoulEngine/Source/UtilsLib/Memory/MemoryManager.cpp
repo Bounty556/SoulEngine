@@ -74,6 +74,25 @@ namespace Soul
 		return _suiMemorySize - GetTotalAllocatedBytes();
 	}
 
+	void MemoryManager::PrintMemory()
+	{
+		SoulLogInfo("Nodes: %d\nFree Bytes: %lld\nAllocated Bytes: %lld",
+			        GetNodeCount(), GetTotalFreeBytes(), GetTotalAllocatedBytes());
+	}
+
+	UInt32 MemoryManager::GetNodeCount()
+	{
+		Handle* opCurrentHandle = _sopFirstHandle;
+		UInt32 uiHandleCount = 0;
+		while (opCurrentHandle)
+		{
+			++uiHandleCount;
+			opCurrentHandle = opCurrentHandle->opNextHandle;
+		}
+
+		return uiHandleCount;
+	}
+
 	void MemoryManager::DeleteHandle(Handle* opHandle)
 	{
 		if (opHandle == _sopFirstHandle)
