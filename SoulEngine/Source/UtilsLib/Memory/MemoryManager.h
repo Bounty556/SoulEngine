@@ -7,8 +7,9 @@ Reserves an initial amount of memory for the engine to be allocated as needed.
 
 #pragma once
 
-#include <utility>
+#include <memory>
 #include <new>
+#include <utility>
 
 #include <UtilsLib/CommonTypes.h>
 #include <UtilsLib/Macros.h>
@@ -251,11 +252,16 @@ namespace Soul
 
 		/*
 		Allocate memory and configure handles. We only need to construct the
-		object if we are not allocating for an array.
+		object if we are not allocating for an array. If we're not allocating
+		an array, just set the memory to 0.
 		*/
 		if (uiCount == 1)
 		{
 			new (pAvailableBlock) T(std::forward<Args>(oArgs)...);
+		}
+		else
+		{
+			memset(pAvailableBlock, 0, uiCount * sizeof(T));
 		}
 		if (opPreviousHandle)
 		{

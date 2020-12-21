@@ -33,30 +33,41 @@ namespace Soul
 		const T& operator*() const;
 		const T& operator[](ArraySize uiIndex) const;
 
+		/*
+		Returns whether this UniqueHandle is active and usable.
+
+		@return Boolean containing the validity of this UniqueHandle.
+		*/
+		bool IsValid() const;
+
 		UniqueHandle() = delete;
 		UniqueHandle(const UniqueHandle&) = delete;
 		UniqueHandle<T>& operator=(const UniqueHandle&) = delete;
 
 	private:
 		Handle* _opHandle; // Pointer to this UniqueHandle's Handle.
+		bool _bIsValid; // Whether this UniqueHandle is active and usable.
 	};
 
 	template <class T>
 	UniqueHandle<T>::UniqueHandle(Handle* oHandle) :
-		_opHandle(oHandle)
+		_opHandle(oHandle),
+		_bIsValid(true)
 	{ }
 
 	template <class T>
 	UniqueHandle<T>::UniqueHandle(UniqueHandle&& oOtherHandle) :
-		_opHandle(oOtherHandle._opHandle)
+		_opHandle(oOtherHandle._opHandle),
+		_bIsValid(oOtherHandle._bIsValid)
 	{
 		oOtherHandle._opHandle = nullptr;
+		oOtherHandle._bIsValid = false;
 	}
 
 	template <class T>
 	UniqueHandle<T>::~UniqueHandle()
 	{
-		if (_opHandle)
+		if (_bIsValid)
 		{
 			MemoryManager::Deallocate<T>(*_opHandle);
 		}
@@ -65,13 +76,15 @@ namespace Soul
 	template <class T>
 	UniqueHandle<T>& UniqueHandle<T>::operator=(UniqueHandle&& oOtherHandle)
 	{
-		if (_opHandle)
+		if (_bIsValid)
 		{
 			MemoryManager::Deallocate<T>(*_opHandle);
 		}
 
 		_opHandle = oOtherHandle._opHandle;
+		_bIsValid = oOtherHandle._bIsValid;
 		oOtherHandle._opHandle = nullptr;
+		oOtherHandle._bIsValid = false;
 
 		return *this;
 	}
@@ -110,5 +123,11 @@ namespace Soul
 	const T& UniqueHandle<T>::operator[](ArraySize uiIndex) const
 	{
 		return ((T*)_opHandle->pLocation)[uiIndex];
+	}
+
+	template <class T>
+	bool UniqueHandle<T>::IsValid() const
+	{
+		return _bIsValid;
 	}
 }

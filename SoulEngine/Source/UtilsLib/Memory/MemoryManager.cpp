@@ -7,8 +7,6 @@ Reserves an initial amount of memory for the engine to be allocated as needed.
 
 #include "MemoryManager.h"
 
-#include <memory>
-
 #include <UtilsLib/Logger.h>
 #include <UtilsLib/Memory/UniqueHandle.h>
 
