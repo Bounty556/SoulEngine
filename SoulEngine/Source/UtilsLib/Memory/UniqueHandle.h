@@ -91,7 +91,7 @@ namespace Soul
 	template <class T>
 	T& UniqueHandle<T>::operator[](ArraySize uiIndex)
 	{
-		return (T)(_opHandle[uiIndex]);
+		return ((T*)_opHandle)[uiIndex];
 	}
 
 	template <class T>
@@ -109,6 +109,6 @@ namespace Soul
 	template <class T>
 	const T& UniqueHandle<T>::operator[](ArraySize uiIndex) const
 	{
-		return (T)(_opHandle[uiIndex]);
+		return ((T*)_opHandle)[uiIndex];
 	}
 }
