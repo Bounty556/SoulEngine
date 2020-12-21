@@ -4,7 +4,7 @@ within it. The MemoryManager returns UniqueHandles which can then be used like
 normal pointers to memory.
 @file UniqueHandle.h
 @author Jacob Peterson
-@version 1 12/17/2020
+@version 1 12/20/2020
 */
 
 #pragma once
