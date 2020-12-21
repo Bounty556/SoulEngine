@@ -26,8 +26,12 @@ namespace Soul
 		~UniqueHandle();
 
 		UniqueHandle<T>& operator=(UniqueHandle&& oOtherHandle);
-		T* operator->() const;
-		T& operator*() const;
+		T* operator->();
+		T& operator*();
+		T& operator[](ArraySize uiIndex);
+		const T* operator->() const;
+		const T& operator*() const;
+		const T& operator[](ArraySize uiIndex) const;
 
 		UniqueHandle() = delete;
 		UniqueHandle(const UniqueHandle&) = delete;
@@ -73,14 +77,38 @@ namespace Soul
 	}
 
 	template <class T>
-	T* UniqueHandle<T>::operator->() const
+	T* UniqueHandle<T>::operator->()
 	{
 		return (T*)_opHandle->pLocation;
 	}
 
 	template <class T>
-	T& UniqueHandle<T>::operator*() const
+	T& UniqueHandle<T>::operator*()
 	{
 		return *((T*)(_opHandle->pLocation));
+	}
+
+	template <class T>
+	T& UniqueHandle<T>::operator[](ArraySize uiIndex)
+	{
+		return (T)(_opHandle[uiIndex]);
+	}
+
+	template <class T>
+	const T* UniqueHandle<T>::operator->() const
+	{
+		return (T*)_opHandle->pLocation;
+	}
+
+	template <class T>
+	const T& UniqueHandle<T>::operator*() const
+	{
+		return *((T*)(_opHandle->pLocation));
+	}
+
+	template <class T>
+	const T& UniqueHandle<T>::operator[](ArraySize uiIndex) const
+	{
+		return (T)(_opHandle[uiIndex]);
 	}
 }
