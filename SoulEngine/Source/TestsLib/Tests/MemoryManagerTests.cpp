@@ -28,7 +28,7 @@ namespace Soul
 		
 		for (UInt8 i = 0; i < 255; ++i)
 		{
-			MemoryManager::Allocate<int>(3);
+			UniqueHandle<int> hIntHandle = MemoryManager::Allocate<int>(3);
 			AssertEqual(MemoryManager::GetTotalAllocatedBytes(), 4,
 				"Incorrect allocation of object.");
 		}
@@ -46,7 +46,7 @@ namespace Soul
 
 		for (UInt8 i = 0; i < 255; ++i)
 		{
-			MemoryManager::AllocateArray<int>(1000);
+			UniqueHandle<int> hIntHandle = MemoryManager::AllocateArray<int>(1000);
 			AssertEqual(MemoryManager::GetTotalAllocatedBytes(), 4000,
 				"Incorrect allocation of array.");
 		}

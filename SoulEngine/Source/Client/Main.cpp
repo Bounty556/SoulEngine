@@ -11,11 +11,13 @@ Entry point for the Client side of this app.
 #include <UtilsLib/Memory/UniqueHandle.h>
 #include <UtilsLib/Logger.h>
 
-#include <UtilsLib/Containers/Queue.h>
+#include <TestsLib/TestRunner.h>
 
 int main()
 {
 	Soul::MemoryManager::StartUp(Gigabytes(1));
+
+	Soul::TestRunner::RunAllTestSuites();
 
 	Assert(Soul::MemoryManager::GetTotalAllocatedBytes() == 0);
 	Soul::MemoryManager::Shutdown();

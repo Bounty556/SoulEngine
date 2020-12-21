@@ -18,4 +18,5 @@ if (x) \
 	{} \
 else {*((int*)0) = 0;}
 
-#define Stringify(x) #x
+#define ToString(x) #x
+#define Stringify(x) ToString(x)

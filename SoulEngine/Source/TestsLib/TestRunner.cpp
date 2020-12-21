@@ -8,6 +8,9 @@ systems are currently running.
 
 #include "TestRunner.h"
 
+#include <TestsLib/Tests/MemoryManagerTests.h>
+#include <TestsLib/TestMacros.h>
+
 namespace Soul
 {
 	void TestRunner::RunAllTestSuites()
@@ -15,6 +18,7 @@ namespace Soul
 		/*
 		TODO: Add test suites here.
 		*/
+		CreateTestSuite(MemoryManagerTests);
 	}
 
 	void TestRunner::RunTestSuite(ITestSuite* coTestSuite)
