@@ -16,31 +16,13 @@ Entry point for the Client side of this app.
 int main()
 {
 	Soul::MemoryManager::StartUp(Gigabytes(1));
-
 	
 	{
-		Soul::Queue<Soul::Queue<int>> intQueue(6);
+		Soul::Queue<Soul::UniqueHandle<int>> intQueue(6);
 
-		for (UInt8 i = 0; i < intQueue.GetCapacity(); ++i)
+		for (UInt8 i = 0; i < 6; ++i)
 		{
-			Soul::Queue<int> temp(6);
-
-			for (UInt8 j = 0; j < temp.GetCapacity(); ++j)
-			{
-				temp.Push(j);
-			}
-
-			intQueue.Push(std::move(temp));
-		}
-
-		for (UInt8 i = 0; i < intQueue.GetCapacity(); ++i)
-		{
-			Soul::Queue<int> temp(intQueue.Pop());
-
-			for (UInt8 j = 0; j < temp.GetCapacity(); ++j)
-			{
-				SoulLogInfo("%d", temp.Pop());
-			}
+			intQueue.Push(Soul::MemoryManager::Allocate<int>(1));
 		}
 	}
 

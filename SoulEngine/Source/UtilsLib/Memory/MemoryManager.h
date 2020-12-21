@@ -197,6 +197,7 @@ namespace Soul
 		Assert(_sbIsSetup);
 
 		Handle* opNewHandle = SetupNewHandle<T>(1, std::forward<Args>(oArgs)...);
+		new (opNewHandle->pLocation) T(std::forward<Args>(oArgs)...);
 		UniqueHandle<T> oUniqueHandle(opNewHandle);
 		return std::move(oUniqueHandle);
 	}
@@ -255,14 +256,7 @@ namespace Soul
 		object if we are not allocating for an array. If we're not allocating
 		an array, just set the memory to 0.
 		*/
-		if (uiCount == 1)
-		{
-			new (pAvailableBlock) T(std::forward<Args>(oArgs)...);
-		}
-		else
-		{
-			memset(pAvailableBlock, 0, uiCount * sizeof(T));
-		}
+		memset(pAvailableBlock, 0, uiCount * sizeof(T));
 		if (opPreviousHandle)
 		{
 			opCurrentHandle->opNextHandle = opPreviousHandle->opNextHandle;
