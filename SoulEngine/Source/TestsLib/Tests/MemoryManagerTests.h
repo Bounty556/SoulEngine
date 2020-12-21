@@ -2,7 +2,7 @@
 Tests for the MemoryManager class.
 @file MemoryManagerTests.h
 @author Jacob Peterson
-@version 1 12/21/2020
+@edited 12/21/2020
 */
 
 #pragma once

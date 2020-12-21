@@ -2,7 +2,7 @@
 Interface for writing test suites to be run with a TestRunner.
 @file ITestSuite.h
 @author Jacob Peterson
-@version 1 12/21/20
+@edited 12/21/20
 */
 
 #pragma once

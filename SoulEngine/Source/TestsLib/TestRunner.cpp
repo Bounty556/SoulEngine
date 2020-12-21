@@ -3,7 +3,7 @@ Used for aggregating and running tests. Assumes that all necessary engine
 systems are currently running.
 @file TestRunner.cpp
 @author Jacob Peterson
-@version 1 12/21/20
+@edited 12/21/20
 */
 
 #include "TestRunner.h"

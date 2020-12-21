@@ -2,7 +2,7 @@
 Contains commonly used typedefs for ease of reading.
 @file CommonTypes.h
 @author Jacob Peterson
-@version 1 12/20/20
+@edited 12/20/20
 */
 
 #pragma once
