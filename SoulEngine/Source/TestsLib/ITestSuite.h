@@ -9,9 +9,19 @@ Interface for writing test suites to be run with a TestRunner.
 
 namespace Soul
 {
+	class TestRunner;
+
+	/*
+	Interface for writing test suites to be run with a TestRunner.
+	*/
 	class ITestSuite
 	{
-	public:
+	protected:
+		/*
+		Runs all tests in this test suite.
+		*/
 		virtual void RunAllTests() = 0;
+
+		friend TestRunner;
 	};
 }
