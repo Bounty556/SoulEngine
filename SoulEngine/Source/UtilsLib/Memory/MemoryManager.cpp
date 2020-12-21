@@ -7,11 +7,10 @@ Reserves an initial amount of memory for the engine to be allocated as needed.
 
 #include "MemoryManager.h"
 
-#include <UtilsLib/Memory/UniqueHandle.h>
-
 #include <memory>
 
 #include <UtilsLib/Logger.h>
+#include <UtilsLib/Memory/UniqueHandle.h>
 
 namespace Soul
 {
@@ -60,7 +59,7 @@ namespace Soul
 		Assert(_sbIsSetup);
 
 		/*
-		Find the first gap.
+		Find the first N gaps, move the memory blocks over to fill the gaps.
 		*/
 		Byte* uipPreviousBlockEnd = _suipAddressableMemoryStart;
 		Handle* opCurrentHandle = _sopFirstHandle;
@@ -92,7 +91,6 @@ namespace Soul
 			uiTotalBytes += opCurrentHandle->uiByteSize;
 			opCurrentHandle = opCurrentHandle->opNextHandle;
 		}
-
 		return uiTotalBytes;
 	}
 
@@ -117,7 +115,6 @@ namespace Soul
 			++uiHandleCount;
 			opCurrentHandle = opCurrentHandle->opNextHandle;
 		}
-
 		return uiHandleCount;
 	}
 

@@ -219,7 +219,6 @@ namespace Soul
 		Destruct all elements at the given block
 		*/
 		T* pCurrentElement = (T*)oHandle.pLocation;
-
 		for (UInt32 i = 0; i < oHandle.uiElementCount; ++i)
 		{
 			pCurrentElement->~T();

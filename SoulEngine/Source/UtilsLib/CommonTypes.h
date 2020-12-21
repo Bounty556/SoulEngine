@@ -8,7 +8,6 @@ Contains commonly used typedefs for ease of reading.
 #pragma once
 
 // Integer Types ///////////////////////////////////////////////////////////////
-typedef size_t PtrSize;
 typedef char Int8;
 typedef short int Int16;
 typedef int Int32;
@@ -16,6 +15,9 @@ typedef long long int Int64;
 
 // Unsigned Integer Types //////////////////////////////////////////////////////
 typedef unsigned char Byte;
+typedef size_t PtrSize;
+typedef size_t Index;
+typedef size_t ArraySize;
 typedef unsigned char UInt8;
 typedef unsigned short int UInt16;
 typedef unsigned int UInt32;
