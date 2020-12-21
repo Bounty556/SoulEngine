@@ -17,3 +17,5 @@ Contains commonly used macros.
 if (x) \
 	{} \
 else {*((int*)0) = 0;}
+
+#define Stringify(x) #x

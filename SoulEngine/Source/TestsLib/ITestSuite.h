@@ -17,11 +17,12 @@ namespace Soul
 	class ITestSuite
 	{
 	protected:
+		friend TestRunner;
+
+	protected:
 		/*
 		Runs all tests in this test suite.
 		*/
 		virtual void RunAllTests() = 0;
-
-		friend TestRunner;
 	};
 }
