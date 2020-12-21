@@ -2,7 +2,7 @@
 Reserves an initial amount of memory for the engine to be allocated as needed.
 @file MemoryManager.cpp
 @author Jacob Peterson
-@version 3 12/18/20
+@version 3 12/20/20
 */
 
 #include "MemoryManager.h"

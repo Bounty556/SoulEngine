@@ -16,15 +16,6 @@ Entry point for the Client side of this app.
 int main()
 {
 	Soul::MemoryManager::StartUp(Gigabytes(1));
-	
-	{
-		Soul::Queue<Soul::UniqueHandle<int>> intQueue(6);
-
-		for (UInt8 i = 0; i < 6; ++i)
-		{
-			intQueue.Push(Soul::MemoryManager::Allocate<int>(1));
-		}
-	}
 
 	Assert(Soul::MemoryManager::GetTotalAllocatedBytes() == 0);
 	Soul::MemoryManager::Shutdown();

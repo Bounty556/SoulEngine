@@ -71,6 +71,7 @@ namespace Soul
 		*/
 		const ArraySize& GetLength() const;
 
+		Queue() = delete;
 		Queue(const Queue<T>&) = delete;
 		Queue<T>& operator=(const Queue<T>&) = delete;
 
