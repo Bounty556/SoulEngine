@@ -100,11 +100,10 @@ namespace Soul
 
 	void MemoryManager::PrintMemory()
 	{
-		SoulLogInfo("\n\tNodes: %d\n\tFree Bytes: %lld\n\tAllocated Bytes: %lld",
-			        GetNodeCount(), GetTotalFreeBytes(), GetTotalAllocatedBytes());
+		SoulLogInfo("\n\tNodes: %d\n\tFree Bytes: %lld\n\tAllocated Bytes: %lld\n\tFragments: %d", GetNodeCount(), GetTotalFreeBytes(), GetTotalAllocatedBytes(), CountFragments());
 	}
 
-	UInt32 MemoryManager::GetNodeCount()
+	HandleTableSize MemoryManager::GetNodeCount()
 	{
 		Handle* opCurrentHandle = _sopFirstHandle;
 		UInt32 uiHandleCount = 0;
@@ -114,6 +113,33 @@ namespace Soul
 			opCurrentHandle = opCurrentHandle->opNextHandle;
 		}
 		return uiHandleCount;
+	}
+
+	HandleTableSize MemoryManager::CountFragments()
+	{
+		Assert(_sbIsSetup);
+
+		/*
+		Find the memory gaps.
+		*/
+		Byte* uipPreviousBlockEnd = _suipAddressableMemoryStart;
+		Handle* opCurrentHandle = _sopFirstHandle;
+		HandleTableSize uiMemoryFragments = 0;
+		while (opCurrentHandle)
+		{
+			ByteCount uiDistance =
+				ByteDistance(uipPreviousBlockEnd, opCurrentHandle->pLocation);
+			if (uiDistance > 0)
+			{
+				++uiMemoryFragments;
+			}
+
+			uipPreviousBlockEnd =
+				(Byte*)opCurrentHandle->pLocation + opCurrentHandle->uiByteSize;
+			opCurrentHandle = opCurrentHandle->opNextHandle;
+		}
+
+		return uiMemoryFragments;
 	}
 
 	void MemoryManager::DeleteHandle(Handle* opHandle)

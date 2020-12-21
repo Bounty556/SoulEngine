@@ -15,6 +15,7 @@ Reserves an initial amount of memory for the engine to be allocated as needed.
 #include <UtilsLib/Macros.h>
 
 typedef PtrSize ByteCount;
+typedef UInt32 HandleTableSize;
 
 namespace Soul
 {
@@ -50,6 +51,8 @@ namespace Soul
 	*/
 	class MemoryManager
 	{
+	public:
+
 	public:
 
 		/*
@@ -136,7 +139,15 @@ namespace Soul
 		@return UInt32 containing the number of allocated memory blocks (handles)
 		        in this MemoryManager.
 		*/
-		static UInt32 GetNodeCount();
+		static HandleTableSize GetNodeCount();
+
+		/*
+		Counts the total amount of empty blocks of memory that are between the
+		start of the addressable memory and the last block of memory.
+
+		@return The number of empty block fragments.
+		*/
+		static HandleTableSize CountFragments();
 
 		/*
 		Creates a new handle pointing to a memory block that can hold the
@@ -185,7 +196,7 @@ namespace Soul
 		static Byte* _suipAddressableMemoryStart; // Start of memory that can be allocated to.
 		static Byte* _suipMemoryEnd; // End of addressable memory.
 		static ByteCount _suiMemorySize; // Size of total reserved memory.
-		static UInt32 _suiHandleTableLength; // Maximum amount of handles that can be created.
+		static HandleTableSize _suiHandleTableLength; // Maximum amount of handles that can be created.
 		static Handle* _sopHandleTableStart; // Start address of handle table.
 		static Handle* _sopFirstHandle; // Address to the starting handle of the table.
 		static bool _sbIsSetup; // Whether this MemoryManager has been initialized yet.
