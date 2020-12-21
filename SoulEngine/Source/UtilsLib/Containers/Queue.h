@@ -24,6 +24,9 @@ namespace Soul
 	{
 	public:
 		Queue(ArraySize uiCapacity = 32);
+		Queue(Queue<T>&& otherQueue);
+
+		Queue<T>& operator=(Queue<T>&& otherQueue);
 
 		/*
 		Returns an immutable reference to the element at the front of this
@@ -68,6 +71,9 @@ namespace Soul
 		*/
 		const ArraySize& GetLength() const;
 
+		Queue(const Queue<T>&) = delete;
+		Queue<T>& operator=(const Queue<T>&) = delete;
+
 	private:
 		UniqueHandle<T> _hMemory; // Handle to the memory block this queue uses.
 		Index _uiHead; // The front of the queue.
@@ -85,6 +91,33 @@ namespace Soul
 		_uiLength(0)
 	{
 
+	}
+
+	template <class T>
+	Queue<T>::Queue(Queue<T>&& otherQueue) :
+		_hMemory(std::move(otherQueue._hMemory)),
+		_uiHead(otherQueue._uiHead),
+		_uiTail(otherQueue._uiTail),
+		_cuiCapacity(otherQueue._cuiCapacity),
+		_uiLength(otherQueue._uiLength)
+	{
+		otherQueue._uiHead = 0;
+		otherQueue._uiTail = 0;
+		otherQueue._uiLength = 0;
+	}
+
+	template <class T>
+	Queue<T>& Queue<T>::operator=(Queue<T>&& otherQueue)
+	{
+		_hMemory = std::move(otherQueue._hMemory);
+		_uiHead = otherQueue._uiHead;
+		_uiTail = otherQueue._uiTail;
+		_cuiCapacity = otherQueue._cuiCapacity;
+		_uiLength = otherQueue._uiLength;
+
+		otherQueue._uiHead = 0;
+		otherQueue._uiTail = 0;
+		otherQueue._uiLength = 0;
 	}
 
 	template <class T>
