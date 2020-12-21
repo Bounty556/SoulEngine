@@ -41,5 +41,8 @@
     <ClInclude Include="Source\UtilsLib\Memory\UniqueHandle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\UtilsLib\Containers\Queue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

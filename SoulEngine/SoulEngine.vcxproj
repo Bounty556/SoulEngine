@@ -17,6 +17,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\UtilsLib\CommonTypes.h" />
+    <ClInclude Include="Source\UtilsLib\Containers\Queue.h" />
     <ClInclude Include="Source\UtilsLib\Logger.h" />
     <ClInclude Include="Source\UtilsLib\Macros.h" />
     <ClInclude Include="Source\UtilsLib\Memory\MemoryManager.h" />

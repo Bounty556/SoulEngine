@@ -28,7 +28,7 @@ namespace Soul
 		Handle* opNextHandle; // The handle closest to this one.
 		void* pLocation; // Location that this handle points to in the memory arena.
 		ByteCount uiByteSize; // Size of the memory block that this handle points to.
-		UInt32 uiElementCount; // Number of elements allocated in the memory block.
+		ArraySize uiElementCount; // Number of elements allocated in the memory block.
 		bool bIsUsed; // Whether this handle is currently in use.
 	};
 
@@ -84,7 +84,7 @@ namespace Soul
 								allocated memory.
 		*/
 		template <class T>
-		static UniqueHandle<T> AllocateArray(UInt32 uiCount);
+		static UniqueHandle<T> AllocateArray(ArraySize uiCount);
 
 		/*
 		Calls the destructor and frees the memory for every object allocated to
@@ -149,7 +149,7 @@ namespace Soul
 		               if this is not an array allocation.
 		*/
 		template <class T, class... Args>
-		static Handle* SetupNewHandle(UInt32 uiCount, Args&&... oArgs);
+		static Handle* SetupNewHandle(ArraySize uiCount, Args&&... oArgs);
 
 		/*
 		Deletes the provided handle and patches the handle table around it.
@@ -201,7 +201,7 @@ namespace Soul
 	}
 
 	template <class T>
-	UniqueHandle<T> MemoryManager::AllocateArray(UInt32 uiCount)
+	UniqueHandle<T> MemoryManager::AllocateArray(ArraySize uiCount)
 	{
 		Assert(_sbIsSetup);
 
@@ -229,7 +229,7 @@ namespace Soul
 	}
 
 	template <class T, class... Args>
-	Handle* MemoryManager::SetupNewHandle(UInt32 uiCount, Args&&... oArgs)
+	Handle* MemoryManager::SetupNewHandle(ArraySize uiCount, Args&&... oArgs)
 	{
 		// TODO: Move FindFirstFreeMemoryBlock call onto a separate thread.
 		/*
