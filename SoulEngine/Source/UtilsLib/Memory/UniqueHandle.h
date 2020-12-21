@@ -26,12 +26,16 @@ namespace Soul
 		~UniqueHandle();
 
 		UniqueHandle<T>& operator=(UniqueHandle&& oOtherHandle);
+		
 		T* operator->();
 		T& operator*();
 		T& operator[](ArraySize uiIndex);
 		const T* operator->() const;
 		const T& operator*() const;
 		const T& operator[](ArraySize uiIndex) const;
+
+		bool operator==(const UniqueHandle& oOther) const;
+		bool operator!=(const UniqueHandle& oOther) const;
 
 		/*
 		Returns whether this UniqueHandle is active and usable.
@@ -123,6 +127,18 @@ namespace Soul
 	const T& UniqueHandle<T>::operator[](ArraySize uiIndex) const
 	{
 		return ((T*)_opHandle->pLocation)[uiIndex];
+	}
+
+	template <class T>
+	bool UniqueHandle<T>::operator==(const UniqueHandle& oOther) const
+	{
+		return _opHandle == oOther._opHandle;
+	}
+
+	template <class T>
+	bool UniqueHandle<T>::operator!=(const UniqueHandle& oOther) const
+	{
+		return _opHandle != oOther._opHandle;
 	}
 
 	template <class T>
