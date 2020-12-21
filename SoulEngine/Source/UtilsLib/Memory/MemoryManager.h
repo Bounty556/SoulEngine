@@ -160,8 +160,8 @@ namespace Soul
 		@param oArgs - The arguments to be passed to the elements constructor
 		               if this is not an array allocation.
 		*/
-		template <class T, class... Args>
-		static Handle* SetupNewHandle(ArraySize uiCount, Args&&... oArgs);
+		template <class T>
+		static Handle* SetupNewHandle(ArraySize uiCount);
 
 		/*
 		Deletes the provided handle and patches the handle table around it.
@@ -207,7 +207,7 @@ namespace Soul
 	{
 		Assert(_sbIsSetup);
 
-		Handle* opNewHandle = SetupNewHandle<T>(1, std::forward<Args>(oArgs)...);
+		Handle* opNewHandle = SetupNewHandle<T>(1);
 		new (opNewHandle->pLocation) T(std::forward<Args>(oArgs)...);
 		UniqueHandle<T> oUniqueHandle(opNewHandle);
 		return std::move(oUniqueHandle);
@@ -241,8 +241,8 @@ namespace Soul
 		DeleteHandle(&oHandle);
 	}
 
-	template <class T, class... Args>
-	Handle* MemoryManager::SetupNewHandle(ArraySize uiCount, Args&&... oArgs)
+	template <class T>
+	Handle* MemoryManager::SetupNewHandle(ArraySize uiCount)
 	{
 		// TODO: Move FindFirstFreeMemoryBlock call onto a separate thread.
 		/*

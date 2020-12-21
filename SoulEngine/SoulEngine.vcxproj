@@ -14,6 +14,7 @@
     <ClCompile Include="Source\Client\Main.cpp" />
     <ClCompile Include="Source\TestsLib\TestRunner.cpp" />
     <ClCompile Include="Source\TestsLib\Tests\MemoryManagerTests.cpp" />
+    <ClCompile Include="Source\TestsLib\Tests\UniqueHandleTests.cpp" />
     <ClCompile Include="Source\UtilsLib\Logger.cpp" />
     <ClCompile Include="Source\UtilsLib\Memory\MemoryManager.cpp" />
   </ItemGroup>
@@ -22,6 +23,7 @@
     <ClInclude Include="Source\TestsLib\TestMacros.h" />
     <ClInclude Include="Source\TestsLib\TestRunner.h" />
     <ClInclude Include="Source\TestsLib\Tests\MemoryManagerTests.h" />
+    <ClInclude Include="Source\TestsLib\Tests\UniqueHandleTests.h" />
     <ClInclude Include="Source\UtilsLib\CommonTypes.h" />
     <ClInclude Include="Source\UtilsLib\Containers\Queue.h" />
     <ClInclude Include="Source\UtilsLib\Logger.h" />

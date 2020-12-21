@@ -144,6 +144,7 @@ namespace Soul
 
 	void MemoryManager::DeleteHandle(Handle* opHandle)
 	{
+		opHandle->bIsUsed = false;
 		if (opHandle == _sopFirstHandle)
 		{
 			_sopFirstHandle = opHandle->opNextHandle;
