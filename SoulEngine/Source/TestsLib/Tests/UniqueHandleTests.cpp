@@ -35,9 +35,9 @@ namespace Soul
 
 			UniqueHandle<int> hInt2 = MemoryManager::Allocate<int>(1);
 			
-			//hInt = std::move(hInt2);
+			hInt = std::move(hInt2);
 
-			//AssertEqual(*hInt, 1, "Failed to move handle.");
+			AssertEqual(*hInt, 1, "Failed to move handle.");
 		}
 
 		AssertEqual(MemoryManager::GetTotalAllocatedBytes(), 0, 

@@ -144,7 +144,6 @@ namespace Soul
 
 	void MemoryManager::DeleteHandle(Handle* opHandle)
 	{
-		opHandle->bIsUsed = false;
 		if (opHandle == _sopFirstHandle)
 		{
 			_sopFirstHandle = opHandle->opNextHandle;
@@ -166,6 +165,11 @@ namespace Soul
 			*/
 			opCurrentHandle->opNextHandle = opCurrentHandle->opNextHandle->opNextHandle;
 		}
+		
+		/*
+		Free the handle
+		*/
+		memset(opHandle, 0, sizeof(Handle));
 	}
 
 	void* MemoryManager::FindFirstFreeMemoryBlock(ByteCount uiRequestedSize,
