@@ -100,6 +100,8 @@ namespace Soul
 
 	void MemoryManager::PrintMemory()
 	{
+		Assert(_sbIsSetup);
+
 		SoulLogInfo("\n\tNodes: %d\n\tFree Bytes: %lld\n\tAllocated Bytes: %lld\n\tFragments: %d", GetNodeCount(), GetTotalFreeBytes(), GetTotalAllocatedBytes(), CountFragments());
 	}
 
@@ -117,8 +119,6 @@ namespace Soul
 
 	HandleTableSize MemoryManager::CountFragments()
 	{
-		Assert(_sbIsSetup);
-
 		/*
 		Find the memory gaps.
 		*/
