@@ -19,6 +19,9 @@ namespace Soul
 	thread-safe container, for a thread-safe implementation, check
 	UtilsLib/Threads/ThreadSafeQueue.h.
 	*/
+	/*
+	TODO: Test with non-movable types.
+	*/
 	template <class T>
 	class Queue
 	{

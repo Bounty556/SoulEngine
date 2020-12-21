@@ -2,7 +2,7 @@
 Entry point for the Client side of this app.
 @file Main.cpp
 @author Jacob Peterson
-@version 1 12/17/20
+@version 1 12/20/20
 */
 
 #include <UtilsLib/CommonTypes.h>
