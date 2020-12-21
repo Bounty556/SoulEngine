@@ -17,16 +17,18 @@ int main()
 {
 	Soul::MemoryManager::StartUp(Gigabytes(1));
 
-	Soul::Queue<int> intQueue(32);
-
-	for (UInt8 i = 0; i < intQueue.GetCapacity(); ++i)
 	{
-		intQueue.Push(i);
-	}
+		Soul::Queue<int> intQueue(32);
 
-	for (UInt8 i = 0; i < intQueue.GetCapacity(); ++i)
-	{
-		SoulLogInfo("%d", intQueue.Pop());
+		for (UInt8 i = 0; i < intQueue.GetCapacity(); ++i)
+		{
+			intQueue.Push(i);
+		}
+
+		for (UInt8 i = 0; i < intQueue.GetCapacity(); ++i)
+		{
+			SoulLogInfo("%d", intQueue.Pop());
+		}
 	}
 
 	Assert(Soul::MemoryManager::GetTotalAllocatedBytes() == 0);
