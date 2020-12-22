@@ -28,5 +28,6 @@ int main()
 	oTimer.Stop();
 	SoulLogInfo("Time taken:\n\tSeconds: %llf\n\tMillis: %llf\n\tMicros: %llf",
 		oTimer.GetElapsedSeconds(), oTimer.GetElapsedMilliseconds(), oTimer.GetElapsedMicroseconds());
+
 	return 0;
 }
