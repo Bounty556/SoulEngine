@@ -12,17 +12,21 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Client\Main.cpp" />
+    <ClCompile Include="Source\TestsLib\TestClass.cpp" />
     <ClCompile Include="Source\TestsLib\TestRunner.cpp" />
     <ClCompile Include="Source\TestsLib\Tests\MemoryManagerTests.cpp" />
+    <ClCompile Include="Source\TestsLib\Tests\QueueTests.cpp" />
     <ClCompile Include="Source\TestsLib\Tests\UniqueHandleTests.cpp" />
     <ClCompile Include="Source\UtilsLib\Logger.cpp" />
     <ClCompile Include="Source\UtilsLib\Memory\MemoryManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\TestsLib\ITestSuite.h" />
+    <ClInclude Include="Source\TestsLib\TestClass.h" />
     <ClInclude Include="Source\TestsLib\TestMacros.h" />
     <ClInclude Include="Source\TestsLib\TestRunner.h" />
     <ClInclude Include="Source\TestsLib\Tests\MemoryManagerTests.h" />
+    <ClInclude Include="Source\TestsLib\Tests\QueueTests.h" />
     <ClInclude Include="Source\TestsLib\Tests\UniqueHandleTests.h" />
     <ClInclude Include="Source\UtilsLib\CommonTypes.h" />
     <ClInclude Include="Source\UtilsLib\Containers\Queue.h" />

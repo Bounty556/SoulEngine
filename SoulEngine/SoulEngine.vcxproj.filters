@@ -33,6 +33,12 @@
     <ClCompile Include="Source\TestsLib\Tests\UniqueHandleTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\TestsLib\Tests\QueueTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TestsLib\TestClass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\UtilsLib\CommonTypes.h">
@@ -66,6 +72,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\TestsLib\Tests\UniqueHandleTests.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TestsLib\Tests\QueueTests.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TestsLib\TestClass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
