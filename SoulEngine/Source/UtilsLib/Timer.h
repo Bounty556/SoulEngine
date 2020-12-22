@@ -95,6 +95,18 @@ namespace Soul
 		*/
 		Float64 GetPerformanceFrequency(Float64 fSecondParts);
 
+		/*
+		Returns the elapsed amount of time in the time units based on
+		fSecondParts. For example, to get the time in milliseconds, pass in
+		1/1000 or 0.001.
+
+		@param fSecondParts - The resulting time unit to return the elapsed time
+		                      in.
+
+		@return Float64 containing the elapsed time in the desired time unit.
+		*/
+		Float64 GetElapsedTime(Float64 fSecondParts);
+
 	private:
 		UInt64 _uiElapsedPerformanceCounts; // Actual elapsed performance counts.
 		UInt64 _uiLastCounterCheckpoint; // Updated everytime we start, stop, or retrieve current time.

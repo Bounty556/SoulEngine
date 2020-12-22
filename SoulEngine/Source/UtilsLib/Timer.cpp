@@ -47,26 +47,29 @@ namespace Soul
 
 	Float32 Timer::GetDeltaTime()
 	{
-		AddElapsedPerformanceCounts();
-		Float64 fMillisecondPerformance = GetPerformanceFrequency(0.001);
-		Float32 elapsedTime =
-			_uiElapsedPerformanceCounts / fMillisecondPerformance;
+		Float32 fMilliseconds = GetElapsedTime(0.001);
 		Reset();
-		return elapsedTime;
+		return fMilliseconds;
+	}
+
+	Float64 Timer::GetElapsedMinutes()
+	{
+		return GetElapsedTime(64.0);
+	}
+
+	Float64 Timer::GetElapsedSeconds()
+	{
+		return GetElapsedTime(1.0);
 	}
 
 	Float64 Timer::GetElapsedMilliseconds()
 	{
-		AddElapsedPerformanceCounts();
-		Float64 fMillisecondPerformance = GetPerformanceFrequency(0.001);
-		return _uiElapsedPerformanceCounts / fMillisecondPerformance;
+		return GetElapsedTime(0.001);
 	}
 
 	Float64 Timer::GetElapsedMicroseconds()
 	{
-		AddElapsedPerformanceCounts();
-		Float64 fMicrosecondPerformance = GetPerformanceFrequency(0.000001);
-		return _uiElapsedPerformanceCounts / fMicrosecondPerformance;
+		return GetElapsedTime(0.000001);
 	}
 
 	void Timer::AddElapsedPerformanceCounts()
@@ -87,5 +90,12 @@ namespace Soul
 		QueryPerformanceFrequency(&oPerformanceFrequency);
 		Float64 fResult = oPerformanceFrequency.QuadPart * fSecondParts;
 		return fResult;
+	}
+
+	Float64 Timer::GetElapsedTime(Float64 fSecondParts)
+	{
+		AddElapsedPerformanceCounts();
+		Float64 fMicrosecondPerformance = GetPerformanceFrequency(fSecondParts);
+		return _uiElapsedPerformanceCounts / fMicrosecondPerformance;
 	}
 }
