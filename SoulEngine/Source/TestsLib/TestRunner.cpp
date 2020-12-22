@@ -3,7 +3,7 @@ Used for aggregating and running tests. Assumes that all necessary engine
 systems are currently running.
 @file TestRunner.cpp
 @author Jacob Peterson
-@edited 12/21/20
+@edited 12/22/20
 */
 
 #include "TestRunner.h"
@@ -11,6 +11,7 @@ systems are currently running.
 #include <TestsLib/TestMacros.h>
 #include <TestsLib/Tests/MemoryManagerTests.h>
 #include <TestsLib/Tests/UniqueHandleTests.h>
+#include <TestsLib/Tests/QueueTests.h>
 
 namespace Soul
 {
@@ -21,6 +22,7 @@ namespace Soul
 		*/
 		CreateTestSuite(MemoryManagerTests);
 		CreateTestSuite(UniqueHandleTests);
+		CreateTestSuite(QueueTests);
 	}
 
 	void TestRunner::RunTestSuite(ITestSuite* coTestSuite)
