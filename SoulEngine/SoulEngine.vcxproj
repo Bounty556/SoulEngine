@@ -19,6 +19,7 @@
     <ClCompile Include="Source\TestsLib\Tests\UniqueHandleTests.cpp" />
     <ClCompile Include="Source\UtilsLib\Logger.cpp" />
     <ClCompile Include="Source\UtilsLib\Memory\MemoryManager.cpp" />
+    <ClCompile Include="Source\UtilsLib\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\TestsLib\ITestSuite.h" />
@@ -34,6 +35,7 @@
     <ClInclude Include="Source\UtilsLib\Macros.h" />
     <ClInclude Include="Source\UtilsLib\Memory\MemoryManager.h" />
     <ClInclude Include="Source\UtilsLib\Memory\UniqueHandle.h" />
+    <ClInclude Include="Source\UtilsLib\Timer.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

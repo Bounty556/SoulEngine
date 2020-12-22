@@ -47,7 +47,7 @@ namespace Soul
 
 	Float32 Timer::GetDeltaTime()
 	{
-		Float32 fMilliseconds = GetElapsedTime(0.001);
+		Float32 fMilliseconds = (Float32)GetElapsedTime(0.001);
 		Reset();
 		return fMilliseconds;
 	}
