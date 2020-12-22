@@ -1,5 +1,6 @@
 /*
 Used as a fake object for unit testing other classes.
+@file TestClass.cpp
 @author Jacob Peterson
 @edited 12/22/20
 */
