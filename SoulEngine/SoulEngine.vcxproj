@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Client\Main.cpp" />
+    <ClCompile Include="Source\Events\EventBus.cpp" />
     <ClCompile Include="Source\TestsLib\TestClass.cpp" />
     <ClCompile Include="Source\TestsLib\TestRunner.cpp" />
     <ClCompile Include="Source\TestsLib\Tests\MemoryManagerTests.cpp" />
@@ -22,6 +23,8 @@
     <ClCompile Include="Source\UtilsLib\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Events\EventBus.h" />
+    <ClInclude Include="Source\Events\EventTypes.h" />
     <ClInclude Include="Source\TestsLib\ITestSuite.h" />
     <ClInclude Include="Source\TestsLib\TestClass.h" />
     <ClInclude Include="Source\TestsLib\TestMacros.h" />
