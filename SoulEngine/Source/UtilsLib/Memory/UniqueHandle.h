@@ -20,6 +20,7 @@ namespace Soul
 	class UniqueHandle
 	{
 	public:
+		UniqueHandle();
 		UniqueHandle(Handle* oHandle);
 		UniqueHandle(UniqueHandle&& oOtherHandle);
 
@@ -58,7 +59,6 @@ namespace Soul
 		*/
 		void Deallocate();
 
-		UniqueHandle() = delete;
 		UniqueHandle(const UniqueHandle&) = delete;
 		UniqueHandle<T>& operator=(const UniqueHandle&) = delete;
 
@@ -68,10 +68,20 @@ namespace Soul
 	};
 
 	template <class T>
+	UniqueHandle<T>::UniqueHandle() :
+		_opHandle(nullptr),
+		_bIsValid(false)
+	{
+
+	}
+
+	template <class T>
 	UniqueHandle<T>::UniqueHandle(Handle* oHandle) :
 		_opHandle(oHandle),
 		_bIsValid(true)
-	{ }
+	{
+	
+	}
 
 	template <class T>
 	UniqueHandle<T>::UniqueHandle(UniqueHandle&& oOtherHandle) :
