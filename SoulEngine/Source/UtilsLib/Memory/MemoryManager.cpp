@@ -2,7 +2,7 @@
 Reserves an initial amount of memory for the engine to be allocated as needed.
 @file MemoryManager.cpp
 @author Jacob Peterson
-@edited 12/20/20
+@edited 12/23/20
 */
 
 #include "MemoryManager.h"
@@ -16,7 +16,7 @@ namespace Soul
 	Byte* MemoryManager::_suipAddressableMemoryStart;
 	Byte* MemoryManager::_suipMemoryEnd;
 	ByteCount MemoryManager::_suiMemorySize;
-	UInt32 MemoryManager::_suiHandleTableLength = 256;
+	UInt32 MemoryManager::_suiHandleTableLength = 512;
 	Handle* MemoryManager::_sopHandleTableStart;
 	Handle* MemoryManager::_sopFirstHandle;
 	bool MemoryManager::_sbIsSetup = false;
