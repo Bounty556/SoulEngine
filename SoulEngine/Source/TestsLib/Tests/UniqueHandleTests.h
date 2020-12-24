@@ -27,5 +27,7 @@ namespace Soul
 		bool PrimitiveArrayHandle();
 		bool ObjectArrayHandle();
 		bool HandleArrayHandle();
+		bool Detach();
+		bool Deallocate();
 	};
 }

@@ -21,6 +21,8 @@ namespace Soul
 		RunTest(PrimitiveArrayHandle);
 		RunTest(ObjectArrayHandle);
 		RunTest(HandleArrayHandle);
+		RunTest(Detach);
+		RunTest(Deallocate);
 	}
 
 	bool UniqueHandleTests::PrimitiveHandle()
@@ -195,6 +197,45 @@ namespace Soul
 
 		AssertEqual(MemoryManager::GetTotalAllocatedBytes(), 0,
 			"Failed to deallocate handle arrays.");
+
+		return true;
+	}
+
+	bool UniqueHandleTests::Detach()
+	{
+		AssertEqual(MemoryManager::GetTotalAllocatedBytes(), 0,
+			"Initial memory condition not met.");
+
+		{
+			UniqueHandle<int> hInt1 = MemoryManager::Allocate<int>(1);
+			UniqueHandle<int> hInt2 = hInt1.Detach();
+
+			AssertEqual(hInt1.IsValid(), false, "Failed to detach handle.");
+			AssertEqual(*hInt2, 1, "Failed to reassign handle.");
+		}
+
+		AssertEqual(MemoryManager::GetTotalAllocatedBytes(), 0,
+			"Failed to deallocate detached handle.");
+
+		return true;
+	}
+
+	bool UniqueHandleTests::Deallocate()
+	{
+		AssertEqual(MemoryManager::GetTotalAllocatedBytes(), 0,
+			"Initial memory condition not met.");
+
+		{
+			UniqueHandle<int> hInt1 = MemoryManager::Allocate<int>();
+
+			AssertEqual(MemoryManager::GetTotalAllocatedBytes(), 4,
+				"Failed to allocate handle.");
+
+			hInt1.Deallocate();
+
+			AssertEqual(MemoryManager::GetTotalAllocatedBytes(), 0,
+				"Failed to deallocate handle.");
+		}
 
 		return true;
 	}
