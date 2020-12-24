@@ -45,6 +45,9 @@
     <ClCompile Include="Source\Events\EventBus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\TestsLib\Tests\VectorTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\UtilsLib\CommonTypes.h">
@@ -93,6 +96,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Events\EventTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UtilsLib\Containers\Vector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TestsLib\Tests\VectorTests.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

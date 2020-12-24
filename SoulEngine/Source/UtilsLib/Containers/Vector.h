@@ -7,10 +7,9 @@ A self-resizing array that behaves similarly to the C Standard Library Vector.
 
 #pragma once
 
-#include <type_traits>
-
 #include <UtilsLib/CommonTypes.h>
 #include <UtilsLib/Memory/MemoryManager.h>
+#include <UtilsLib/Memory/UniqueHandle.h>
 
 namespace Soul
 {
@@ -96,9 +95,11 @@ namespace Soul
 	{
 		_hElements = std::move(oOtherVector._hElements);
 		_uiCapacity = oOtherVector._uiCapacity;
-		_uiCapacity = oOtherVector._uiLength;
+		_uiLength = oOtherVector._uiLength;
 		oOtherVector._uiCapacity = 0;
 		oOtherVector._uiLength = 0;
+
+		return *this;
 	}
 
 	template <class T>
@@ -143,14 +144,8 @@ namespace Soul
 	T Vector<T>::Pop()
 	{
 		Assert(_uiLength > 0);
-		if (std::is_move_constructible<T>::value)
-		{
-			return std::move(_hElements[--_uiLength]);
-		}
-		else // Assume copy constructible/assignable
-		{
-			return _hElements[--_uiLength];
-		}
+		
+		return std::move(_hElements[--_uiLength]);
 	}
 
 	template <class T>

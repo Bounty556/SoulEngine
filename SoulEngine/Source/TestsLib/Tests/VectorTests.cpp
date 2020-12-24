@@ -36,9 +36,9 @@ namespace Soul
 
 			AssertEqual(oIntVector.Length(), 255, "Incorrect Vector length.");
 
-			for (UInt8 i = 254; i >= 0; ++i)
+			for (UInt8 i = 0; i < 255; ++i)
 			{
-				AssertEqual(oIntVector.Pop(), i,
+				AssertEqual(oIntVector.Pop(), 254 - i,
 					"Failed to store primitive in Vector.");
 			}
 
@@ -51,9 +51,11 @@ namespace Soul
 
 			oIntVector = std::move(oIntVector2);
 
-			for (UInt8 i = 254; i >= 0; ++i)
+			AssertEqual(oIntVector.Length(), 255, "Incorrect Vector length.");
+
+			for (UInt8 i = 0; i < 255; ++i)
 			{
-				AssertEqual(oIntVector.Pop(), i + 1,
+				AssertEqual(oIntVector.Pop(), 255 - i,
 					"Failed to move primitive Vector.");
 			}
 		}
@@ -82,7 +84,7 @@ namespace Soul
 
 			AssertEqual(oVector.Length(), 255, "Incorrect Vector length.");
 
-			for (UInt8 i = 254; i >= 0; ++i)
+			for (UInt8 i = 0; i < 255; ++i)
 			{
 				AssertEqual(oVector.Pop(), oFake,
 					"Failed to store object in Vector.");
@@ -97,7 +99,9 @@ namespace Soul
 
 			oVector = std::move(oVector2);
 
-			for (UInt8 i = 254; i >= 0; ++i)
+			AssertEqual(oVector.Length(), 255, "Incorrect Vector length.");
+
+			for (UInt8 i = 0; i < 255; ++i)
 			{
 				AssertEqual(oVector.Pop(), oFake2,
 					"Failed to move object Vector.");
@@ -133,6 +137,8 @@ namespace Soul
 			AssertEqual(oVector.Length(), 255, "Incorrect Vector length.");
 
 			Vector<int> oTemp(oVector.Pop());
+
+			AssertEqual(oTemp.Length(), 255, "Incorrect Vector length.");
 
 			AssertEqual(oTemp.Pop(), 254,
 				"Failed to store Vector in Vector.");
