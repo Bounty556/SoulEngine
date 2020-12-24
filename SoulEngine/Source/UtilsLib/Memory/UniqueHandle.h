@@ -44,6 +44,14 @@ namespace Soul
 		*/
 		bool IsValid() const;
 
+		/*
+		Removes the handle from the ownership of this UniqueHandle, and returns
+		a pointer to the Handle to be managed elsewhere.
+
+		@return Pointer to the Handle this UniqueHandle used to own.
+		*/
+		Handle* Detach();
+
 		UniqueHandle() = delete;
 		UniqueHandle(const UniqueHandle&) = delete;
 		UniqueHandle<T>& operator=(const UniqueHandle&) = delete;
@@ -145,5 +153,15 @@ namespace Soul
 	bool UniqueHandle<T>::IsValid() const
 	{
 		return _bIsValid;
+	}
+
+	template <class T>
+	Handle* UniqueHandle<T>::Detach()
+	{
+		Handle* opHandle = _opHandle;
+		_opHandle = nullptr;
+		_bIsValid = false;
+
+		return opHandle;
 	}
 }
