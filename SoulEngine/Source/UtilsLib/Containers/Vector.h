@@ -158,7 +158,7 @@ namespace Soul
 	template <class T>
 	void Vector<T>::Remove(ArraySize uiIndex)
 	{
-		Assert(uiIndex > 0);
+		Assert(uiIndex >= 0);
 		Assert(uiIndex < _uiLength);
 		_hElements[uiIndex].~T();
 
@@ -169,6 +169,7 @@ namespace Soul
 		memcpy(&(_hElements[uiIndex]), &(_hElements[uiIndex + 1]),
 			uiElementsToMove * sizeof(T));
 		--_uiLength;
+		memset(&(_hElements[_uiLength]), 0, sizeof(T));
 	}
 
 	template <class T>
@@ -192,6 +193,7 @@ namespace Soul
 		*/
 		memcpy(hNewMemory.GetMemory(), _hElements.GetMemory(),
 			sizeof(T) * uiOldCapacity);
+		memset(_hElements.GetMemory(), 0, sizeof(T) * uiOldCapacity);
 		_hElements = std::move(hNewMemory);
 	}
 }

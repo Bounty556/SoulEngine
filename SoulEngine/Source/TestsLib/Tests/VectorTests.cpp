@@ -73,8 +73,8 @@ namespace Soul
 		AssertEqual(MemoryManager::GetTotalAllocatedBytes(), 0,
 			"Failed initial memory condition.");
 
-		TestClass oFake(0, 'a', 1.5f);
-		TestClass oFake2(1, 'b', 1.8f);
+		TestClass oFake = { 0, 'a', 1.5f };
+		TestClass oFake2 = { 1, 'b', 1.8f };
 
 		{
 			Vector<TestClass> oVector(255);
@@ -179,19 +179,50 @@ namespace Soul
 			"Failed initial memory condition.");
 
 		{
-			Vector<int> oSmallVector(3);
+			Vector<UInt8> oSmallVector(3);
 
 			for (UInt8 i = 0; i < 255; ++i)
 			{
 				oSmallVector.Push(i);
 			}
-
-			Assert(oSmallVector.Length(), 255, "Could not resize Vector");
+			AssertEqual(oSmallVector.Length(), 255, "Could not resize Vector");
 
 			for (UInt8 i = 0; i < 255; ++i)
 			{
-				Assert(oSmallVector.Pop(), 254 - i,
+				AssertEqual(oSmallVector.Pop(), 254 - i,
 					"Incorrect values in resized Vector.");
+			}
+
+			Vector<TestClass> oSmallVector2(3);
+			TestClass oFake = {1, 'a', 1.3f};
+
+			for (UInt8 i = 0; i < 255; ++i)
+			{
+				oSmallVector2.Push(oFake);
+			}
+			for (UInt8 i = 0; i < 255; ++i)
+			{
+				AssertEqual(oSmallVector2.Pop(), oFake,
+					"Failed to resize Vector of objects.");
+			}
+
+			Vector<Vector<int>> oSmallVector3(3);
+
+			for (UInt8 i = 0; i < 255; ++i)
+			{
+				Vector<int> oTemp(3);
+
+				for (UInt8 i = 0; i < 255; ++i)
+				{
+					oTemp.Push(i);
+				}
+				oSmallVector3.Push(std::move(oTemp));
+			}
+			for (UInt8 i = 0; i < 255; ++i)
+			{
+				Vector<int> oTemp(oSmallVector3.Pop());
+				AssertEqual(oTemp.Pop(), 254,
+					"Failed to resize Vector of Vectors");
 			}
 		}
 
@@ -207,9 +238,12 @@ namespace Soul
 			"Failed initial memory condition.");
 
 		{
+			/*
+			Test with primitives.
+			*/
 			Vector<int> oSmallVector(5);
 
-			for (UInt8 i = 0; i < oSmallVector.Length(); ++i)
+			for (UInt8 i = 0; i < 5; ++i)
 			{
 				oSmallVector.Push(i);
 			}
@@ -217,16 +251,62 @@ namespace Soul
 			oSmallVector.Remove(0);
 			oSmallVector.Remove(3);
 
-			Assert(oSmallVector.Length(), 3,
+			AssertEqual(oSmallVector.Length(), 3,
 				"Incorrect Vector length after removing elements.");
 
-			Assert(oSmallVector.Pop(), 3, "Incorrect element in Vector.");
-			Assert(oSmallVector.Pop(), 2, "Incorrect element in Vector.");
-			Assert(oSmallVector.Pop(), 1, "Incorrect element in Vector.");
+			AssertEqual(oSmallVector.Pop(), 3, "Incorrect element in Vector.");
+			AssertEqual(oSmallVector.Pop(), 2, "Incorrect element in Vector.");
+			AssertEqual(oSmallVector.Pop(), 1, "Incorrect element in Vector.");
+
+			/*
+			Test with basic objects.
+			*/
+			Vector<TestClass> oSmallVector2(5);
+
+			TestClass oFake = { 1, 'a', 1.2f };
+
+			for (UInt8 i = 0; i < 5; ++i)
+			{
+				oSmallVector2.Push(oFake);
+			}
+
+			oSmallVector2.Remove(0);
+			oSmallVector2.Remove(3);
+
+			AssertEqual(oSmallVector2.Pop(), oFake, "Incorrect object in Vector.");
+			AssertEqual(oSmallVector2.Pop(), oFake, "Incorrect object in Vector.");
+			AssertEqual(oSmallVector2.Pop(), oFake, "Incorrect object in Vector.");
+
+			/*
+			Test with other Vectors
+			*/
+			Vector<Vector<int>> oSmallVector3(5);
+
+			for (UInt8 i = 0; i < 5; ++i)
+			{
+				Vector<int> oTemp(5);
+
+				for (UInt8 i = 0; i < 5; ++i)
+				{
+					oTemp.Push(i);
+				}
+
+				oTemp.Remove(i);
+				oSmallVector3.Push(std::move(oTemp));
+			}
+
+			oSmallVector3.Remove(0);
+			oSmallVector3.Remove(3);
+
+			Vector<int> oTemp(oSmallVector3.Pop());
+			AssertEqual(oTemp.Pop(), 4, "Incorrect Vector removed.");
+			AssertEqual(oTemp.Pop(), 2, "Incorrect Vector removed.");
+			AssertEqual(oTemp.Pop(), 1, "Incorrect Vector removed.");
+			AssertEqual(oTemp.Pop(), 0, "Incorrect Vector removed.");
 		}
 
 		AssertEqual(MemoryManager::GetTotalAllocatedBytes(), 0,
-			"Failed to deallocate Vector with removed elements.");
+			"Failed to deallocate Vectors with removed elements.");
 
 		return true;
 	}
