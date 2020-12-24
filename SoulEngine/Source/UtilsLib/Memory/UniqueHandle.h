@@ -52,6 +52,12 @@ namespace Soul
 		*/
 		Handle* Detach();
 
+		/*
+		Deallocates the memory pointed to by the underlying handle, and makes
+		this UniqueHandle invalid.
+		*/
+		void Deallocate();
+
 		UniqueHandle() = delete;
 		UniqueHandle(const UniqueHandle&) = delete;
 		UniqueHandle<T>& operator=(const UniqueHandle&) = delete;
@@ -163,5 +169,14 @@ namespace Soul
 		_bIsValid = false;
 
 		return opHandle;
+	}
+
+	template <class T>
+	void UniqueHandle<T>::Deallocate()
+	{
+		Assert(_bIsValid);
+
+		MemoryManager::Deallocate<T>(*_opHandle);
+		_opHandle = nullptr;
 	}
 }
