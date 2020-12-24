@@ -2,7 +2,7 @@
 Transfers events to all registered event listeners in queue order.
 @file EventBus.h
 @author Jacob Peterson
-@edited 12/23/2020
+@edited 12/24/2020
 */
 
 #pragma once
@@ -10,7 +10,11 @@ Transfers events to all registered event listeners in queue order.
 #include <Events/EventTypes.h>
 #include <UtilsLib/CommonTypes.h>
 #include <UtilsLib/Containers/Queue.h>
+#include <UtilsLib/Containers/Vector.h>
 #include <UtilsLib/Memory/MemoryManager.h>
+
+typedef void(*EventCallback)(Soul::Handle&);
+typedef UInt64 CallbackId;
 
 namespace Soul
 {
@@ -18,6 +22,12 @@ namespace Soul
 	{
 		Events eEventType;
 		Handle& hData;
+	};
+
+	struct Callback
+	{
+		EventCallback fnCallback;
+		CallbackId uiCallbackId;
 	};
 
 	class EventBus
@@ -49,10 +59,32 @@ namespace Soul
 		*/
 		static void DispatchEvents(UInt8 uiEventCount);
 
+		/*
+		Adds a new callback to be called when the given event is triggered.
+
+		@param eEventType - The event to register the callback for.
+
+		@param fnCallback - The callback function to be registered.
+
+		@return CallbackId containing the unique callback id.
+		*/
+		static CallbackId RegisterCallback(Events eEventType, EventCallback fnCallback);
+
+		/*
+		Unregisters the callback with the given id from the given event.
+
+		@param eEventType - The event to unregister the callback from.
+
+		@param uiId - The id of the callback to unregister.
+		*/
+		static void UnregisterCallback(Events eEventType, CallbackId uiId);
+
 		EventBus() = delete;
 
 	private:
 		static UniqueHandle<Queue<Event>> _shEventQueue; // Queue of events to be dispatched.
+		static UniqueHandle<Vector<Callback>> _shRegisteredCallbacks; // All registered callbacks
+		static CallbackId _uiCallbackCount; // Used for identifying unique callbacks.
 		static bool _bIsSetup; // Whether this EventBus has been initialized.
 	};
 
@@ -60,7 +92,7 @@ namespace Soul
 	static void EventBus::QueueEvent(Events eEventType, UniqueHandle<T> hData)
 	{
 		Handle* hpData = hData.Detach();
-		Event oEvent(eEventType, *hpData);
+		Event oEvent{ eEventType, *hpData };
 		_shEventQueue->Push(oEvent);
 	}
 }
