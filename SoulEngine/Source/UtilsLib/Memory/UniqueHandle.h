@@ -59,17 +59,24 @@ namespace Soul
 		*/
 		void Deallocate();
 
+		/*
+		USE CAUTIOUSLY!!! Gets the memory at pointed to by this handle.
+
+		@return Pointer to the memory managed by this handle.
+		*/
+		T* GetMemory();
+
 		UniqueHandle(const UniqueHandle&) = delete;
 		UniqueHandle<T>& operator=(const UniqueHandle&) = delete;
 
 	private:
-		Handle* _opHandle; // Pointer to this UniqueHandle's Handle.
+		Handle* _hpHandle; // Pointer to this UniqueHandle's Handle.
 		bool _bIsValid; // Whether this UniqueHandle is active and usable.
 	};
 
 	template <class T>
 	UniqueHandle<T>::UniqueHandle() :
-		_opHandle(nullptr),
+		_hpHandle(nullptr),
 		_bIsValid(false)
 	{
 
@@ -77,7 +84,7 @@ namespace Soul
 
 	template <class T>
 	UniqueHandle<T>::UniqueHandle(Handle* oHandle) :
-		_opHandle(oHandle),
+		_hpHandle(oHandle),
 		_bIsValid(true)
 	{
 	
@@ -85,10 +92,10 @@ namespace Soul
 
 	template <class T>
 	UniqueHandle<T>::UniqueHandle(UniqueHandle&& oOtherHandle) :
-		_opHandle(oOtherHandle._opHandle),
+		_hpHandle(oOtherHandle._hpHandle),
 		_bIsValid(oOtherHandle._bIsValid)
 	{
-		oOtherHandle._opHandle = nullptr;
+		oOtherHandle._hpHandle = nullptr;
 		oOtherHandle._bIsValid = false;
 	}
 
@@ -97,7 +104,7 @@ namespace Soul
 	{
 		if (_bIsValid)
 		{
-			MemoryManager::Deallocate<T>(*_opHandle);
+			MemoryManager::Deallocate<T>(*_hpHandle);
 		}
 	}
 
@@ -106,12 +113,12 @@ namespace Soul
 	{
 		if (_bIsValid)
 		{
-			MemoryManager::Deallocate<T>(*_opHandle);
+			MemoryManager::Deallocate<T>(*_hpHandle);
 		}
 
-		_opHandle = oOtherHandle._opHandle;
+		_hpHandle = oOtherHandle._hpHandle;
 		_bIsValid = oOtherHandle._bIsValid;
-		oOtherHandle._opHandle = nullptr;
+		oOtherHandle._hpHandle = nullptr;
 		oOtherHandle._bIsValid = false;
 
 		return *this;
@@ -120,49 +127,49 @@ namespace Soul
 	template <class T>
 	T* UniqueHandle<T>::operator->()
 	{
-		return (T*)_opHandle->pLocation;
+		return (T*)_hpHandle->pLocation;
 	}
 
 	template <class T>
 	T& UniqueHandle<T>::operator*()
 	{
-		return *((T*)(_opHandle->pLocation));
+		return *((T*)(_hpHandle->pLocation));
 	}
 
 	template <class T>
 	T& UniqueHandle<T>::operator[](ArraySize uiIndex)
 	{
-		return ((T*)_opHandle->pLocation)[uiIndex];
+		return ((T*)_hpHandle->pLocation)[uiIndex];
 	}
 
 	template <class T>
 	const T* UniqueHandle<T>::operator->() const
 	{
-		return (T*)_opHandle->pLocation;
+		return (T*)_hpHandle->pLocation;
 	}
 
 	template <class T>
 	const T& UniqueHandle<T>::operator*() const
 	{
-		return *((T*)(_opHandle->pLocation));
+		return *((T*)(_hpHandle->pLocation));
 	}
 
 	template <class T>
 	const T& UniqueHandle<T>::operator[](ArraySize uiIndex) const
 	{
-		return ((T*)_opHandle->pLocation)[uiIndex];
+		return ((T*)_hpHandle->pLocation)[uiIndex];
 	}
 
 	template <class T>
 	bool UniqueHandle<T>::operator==(const UniqueHandle& oOther) const
 	{
-		return _opHandle == oOther._opHandle;
+		return _hpHandle == oOther._hpHandle;
 	}
 
 	template <class T>
 	bool UniqueHandle<T>::operator!=(const UniqueHandle& oOther) const
 	{
-		return _opHandle != oOther._opHandle;
+		return _hpHandle != oOther._hpHandle;
 	}
 
 	template <class T>
@@ -174,8 +181,8 @@ namespace Soul
 	template <class T>
 	Handle* UniqueHandle<T>::Detach()
 	{
-		Handle* opHandle = _opHandle;
-		_opHandle = nullptr;
+		Handle* opHandle = _hpHandle;
+		_hpHandle = nullptr;
 		_bIsValid = false;
 
 		return opHandle;
@@ -186,8 +193,14 @@ namespace Soul
 	{
 		Assert(_bIsValid);
 
-		MemoryManager::Deallocate<T>(*_opHandle);
-		_opHandle = nullptr;
+		MemoryManager::Deallocate<T>(*_hpHandle);
+		_hpHandle = nullptr;
 		_bIsValid = false;
+	}
+
+	template <class T>
+	T* UniqueHandle<T>::GetMemory()
+	{
+		return (T*)_hpHandle->pLocation;
 	}
 }
