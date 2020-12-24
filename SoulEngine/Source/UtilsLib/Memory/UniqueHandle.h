@@ -188,5 +188,6 @@ namespace Soul
 
 		MemoryManager::Deallocate<T>(*_opHandle);
 		_opHandle = nullptr;
+		_bIsValid = false;
 	}
 }
