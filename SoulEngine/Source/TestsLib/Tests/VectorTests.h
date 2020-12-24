@@ -23,5 +23,7 @@ namespace Soul
 		bool PrimitiveVector();
 		bool ObjectVector();
 		bool VectorVector();
+		bool ResizeVector();
+		bool RemoveElements();
 	};
 }

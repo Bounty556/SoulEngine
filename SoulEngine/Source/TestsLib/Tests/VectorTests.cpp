@@ -19,6 +19,8 @@ namespace Soul
 		RunTest(PrimitiveVector);
 		RunTest(ObjectVector);
 		RunTest(VectorVector);
+		RunTest(ResizeVector);
+		RunTest(RemoveElements);
 	}
 
 	bool VectorTests::PrimitiveVector()
@@ -167,6 +169,64 @@ namespace Soul
 
 		AssertEqual(MemoryManager::GetTotalAllocatedBytes(), 0,
 			"Failed to deallocate Vectors of Vectors.");
+
+		return true;
+	}
+
+	bool VectorTests::ResizeVector()
+	{
+		AssertEqual(MemoryManager::GetTotalAllocatedBytes(), 0,
+			"Failed initial memory condition.");
+
+		{
+			Vector<int> oSmallVector(3);
+
+			for (UInt8 i = 0; i < 255; ++i)
+			{
+				oSmallVector.Push(i);
+			}
+
+			Assert(oSmallVector.Length(), 255, "Could not resize Vector");
+
+			for (UInt8 i = 0; i < 255; ++i)
+			{
+				Assert(oSmallVector.Pop(), 254 - i,
+					"Incorrect values in resized Vector.");
+			}
+		}
+
+		AssertEqual(MemoryManager::GetTotalAllocatedBytes(), 0,
+			"Failed to deallocate resized Vector.");
+
+		return true;
+	}
+
+	bool VectorTests::RemoveElements()
+	{
+		AssertEqual(MemoryManager::GetTotalAllocatedBytes(), 0,
+			"Failed initial memory condition.");
+
+		{
+			Vector<int> oSmallVector(5);
+
+			for (UInt8 i = 0; i < oSmallVector.Length(); ++i)
+			{
+				oSmallVector.Push(i);
+			}
+
+			oSmallVector.Remove(0);
+			oSmallVector.Remove(3);
+
+			Assert(oSmallVector.Length(), 3,
+				"Incorrect Vector length after removing elements.");
+
+			Assert(oSmallVector.Pop(), 3, "Incorrect element in Vector.");
+			Assert(oSmallVector.Pop(), 2, "Incorrect element in Vector.");
+			Assert(oSmallVector.Pop(), 1, "Incorrect element in Vector.");
+		}
+
+		AssertEqual(MemoryManager::GetTotalAllocatedBytes(), 0,
+			"Failed to deallocate Vector with removed elements.");
 
 		return true;
 	}
