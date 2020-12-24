@@ -50,11 +50,18 @@ namespace Soul
 		T Pop();
 
 		/*
+		Removes the element at the given index.
+		
+		@param uiIndex - The index of the element to be removed.
+		*/
+		void Remove(ArraySize uiIndex);
+
+		/*
 		Gets the current number of elements in this Vector.
 
 		@return ArraySize containing the number of elements in this Vector.
 		*/
-		ArraySize Length();
+		ArraySize Length() const;
 
 		Vector() = delete;
 		Vector(const Vector&) = delete;
@@ -149,7 +156,23 @@ namespace Soul
 	}
 
 	template <class T>
-	ArraySize Vector<T>::Length()
+	void Vector<T>::Remove(ArraySize uiIndex)
+	{
+		Assert(uiIndex > 0);
+		Assert(uiIndex < _uiLength);
+		_hElements[uiIndex].~T();
+
+		/*
+		Move memory in front of this element over.
+		*/
+		ArraySize uiElementsToMove = _uiLength - (uiIndex + 1);
+		memcpy(&(_hElements[uiIndex]), &(_hElements[uiIndex + 1]),
+			uiElementsToMove * sizeof(T));
+		--_uiLength;
+	}
+
+	template <class T>
+	ArraySize Vector<T>::Length() const
 	{
 		return _uiLength;
 	}
