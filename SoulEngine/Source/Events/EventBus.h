@@ -13,21 +13,21 @@ Transfers events to all registered event listeners in queue order.
 #include <UtilsLib/Containers/Vector.h>
 #include <UtilsLib/Memory/MemoryManager.h>
 
-typedef void(*EventCallback)(Soul::Handle&);
+typedef void(*EventCallback)(Soul::Handle*);
 typedef UInt64 CallbackId;
 
 namespace Soul
 {
 	struct Event
 	{
-		Events eEventType;
-		Handle& hData;
+		Events eEventType; // This Event's type
+		Handle* hData; // The data associated with this event, if any.
 	};
 
 	struct Callback
 	{
-		EventCallback fnCallback;
-		CallbackId uiCallbackId;
+		EventCallback fnCallback; // The actual callback.
+		CallbackId uiCallbackId; // The id of this callback.
 	};
 
 	class EventBus
@@ -91,8 +91,7 @@ namespace Soul
 	template <class T>
 	static void EventBus::QueueEvent(Events eEventType, UniqueHandle<T> hData)
 	{
-		Handle* hpData = hData.Detach();
-		Event oEvent{ eEventType, *hpData };
+		Event oEvent{ eEventType, hData.Detach() };
 		_shEventQueue->Push(oEvent);
 	}
 }

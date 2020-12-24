@@ -2,7 +2,7 @@
 Tests for the Vector class.
 @file VectorTests.h
 @author Jacob Peterson
-@edited 12/23/2020
+@edited 12/24/2020
 */
 
 #pragma once

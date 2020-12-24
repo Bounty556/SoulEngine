@@ -11,7 +11,7 @@ namespace Soul
 {
 	UniqueHandle<Queue<Event>> EventBus::_shEventQueue;
 	UniqueHandle<Vector<Callback>> EventBus::_shRegisteredCallbacks;
-	CallbackId EventBus::_uiCallbackCount = 0;
+	CallbackId EventBus::_uiCallbackCount = 1; // 0 indicates an invalid callback.
 	bool EventBus::_bIsSetup = false;
 
 	void EventBus::StartUp(ArraySize uiEventCount)
@@ -82,6 +82,7 @@ namespace Soul
 			if (oEventCallbacks[i].uiCallbackId == uiId)
 			{
 				oEventCallbacks.Remove(i);
+				break;
 			}
 		}
 	}
