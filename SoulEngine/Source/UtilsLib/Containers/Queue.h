@@ -19,14 +19,11 @@ namespace Soul
 	thread-safe container, for a thread-safe implementation, check
 	UtilsLib/Threads/ThreadSafeQueue.h.
 	*/
-	/*
-	TODO: Test with non-movable types.
-	*/
 	template <class T>
 	class Queue
 	{
 	public:
-		Queue(ArraySize uiCapacity = 32);
+		Queue(ArraySize uiCapacity);
 		Queue(Queue<T>&& otherQueue);
 
 		Queue<T>& operator=(Queue<T>&& otherQueue);
@@ -87,7 +84,7 @@ namespace Soul
 	};
 
 	template <class T>
-	Queue<T>::Queue(ArraySize uiCapacity /*= 32*/) :
+	Queue<T>::Queue(ArraySize uiCapacity) :
 		_hMemory(MemoryManager::AllocateArray<T>(uiCapacity)),
 		_uiHead(0),
 		_uiTail(0),
