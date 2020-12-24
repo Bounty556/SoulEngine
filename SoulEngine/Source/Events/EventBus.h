@@ -30,6 +30,14 @@ namespace Soul
 		CallbackId uiCallbackId; // The id of this callback.
 	};
 
+	/*
+	Singleton Event system which manages Events, registering callbacks for
+	events, and dispatching the events to call those callbacks. This system
+	needs to have been initialized with StartUp() before being used.
+
+	The functions for managing callbacks, such as RegisterCallback() and
+	UnregisterCallback() should only be used through the EventListener class.
+	*/
 	class EventBus
 	{
 	public:
