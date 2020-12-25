@@ -7,13 +7,15 @@ Transfers events to all registered event listeners in queue order.
 
 #pragma once
 
+#include <functional>
+
 #include <Events/EventTypes.h>
 #include <UtilsLib/CommonTypes.h>
 #include <UtilsLib/Containers/Queue.h>
 #include <UtilsLib/Containers/Vector.h>
 #include <UtilsLib/Memory/MemoryManager.h>
 
-typedef void(*EventCallback)(Soul::Handle*);
+typedef std::function<void(Soul::Handle*)> EventCallback;
 typedef UInt64 CallbackId;
 
 namespace Soul

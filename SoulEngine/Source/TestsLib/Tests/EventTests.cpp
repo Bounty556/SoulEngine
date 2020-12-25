@@ -43,8 +43,7 @@ namespace Soul
 
 		TestClass oFake = { 1, 'a', 3.5f };
 
-		EventCallback fnCallback = [](Handle* hData) {
-			TestClass oFake = { 1, 'a', 3.5f };
+		EventCallback fnCallback = [oFake](Handle* hData) {
 			UniqueHandle<TestClass> hObject(hData);
 			Assert(*hObject == oFake);
 		};
