@@ -4,6 +4,7 @@ Entry point for the Client side of this app.
 @author Jacob Peterson
 */
 
+#include <Events/EventBus.h>
 #include <UtilsLib/CommonTypes.h>
 #include <UtilsLib/Macros.h>
 #include <UtilsLib/Memory/MemoryManager.h>
@@ -19,8 +20,11 @@ int main()
 	oTimer.Start();
 
 	Soul::MemoryManager::StartUp(Gigabytes(1));
+	Soul::EventBus::StartUp(32);
 
 	Soul::TestRunner::RunAllTestSuites();
+
+	Soul::EventBus::Shutdown();
 
 	Assert(Soul::MemoryManager::GetTotalAllocatedBytes() == 0);
 	Soul::MemoryManager::Shutdown();

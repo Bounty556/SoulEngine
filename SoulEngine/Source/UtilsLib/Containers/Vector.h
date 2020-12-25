@@ -112,7 +112,7 @@ namespace Soul
 	template <class T>
 	T& Vector<T>::operator[](ArraySize uiIndex)
 	{
-		Assert(uiIndex > 0);
+		Assert(uiIndex >= 0);
 		Assert(uiIndex < _uiLength);
 		return _hElements[uiIndex];
 	}
@@ -120,7 +120,7 @@ namespace Soul
 	template <class T>
 	const T& Vector<T>::operator[](ArraySize uiIndex) const
 	{
-		Assert(uiIndex > 0);
+		Assert(uiIndex >= 0);
 		Assert(uiIndex < _uiLength);
 		return _hElements[uiIndex];
 	}

@@ -34,6 +34,7 @@ namespace Soul
 	EventListener& EventListener::operator=(EventListener&& oOtherListener)
 	{
 		_hRegisteredCallbacks = std::move(oOtherListener._hRegisteredCallbacks);
+		return *this;
 	}
 
 	CallbackId EventListener::RegisterCallback(Events eEventType, EventCallback fnCallback)
@@ -41,6 +42,7 @@ namespace Soul
 		RegisteredCallback oCallback =
 		{ eEventType, EventBus::RegisterCallback(eEventType, fnCallback) };
 		_hRegisteredCallbacks.Push(oCallback);
+		return oCallback.uiCallbackId;
 	}
 
 	void EventListener::UnregisterCallback(Events eEventType)

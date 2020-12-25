@@ -71,6 +71,7 @@ namespace Soul
 	template <class T>
 	void EventListener::QueueEvent(Events&& eEventType, UniqueHandle<T>&& hData)
 	{
-		EventBus::QueueEvent(std::forward(eEventType), std::forward(hData));
+		EventBus::QueueEvent(
+			std::forward<Events>(eEventType), std::forward<UniqueHandle<T>>(hData));
 	}
 }

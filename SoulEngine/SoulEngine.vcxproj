@@ -13,8 +13,10 @@
   <ItemGroup>
     <ClCompile Include="Source\Client\Main.cpp" />
     <ClCompile Include="Source\Events\EventBus.cpp" />
+    <ClCompile Include="Source\Events\EventListener.cpp" />
     <ClCompile Include="Source\TestsLib\TestClass.cpp" />
     <ClCompile Include="Source\TestsLib\TestRunner.cpp" />
+    <ClCompile Include="Source\TestsLib\Tests\EventTests.cpp" />
     <ClCompile Include="Source\TestsLib\Tests\MemoryManagerTests.cpp" />
     <ClCompile Include="Source\TestsLib\Tests\QueueTests.cpp" />
     <ClCompile Include="Source\TestsLib\Tests\UniqueHandleTests.cpp" />
@@ -25,11 +27,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Events\EventBus.h" />
+    <ClInclude Include="Source\Events\EventListener.h" />
     <ClInclude Include="Source\Events\EventTypes.h" />
     <ClInclude Include="Source\TestsLib\ITestSuite.h" />
     <ClInclude Include="Source\TestsLib\TestClass.h" />
     <ClInclude Include="Source\TestsLib\TestMacros.h" />
     <ClInclude Include="Source\TestsLib\TestRunner.h" />
+    <ClInclude Include="Source\TestsLib\Tests\EventTests.h" />
     <ClInclude Include="Source\TestsLib\Tests\MemoryManagerTests.h" />
     <ClInclude Include="Source\TestsLib\Tests\QueueTests.h" />
     <ClInclude Include="Source\TestsLib\Tests\UniqueHandleTests.h" />
