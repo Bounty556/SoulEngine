@@ -26,6 +26,7 @@ int main()
 
 	Soul::EventBus::Shutdown();
 
+	SoulLogInfo("%d", Soul::MemoryManager::GetTotalAllocatedBytes());
 	Assert(Soul::MemoryManager::GetTotalAllocatedBytes() == 0);
 	Soul::MemoryManager::Shutdown();
 
