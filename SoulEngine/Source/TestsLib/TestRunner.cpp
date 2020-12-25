@@ -14,6 +14,7 @@ systems are currently running.
 #include <TestsLib/Tests/UniqueHandleTests.h>
 #include <TestsLib/Tests/QueueTests.h>
 #include <TestsLib/Tests/VectorTests.h>
+#include <TestsLib/Tests/WeakHandleTests.h>
 
 namespace Soul
 {
@@ -27,6 +28,7 @@ namespace Soul
 		CreateTestSuite(QueueTests);
 		CreateTestSuite(VectorTests);
 		CreateTestSuite(EventTests);
+		CreateTestSuite(WeakHandleTests);
 	}
 
 	void TestRunner::RunTestSuite(ITestSuite* coTestSuite)

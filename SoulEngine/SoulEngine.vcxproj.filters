@@ -116,5 +116,11 @@
     <ClInclude Include="Source\TestsLib\Tests\EventTests.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\UtilsLib\Memory\WeakHandle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TestsLib\Tests\WeakHandleTests.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

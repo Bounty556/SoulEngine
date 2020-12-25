@@ -38,12 +38,14 @@
     <ClInclude Include="Source\TestsLib\Tests\QueueTests.h" />
     <ClInclude Include="Source\TestsLib\Tests\UniqueHandleTests.h" />
     <ClInclude Include="Source\TestsLib\Tests\VectorTests.h" />
+    <ClInclude Include="Source\TestsLib\Tests\WeakHandleTests.h" />
     <ClInclude Include="Source\UtilsLib\CommonTypes.h" />
     <ClInclude Include="Source\UtilsLib\Containers\Queue.h" />
     <ClInclude Include="Source\UtilsLib\Containers\Vector.h" />
     <ClInclude Include="Source\UtilsLib\Logger.h" />
     <ClInclude Include="Source\UtilsLib\Macros.h" />
     <ClInclude Include="Source\UtilsLib\Memory\MemoryManager.h" />
+    <ClInclude Include="Source\UtilsLib\Memory\WeakHandle.h" />
     <ClInclude Include="Source\UtilsLib\Memory\UniqueHandle.h" />
     <ClInclude Include="Source\UtilsLib\Timer.h" />
   </ItemGroup>

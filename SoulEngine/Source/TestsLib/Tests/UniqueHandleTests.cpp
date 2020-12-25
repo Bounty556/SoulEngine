@@ -1,6 +1,6 @@
 /*
 Tests for the UniqueHandle class.
-@file UniqueHandleTests.h
+@file UniqueHandleTests.cpp
 @author Jacob Peterson
 @edited 12/21/2020
 */
