@@ -54,6 +54,9 @@
     <ClCompile Include="Source\TestsLib\Tests\EventTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\TestsLib\Tests\WeakHandleTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\UtilsLib\CommonTypes.h">

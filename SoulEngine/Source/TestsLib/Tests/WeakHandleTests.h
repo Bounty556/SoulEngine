@@ -23,9 +23,5 @@ namespace Soul
 	private:
 		bool PrimitiveHandle();
 		bool ObjectHandle();
-		bool PrimitiveArrayHandle();
-		bool ObjectArrayHandle();
-		bool HandleArrayHandle();
-		bool Detach();
 	};
 }

@@ -7,6 +7,8 @@ Transfers events to all registered event listeners in queue order.
 
 #include "EventBus.h"
 
+#include <UtilsLib/Memory/WeakHandle.h>
+
 namespace Soul
 {
 	UniqueHandle<Queue<Event>> EventBus::_shEventQueue;

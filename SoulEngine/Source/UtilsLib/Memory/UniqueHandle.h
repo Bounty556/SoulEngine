@@ -13,6 +13,9 @@ normal pointers to memory.
 
 namespace Soul
 {
+	template <class T>
+	class WeakHandle;
+
 	/*
 	This is to be used similarly to std::unique_ptr<T>. 
 	*/
