@@ -2,7 +2,7 @@
 Used as a fake object for unit testing other classes.
 @file TestClass.cpp
 @author Jacob Peterson
-@edited 12/22/20
+@edited 12/24/20
 */
 
 #include "TestClass.h"
@@ -25,15 +25,13 @@ namespace Soul
 	
 	}
 
+	bool TestClass::operator==(const TestClass& oOther) const
+	{
+		return oOther._iX == _iX && oOther._iY == _iY && oOther._fZ == _fZ;
+	}
+
 	bool TestClass::operator!=(const TestClass& oOther) const
 	{
-		if (oOther._iX != _iX ||
-			oOther._iY != _iY ||
-			oOther._fZ != _fZ)
-		{
-			return true;
-		}
-
-		return false;
+		return oOther._iX != _iX || oOther._iY != _iY || oOther._fZ != _fZ;
 	}
 }
