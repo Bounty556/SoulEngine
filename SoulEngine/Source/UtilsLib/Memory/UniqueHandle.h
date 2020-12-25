@@ -72,6 +72,8 @@ namespace Soul
 	private:
 		Handle* _hpHandle; // Pointer to this UniqueHandle's Handle.
 		bool _bIsValid; // Whether this UniqueHandle is active and usable.
+
+		friend WeakHandle;
 	};
 
 	template <class T>

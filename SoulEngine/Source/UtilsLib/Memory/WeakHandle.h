@@ -10,6 +10,7 @@ form weak pointers to memory.
 #pragma once
 
 #include <UtilsLib/Memory/MemoryManager.h>
+#include <UtilsLib/Memory/UniqueHandle.h>
 
 namespace Soul
 {
@@ -22,6 +23,7 @@ namespace Soul
 	public:
 		WeakHandle();
 		WeakHandle(Handle* oHandle);
+		WeakHandle(const UniqueHandle<T>& oOtherHandle);
 		WeakHandle(const WeakHandle& oOtherHandle);
 		WeakHandle(WeakHandle&& oOtherHandle);
 
@@ -85,6 +87,14 @@ namespace Soul
 	WeakHandle<T>::WeakHandle(Handle* oHandle) :
 		_hpHandle(oHandle),
 		_bIsValid(true)
+	{
+
+	}
+
+	template <class T>
+	WeakHandle<T>::WeakHandle(const UniqueHandle<T>& oOtherHandle) :
+		_hpHandle(oOtherHandle._hpHandle),
+		_bIsValid(oOtherHandle._bIsValid)
 	{
 
 	}
