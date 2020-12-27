@@ -2,12 +2,10 @@
 Transfers events to all registered event listeners in queue order.
 @file EventBus.h
 @author Jacob Peterson
-@edited 12/24/2020
+@edited 12/26/2020
 */
 
 #include "EventBus.h"
-
-#include <UtilsLib/Memory/WeakHandle.h>
 
 namespace Soul
 {
@@ -40,20 +38,20 @@ namespace Soul
 		_bIsSetup = false;
 	}
 
-	void EventBus::DispatchEvents(UInt8 uiEventCount)
+	void EventBus::DispatchEvents()
 	{
 		/*
 		Dispatch up to the first "uiEventCount" events to all registered
 		callbacks for that event.
 		*/
-		for (UInt8 i = 0; i < uiEventCount && _shEventQueue->GetLength() > 0; ++i)
+		while (_shEventQueue->GetLength() > 0)
 		{
 			Event oEvent = _shEventQueue->Pop();
 			Vector<Callback>& oEventCallbacks =
 				_shRegisteredCallbacks[(ArraySize)oEvent.eEventType];
 			for (ArraySize j = 0; j < oEventCallbacks.Length(); ++j)
 			{
-				oEventCallbacks[j].fnCallback(oEvent.hData);
+				oEventCallbacks[j].fnCallback(oEvent.pData);
 			}
 		}
 	}

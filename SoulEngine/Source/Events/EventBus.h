@@ -2,7 +2,7 @@
 Transfers events to all registered event listeners in queue order.
 @file EventBus.h
 @author Jacob Peterson
-@edited 12/24/2020
+@edited 12/26/2020
 */
 
 #pragma once
@@ -15,7 +15,7 @@ Transfers events to all registered event listeners in queue order.
 #include <UtilsLib/Containers/Vector.h>
 #include <UtilsLib/Memory/MemoryManager.h>
 
-typedef std::function<void(Soul::Handle*)> EventCallback;
+typedef std::function<void(void*)> EventCallback;
 typedef UInt64 CallbackId;
 
 namespace Soul
@@ -23,7 +23,7 @@ namespace Soul
 	struct Event
 	{
 		Events eEventType; // This Event's type
-		Handle* hData; // The data associated with this event, if any.
+		void* pData; // The data associated with this event, if any.
 	};
 
 	struct Callback
@@ -60,14 +60,12 @@ namespace Soul
 		Adds a new event to the end of event queue to be dispatched.
 		*/
 		template <class T>
-		static void QueueEvent(Events eEventType, UniqueHandle<T> hData);
+		static void QueueEvent(Events eEventType, void* pData);
 
 		/*
-		Dispatches the first N number of events to all attached event listeners.
-		
-		@param uiEventCount - Number of events to dispatch.
+		Dispatches all events to attached event listeners.
 		*/
-		static void DispatchEvents(UInt8 uiEventCount);
+		static void DispatchEvents();
 
 		/*
 		Adds a new callback to be called when the given event is triggered.
@@ -99,9 +97,9 @@ namespace Soul
 	};
 
 	template <class T>
-	static void EventBus::QueueEvent(Events eEventType, UniqueHandle<T> hData)
+	static void EventBus::QueueEvent(Events eEventType, void* pData)
 	{
-		Event oEvent{ eEventType, hData.Detach() };
+		Event oEvent{ eEventType, pData };
 		_shEventQueue->Push(oEvent);
 	}
 }

@@ -3,7 +3,7 @@ Manages adding and removing callbacks with the EventBus to provide a thin
 layer of abstraction and automation.
 @file EventListener.h
 @author Jacob Peterson
-@edited 12/24/2020
+@edited 12/26/2020
 */
 
 #pragma once
@@ -39,7 +39,7 @@ namespace Soul
 		Adds a new event to the end of event queue to be dispatched.
 		*/
 		template <class T>
-		void QueueEvent(Events&& eEventType, UniqueHandle<T>&& hData);
+		void QueueEvent(Events&& eEventType, void*&& pData);
 
 		/*
 		Adds a new callback to be called when the given event is triggered.
@@ -69,9 +69,9 @@ namespace Soul
 	};
 
 	template <class T>
-	void EventListener::QueueEvent(Events&& eEventType, UniqueHandle<T>&& hData)
+	void EventListener::QueueEvent(Events&& eEventType, void*&& pData)
 	{
 		EventBus::QueueEvent(
-			std::forward<Events>(eEventType), std::forward<UniqueHandle<T>>(hData));
+			std::forward<Events>(eEventType), std::forward<void*>(pData));
 	}
 }

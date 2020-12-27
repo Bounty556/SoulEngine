@@ -3,7 +3,7 @@ Manages adding and removing callbacks with the EventBus to provide a thin
 layer of abstraction and automation.
 @file EventListener.h
 @author Jacob Peterson
-@edited 12/24/2020
+@edited 12/26/2020
 */
 
 #include "EventListener.h"
