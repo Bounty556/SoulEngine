@@ -59,7 +59,6 @@ namespace Soul
 		/*
 		Adds a new event to the end of event queue to be dispatched.
 		*/
-		template <class T>
 		static void QueueEvent(Events eEventType, void* pData);
 
 		/*
@@ -95,11 +94,4 @@ namespace Soul
 		static CallbackId _uiCallbackCount; // Used for identifying unique callbacks.
 		static bool _bIsSetup; // Whether this EventBus has been initialized.
 	};
-
-	template <class T>
-	static void EventBus::QueueEvent(Events eEventType, void* pData)
-	{
-		Event oEvent{ eEventType, pData };
-		_shEventQueue->Push(oEvent);
-	}
 }

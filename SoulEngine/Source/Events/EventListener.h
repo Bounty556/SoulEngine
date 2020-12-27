@@ -38,8 +38,7 @@ namespace Soul
 		/*
 		Adds a new event to the end of event queue to be dispatched.
 		*/
-		template <class T>
-		void QueueEvent(Events&& eEventType, void*&& pData);
+		void QueueEvent(Events eEventType, void* pData);
 
 		/*
 		Adds a new callback to be called when the given event is triggered.
@@ -68,10 +67,4 @@ namespace Soul
 		Vector<RegisteredCallback> _hRegisteredCallbacks; // The callback Id for each registeredevent.
 	};
 
-	template <class T>
-	void EventListener::QueueEvent(Events&& eEventType, void*&& pData)
-	{
-		EventBus::QueueEvent(
-			std::forward<Events>(eEventType), std::forward<void*>(pData));
-	}
 }

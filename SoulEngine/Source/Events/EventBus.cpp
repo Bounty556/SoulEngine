@@ -38,6 +38,12 @@ namespace Soul
 		_bIsSetup = false;
 	}
 
+	void EventBus::QueueEvent(Events eEventType, void* pData)
+	{
+		Event oEvent{ eEventType, pData };
+		_shEventQueue->Push(oEvent);
+	}
+
 	void EventBus::DispatchEvents()
 	{
 		/*

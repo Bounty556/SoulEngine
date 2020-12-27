@@ -37,6 +37,11 @@ namespace Soul
 		return *this;
 	}
 
+	void EventListener::QueueEvent(Events eEventType, void* pData)
+	{
+		EventBus::QueueEvent(eEventType, pData);
+	}
+
 	CallbackId EventListener::RegisterCallback(Events eEventType, EventCallback fnCallback)
 	{
 		RegisteredCallback oCallback =
