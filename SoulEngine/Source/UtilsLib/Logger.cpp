@@ -12,7 +12,7 @@ Prints info to the console using three different logging levels.
 
 namespace Soul
 {
-	LogLevel Logger::_seLogLevel = LogLevel::Info;
+	LogLevel Logger::_seLogLevel = LogLevel::Event;
 
 	/*
 	Logs an error to the console, with red text for distinguishability.
