@@ -2,7 +2,7 @@
 Prints info to the console using three different logging levels.
 @file Logger.h
 @author Jacob Peterson
-@edited 12/26/20
+@edited 12/27/20
 */
 
 #include "Logger.h"
