@@ -2,7 +2,7 @@
 Prints info to the console using three different logging levels.
 @file Logger.h
 @author Jacob Peterson
-@edited 12/17/20
+@edited 12/26/20
 */
 
 #pragma once
@@ -15,10 +15,11 @@ namespace Soul
 	Determines which messages the logger prints and which
 	messages it ignores.
 	*/
-	enum LogLevel
+	enum class LogLevel
 	{
 		Error,
 		Warning,
+		Event,
 		Info
 	};
 
@@ -62,6 +63,16 @@ namespace Soul
 		static void LogWarning(const char* zMessage, ...);
 
 		/*
+		Logs a warning to the console, with green text for
+		distinguishability.
+
+		@param zMessage - Formatted C-String that gets printed to the console.
+
+		@param ... - Parameters to pass to the formatted string to be printed.
+		*/
+		static void LogEvent(const char* zMessage, ...);
+
+		/*
 		Logs info to the console, with white text for
 		distinguishability.
 
@@ -91,4 +102,5 @@ namespace Soul
 // Logging Macros //////////////////////////////////////////////////////////////
 #define SoulLogError(message, ...) (Soul::Logger::LogError("[Error]: " message "\n", ##__VA_ARGS__))
 #define SoulLogWarning(message, ...) (Soul::Logger::LogWarning("[Warning]: " message "\n", ##__VA_ARGS__))
+#define SoulLogEvent(message, ...) (Soul::Logger::LogEvent("[Event]: " message "\n", ##__VA_ARGS__))
 #define SoulLogInfo(message, ...) (Soul::Logger::LogInfo("[Info]: " message "\n", ##__VA_ARGS__))
