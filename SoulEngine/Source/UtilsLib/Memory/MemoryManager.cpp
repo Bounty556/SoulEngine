@@ -2,7 +2,7 @@
 Reserves an initial amount of memory for the engine to be allocated as needed.
 @file MemoryManager.cpp
 @author Jacob Peterson
-@edited 12/23/20
+@edited 12/26/20
 */
 
 #include "MemoryManager.h"
@@ -19,14 +19,19 @@ namespace Soul
 	UInt32 MemoryManager::_suiHandleTableLength = 512;
 	Handle* MemoryManager::_sopHandleTableStart;
 	Handle* MemoryManager::_sopFirstHandle;
+	Byte* MemoryManager::_suipVolatileMemoryStart;
+	Byte* MemoryManager::_suipVolatileMemoryEnd; 
+	ByteCount MemoryManager::_suiVolatileMemorySize;
+	Byte* MemoryManager::_suipVolatileNext;
+	UInt8 MemoryManager::_suiFrameCounter;
 	bool MemoryManager::_sbIsSetup = false;
 
-	void MemoryManager::StartUp(ByteCount uiByteSize)
+	void MemoryManager::StartUp(ByteCount uiByteSize, ByteCount uiVolatileByteSize)
 	{
 		Assert(!_sbIsSetup);
 
 		/*
-		Allocate the necessary memory
+		Allocate main memory.
 		*/
 		_suiMemorySize = uiByteSize - sizeof(Handle) * _suiHandleTableLength;
 		_suipMemoryStart = (Byte*)malloc(_suiMemorySize);
@@ -34,9 +39,20 @@ namespace Soul
 		_sopHandleTableStart = (Handle*)_suipMemoryStart;
 		_sopFirstHandle = nullptr;
 		_suipAddressableMemoryStart = (Byte*)(_sopHandleTableStart + _suiHandleTableLength);
+
+		/*
+		Allocate volatile storage.
+		*/
+		_suiVolatileMemorySize = uiVolatileByteSize;
+		_suipVolatileMemoryStart = (Byte*)malloc(_suiVolatileMemorySize);
+		_suipVolatileMemoryEnd = _suipVolatileMemoryStart + _suiVolatileMemorySize;
+		_suipVolatileNext = _suipVolatileMemoryStart;
+		_suiFrameCounter = 0;
+
 		_sbIsSetup = true;
 
 		memset(_sopHandleTableStart, 0, sizeof(Handle) * _suiHandleTableLength);
+		memset(_suipVolatileMemoryStart, 0, _suiVolatileMemorySize);
 	}
 
 	void MemoryManager::Shutdown()
@@ -50,6 +66,16 @@ namespace Soul
 		_sopHandleTableStart = nullptr; 
 		_sopFirstHandle = nullptr;
 		_sbIsSetup = false;
+	}
+
+	void MemoryManager::IncrementFrameCounter()
+	{
+		if (++_suiFrameCounter >= 2)
+		{
+			_suiFrameCounter = 0;
+			memset(_suipVolatileMemoryStart, 0, _suiVolatileMemorySize);
+			_suipVolatileNext = _suipVolatileMemoryStart;
+		}
 	}
 
 	void MemoryManager::Defragment(UInt8 uiBlockCount)

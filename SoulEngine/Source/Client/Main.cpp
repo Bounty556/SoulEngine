@@ -19,7 +19,7 @@ int main()
 	Soul::Timer oTimer;
 	oTimer.Start();
 
-	Soul::MemoryManager::StartUp(Gigabytes(1));
+	Soul::MemoryManager::StartUp(Gigabytes(1), Megabytes(8));
 	Soul::EventBus::StartUp(32);
 
 	Soul::TestRunner::RunAllTestSuites();

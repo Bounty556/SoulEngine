@@ -2,7 +2,7 @@
 Reserves an initial amount of memory for the engine to be allocated as needed.
 @file MemoryManager.h
 @author Jacob Peterson
-@edited 12/20/20
+@edited 12/26/20
 */
 
 #pragma once
@@ -53,14 +53,15 @@ namespace Soul
 	{
 	public:
 
-	public:
-
 		/*
 		Initializes the MemoryManager's memory and sets up the Handle table.
 
 		@param uiByteSize - The number of bytes to reserve for this MemoryManager.
+
+		@param uiVolatileByteSize - The number of bytes to reserve for the
+		                            the volatile memory storage.
 		*/
-		static void StartUp(ByteCount uiByteSize);
+		static void StartUp(ByteCount uiByteSize, ByteCount uiVolatileByteSize);
 
 		/*
 		Shuts down the MemoryManager and frees all its memory.
@@ -91,6 +92,17 @@ namespace Soul
 		static UniqueHandle<T> AllocateArray(ArraySize uiCount);
 
 		/*
+		Allocates memory in the volatile memory arena. This memory gets cleared
+		every other frame.
+
+		@param uiCount - Number of elements to allocate.
+
+		@return Pointer to the newly allocated memory.
+		*/
+		template <class T>
+		static T* AllocateVolatile(ArraySize uiCount = 1);
+
+		/*
 		Calls the destructor and frees the memory for every object allocated to
 		the provided handle.
 
@@ -98,6 +110,12 @@ namespace Soul
 		*/
 		template <class T>
 		static void Deallocate(Handle& oHandle);
+
+		/*
+		Increases the frame memory counter. Once the frame memory counter
+		reaches two, the memory is cleared.
+		*/
+		static void IncrementFrameCounter();
 
 		/*
 		Attempts to defragment the provided number of blocks to keep memory
@@ -199,6 +217,13 @@ namespace Soul
 		static HandleTableSize _suiHandleTableLength; // Maximum amount of handles that can be created.
 		static Handle* _sopHandleTableStart; // Start address of handle table.
 		static Handle* _sopFirstHandle; // Address to the starting handle of the table.
+
+		static Byte* _suipVolatileMemoryStart; // Start of volatile partitioned memory.
+		static Byte* _suipVolatileMemoryEnd; // End of volatile partitioned memory.
+		static ByteCount _suiVolatileMemorySize; // Size of volatile memory.
+		static Byte* _suipVolatileNext; // The next address to allocate volatile memory to.
+		static UInt8 _suiFrameCounter; // Number of frames since last volatile memory clear.
+
 		static bool _sbIsSetup; // Whether this MemoryManager has been initialized yet.
 	};
 
@@ -221,6 +246,17 @@ namespace Soul
 		Handle* opNewHandle = SetupNewHandle<T>(uiCount);
 		UniqueHandle<T> oUniqueHandle(opNewHandle);
 		return std::move(oUniqueHandle);
+	}
+
+	template <class T>
+	static T* MemoryManager::AllocateVolatile(ArraySize uiCount /*=1*/)
+	{
+		Assert(_suipVolatileNext + uiCount * sizeof(T) <= _suipVolatileMemoryEnd);
+
+		T* pMemory = (T*)_suipVolatileNext;
+		_suipVolatileNext += uiCount * sizeof(T);
+
+		return pMemory;
 	}
 
 	template <class T>
