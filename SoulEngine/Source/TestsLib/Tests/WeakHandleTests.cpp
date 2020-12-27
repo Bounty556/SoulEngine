@@ -2,7 +2,7 @@
 Tests for the WeakHandle class.
 @file WeakHandleTests.cpp
 @author Jacob Peterson
-@edited 12/24/2020
+@edited 12/26/2020
 */
 
 #include "WeakHandleTests.h"

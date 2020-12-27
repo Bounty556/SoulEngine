@@ -2,13 +2,15 @@
 Tests for the Queue class.
 @file QueueTests.cpp
 @author Jacob Peterson
-@edited 12/22/2020
+@edited 12/26/2020
 */
 
 #include "QueueTests.h"
 
 #include <TestsLib/TestMacros.h>
+#include <UtilsLib/CommonTypes.h>
 #include <UtilsLib/Containers/Queue.h>
+#include <UtilsLib/Memory/MemoryManager.h>
 
 namespace Soul
 {
@@ -21,9 +23,8 @@ namespace Soul
 
 	bool QueueTests::PrimitiveQueue()
 	{
-		AssertEqual(Soul::MemoryManager::GetTotalAllocatedBytes(), 0, 
-			"Failed initial memory condition.");
-
+		ByteCount uiBytes = MemoryManager::GetTotalAllocatedBytes();
+		
 		{
 			Queue<UInt32> oQueue(100);
 
@@ -54,7 +55,7 @@ namespace Soul
 			}
 		}
 
-		AssertEqual(Soul::MemoryManager::GetTotalAllocatedBytes(), 0,
+		AssertEqual(uiBytes, MemoryManager::GetTotalAllocatedBytes(),
 			"Primitive queue was not properly deallocated.");
 
 		return true;
@@ -62,8 +63,7 @@ namespace Soul
 
 	bool QueueTests::ObjectQueue()
 	{
-		AssertEqual(Soul::MemoryManager::GetTotalAllocatedBytes(), 0,
-			"Failed initial memory condition.");
+		ByteCount uiBytes = MemoryManager::GetTotalAllocatedBytes();
 
 		TestClass oFake(0, 'a', 2.0f);
 		TestClass oFake2(1, 'b', 3.0f);
@@ -98,7 +98,7 @@ namespace Soul
 			}
 		}
 
-		AssertEqual(Soul::MemoryManager::GetTotalAllocatedBytes(), 0,
+		AssertEqual(uiBytes, MemoryManager::GetTotalAllocatedBytes(),
 			"Object queue was not properly deallocated.");
 
 		return true;
@@ -106,8 +106,7 @@ namespace Soul
 
 	bool QueueTests::QueueQueue()
 	{
-		AssertEqual(Soul::MemoryManager::GetTotalAllocatedBytes(), 0,
-			"Failed initial memory condition.");
+		ByteCount uiBytes = MemoryManager::GetTotalAllocatedBytes();
 
 		{
 			Queue<Queue<int>> oQueue(100);
@@ -157,7 +156,7 @@ namespace Soul
 			}
 		}
 
-		AssertEqual(Soul::MemoryManager::GetTotalAllocatedBytes(), 0,
+		AssertEqual(uiBytes, MemoryManager::GetTotalAllocatedBytes(),
 			"Queue queue was not properly deallocated.");
 
 		return true;

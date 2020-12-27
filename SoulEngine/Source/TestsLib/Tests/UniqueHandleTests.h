@@ -2,7 +2,7 @@
 Tests for the UniqueHandle class.
 @file UniqueHandleTests.h
 @author Jacob Peterson
-@edited 12/22/2020
+@edited 12/26/2020
 */
 
 #pragma once

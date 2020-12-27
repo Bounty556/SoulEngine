@@ -2,7 +2,7 @@
 Tests for the EventBus and EventListener classes.
 @file EventTests.h
 @author Jacob Peterson
-@edited 12/24/2020
+@edited 12/26/2020
 */
 
 #pragma once

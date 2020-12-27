@@ -2,7 +2,7 @@
 Tests for the Vector class.
 @file VectorTests.h
 @author Jacob Peterson
-@edited 12/24/2020
+@edited 12/26/2020
 */
 
 #include "VectorTests.h"
@@ -25,8 +25,7 @@ namespace Soul
 
 	bool VectorTests::PrimitiveVector()
 	{
-		AssertEqual(MemoryManager::GetTotalAllocatedBytes(), 0,
-			"Failed initial memory condition.");
+		ByteCount uiBytes = MemoryManager::GetTotalAllocatedBytes();
 
 		{
 			Vector<UInt32> oIntVector(255);
@@ -62,7 +61,7 @@ namespace Soul
 			}
 		}
 
-		AssertEqual(MemoryManager::GetTotalAllocatedBytes(), 0,
+		AssertEqual(uiBytes, MemoryManager::GetTotalAllocatedBytes(),
 			"Failed to deallocate primitive Vectors.");
 
 		return true;
@@ -70,8 +69,7 @@ namespace Soul
 
 	bool VectorTests::ObjectVector()
 	{
-		AssertEqual(MemoryManager::GetTotalAllocatedBytes(), 0,
-			"Failed initial memory condition.");
+		ByteCount uiBytes = MemoryManager::GetTotalAllocatedBytes();
 
 		TestClass oFake = { 0, 'a', 1.5f };
 		TestClass oFake2 = { 1, 'b', 1.8f };
@@ -110,7 +108,7 @@ namespace Soul
 			}
 		}
 
-		AssertEqual(MemoryManager::GetTotalAllocatedBytes(), 0,
+		AssertEqual(uiBytes, MemoryManager::GetTotalAllocatedBytes(),
 			"Failed to deallocate object Vectors.");
 
 		return true;
@@ -118,8 +116,7 @@ namespace Soul
 
 	bool VectorTests::VectorVector()
 	{
-		AssertEqual(MemoryManager::GetTotalAllocatedBytes(), 0,
-			"Failed initial memory condition.");
+		ByteCount uiBytes = MemoryManager::GetTotalAllocatedBytes();
 
 		{
 			Vector<Vector<int>> oVector(255);
@@ -167,7 +164,7 @@ namespace Soul
 				"Failed to move Vector of Vectors.");
 		}
 
-		AssertEqual(MemoryManager::GetTotalAllocatedBytes(), 0,
+		AssertEqual(uiBytes, MemoryManager::GetTotalAllocatedBytes(),
 			"Failed to deallocate Vectors of Vectors.");
 
 		return true;
@@ -175,8 +172,7 @@ namespace Soul
 
 	bool VectorTests::ResizeVector()
 	{
-		AssertEqual(MemoryManager::GetTotalAllocatedBytes(), 0,
-			"Failed initial memory condition.");
+		ByteCount uiBytes = MemoryManager::GetTotalAllocatedBytes();
 
 		{
 			Vector<UInt8> oSmallVector(3);
@@ -226,7 +222,7 @@ namespace Soul
 			}
 		}
 
-		AssertEqual(MemoryManager::GetTotalAllocatedBytes(), 0,
+		AssertEqual(uiBytes, MemoryManager::GetTotalAllocatedBytes(),
 			"Failed to deallocate resized Vector.");
 
 		return true;
@@ -234,8 +230,7 @@ namespace Soul
 
 	bool VectorTests::RemoveElements()
 	{
-		AssertEqual(MemoryManager::GetTotalAllocatedBytes(), 0,
-			"Failed initial memory condition.");
+		ByteCount uiBytes = MemoryManager::GetTotalAllocatedBytes();
 
 		{
 			/*
@@ -305,7 +300,7 @@ namespace Soul
 			AssertEqual(oTemp.Pop(), 0, "Incorrect Vector removed.");
 		}
 
-		AssertEqual(MemoryManager::GetTotalAllocatedBytes(), 0,
+		AssertEqual(uiBytes, MemoryManager::GetTotalAllocatedBytes(),
 			"Failed to deallocate Vectors with removed elements.");
 
 		return true;
