@@ -60,6 +60,12 @@
     <ClCompile Include="Source\Framework\Graphics\Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
+=======
+    <ClCompile Include="Vendor\glad\src\glad.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+>>>>>>> 11ee09ddc24f5e149c9b13756059fdb6097a8f17
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\UtilsLib\CommonTypes.h">
@@ -131,5 +137,20 @@
     <ClInclude Include="Source\Framework\Graphics\Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
+=======
+    <ClInclude Include="Vendor\glad\include\glad\glad.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vendor\glad\include\KHR\khrplatform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vendor\glfw\include\GLFW\glfw3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vendor\glfw\include\GLFW\glfw3native.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+>>>>>>> 11ee09ddc24f5e149c9b13756059fdb6097a8f17
   </ItemGroup>
 </Project>
