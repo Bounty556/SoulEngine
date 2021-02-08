@@ -1,27 +1,54 @@
 /*
-A window that can be rendered to.
+Singleton class that manages the Engine's main window.
 @file Window.h
 @author Jacob Peterson
-@edited 12/27/2020
+@edited 2/8/2021
 */
 
 #pragma once
 
+#define GLFW_INCLUDE_NONE
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
 #include <UtilsLib/CommonTypes.h>
+
+typedef GLFWwindow* WindowPtr;
 
 namespace Soul
 {
-	enum class WindowModes
+	enum class WindowMode
 	{
 		Fullscreen,
-		Windowed,
-		BorderlessWindowed
+		Borderless,
+		Windowed
 	};
 
 	class Window
 	{
 	public:
-		Window(UInt16 uiWindowWidth, UInt16 uiWindowHeight,
-			WindowModes eWindowMode);
+
+		static bool StartUp(Int32 iXResolution, Int32 iYResolution, const char* zTitle,
+			WindowMode eMode);
+
+		static void ShutDown();
+
+		static void SetWindowMode(WindowMode eMode);
+
+		static void SetResizable(bool bIsResizable);
+
+		static bool ShouldWindowClose();
+
+		static void PrepWindowForRendering();
+
+		static void Render();
+
+		Window() = delete;
+
+	private:
+		static WindowPtr _poWindow;
+		static WindowMode _eWindowMode;
+		static bool _bIsResizable;
+		static bool _bIsSetup;
 	};
 }

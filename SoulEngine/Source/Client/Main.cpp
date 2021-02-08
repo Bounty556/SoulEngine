@@ -5,6 +5,7 @@ Entry point for the Client side of this app.
 */
 
 #include <Events/EventBus.h>
+#include <Framework/Graphics/Window.h>
 #include <UtilsLib/CommonTypes.h>
 #include <UtilsLib/Macros.h>
 #include <UtilsLib/Memory/MemoryManager.h>
@@ -14,24 +15,39 @@ Entry point for the Client side of this app.
 
 #include <TestsLib/TestRunner.h>
 
+void StartUp();
+void ShutDown();
+
 int main()
 {
 	Soul::Timer oTimer;
 	oTimer.Start();
 
-	Soul::MemoryManager::StartUp(Gigabytes(1), Megabytes(8));
-	Soul::EventBus::StartUp(32);
+	StartUp();
 
 	Soul::TestRunner::RunAllTestSuites();
 
-	Soul::EventBus::Shutdown();
-
-	Assert(Soul::MemoryManager::GetTotalAllocatedBytes() == 0);
-	Soul::MemoryManager::Shutdown();
+	ShutDown();
 
 	oTimer.Stop();
 	SoulLogInfo("Time taken:\n\tSeconds: %llf\n\tMillis: %llf\n\tMicros: %llf",
 		oTimer.GetElapsedSeconds(), oTimer.GetElapsedMilliseconds(), oTimer.GetElapsedMicroseconds());
 
 	return 0;
+}
+
+void StartUp()
+{
+	Soul::MemoryManager::StartUp(Gigabytes(1), Megabytes(8));
+	Soul::EventBus::StartUp(32);
+	Soul::Window::StartUp(640, 480, "SoulEngine", Soul::WindowMode::Windowed);
+}
+
+void ShutDown()
+{
+	Soul::Window::ShutDown();
+	Soul::EventBus::Shutdown();
+
+	Assert(Soul::MemoryManager::GetTotalAllocatedBytes() == 0);
+	Soul::MemoryManager::Shutdown();
 }
