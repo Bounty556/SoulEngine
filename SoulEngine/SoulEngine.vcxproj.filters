@@ -1,156 +1,50 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
+    <ClCompile Include="Source\Client\Main.cpp" />
+    <ClCompile Include="Source\Events\EventBus.cpp" />
+    <ClCompile Include="Source\Events\EventListener.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Window.cpp" />
+    <ClCompile Include="Source\TestsLib\TestClass.cpp" />
+    <ClCompile Include="Source\TestsLib\TestRunner.cpp" />
+    <ClCompile Include="Source\TestsLib\Tests\EventTests.cpp" />
+    <ClCompile Include="Source\TestsLib\Tests\MemoryManagerTests.cpp" />
+    <ClCompile Include="Source\TestsLib\Tests\QueueTests.cpp" />
+    <ClCompile Include="Source\TestsLib\Tests\UniqueHandleTests.cpp" />
+    <ClCompile Include="Source\TestsLib\Tests\VectorTests.cpp" />
+    <ClCompile Include="Source\TestsLib\Tests\WeakHandleTests.cpp" />
+    <ClCompile Include="Source\UtilsLib\Logger.cpp" />
+    <ClCompile Include="Source\UtilsLib\Memory\MemoryManager.cpp" />
+    <ClCompile Include="Source\UtilsLib\Timer.cpp" />
+    <ClCompile Include="Vendor\glad\src\glad.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Client\Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\UtilsLib\Logger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\UtilsLib\Memory\MemoryManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\TestsLib\TestRunner.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\TestsLib\Tests\MemoryManagerTests.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\TestsLib\Tests\UniqueHandleTests.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\TestsLib\Tests\QueueTests.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\TestsLib\TestClass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\UtilsLib\Timer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Events\EventBus.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\TestsLib\Tests\VectorTests.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Events\EventListener.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\TestsLib\Tests\EventTests.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\TestsLib\Tests\WeakHandleTests.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Window.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-<<<<<<< HEAD
-=======
-    <ClCompile Include="Vendor\glad\src\glad.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
->>>>>>> 11ee09ddc24f5e149c9b13756059fdb6097a8f17
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Source\UtilsLib\CommonTypes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\UtilsLib\Logger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\UtilsLib\Macros.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\UtilsLib\Memory\MemoryManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\UtilsLib\Memory\UniqueHandle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\UtilsLib\Containers\Queue.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\TestsLib\ITestSuite.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\TestsLib\TestRunner.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\TestsLib\Tests\MemoryManagerTests.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\TestsLib\TestMacros.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\TestsLib\Tests\UniqueHandleTests.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\TestsLib\Tests\QueueTests.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\TestsLib\TestClass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\UtilsLib\Timer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Events\EventBus.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Events\EventTypes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\UtilsLib\Containers\Vector.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\TestsLib\Tests\VectorTests.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Events\EventListener.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\TestsLib\Tests\EventTests.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\UtilsLib\Memory\WeakHandle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\TestsLib\Tests\WeakHandleTests.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Window.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-<<<<<<< HEAD
-=======
-    <ClInclude Include="Vendor\glad\include\glad\glad.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Vendor\glad\include\KHR\khrplatform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Vendor\glfw\include\GLFW\glfw3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Vendor\glfw\include\GLFW\glfw3native.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
->>>>>>> 11ee09ddc24f5e149c9b13756059fdb6097a8f17
+    <ClInclude Include="Source\Events\EventBus.h" />
+    <ClInclude Include="Source\Events\EventListener.h" />
+    <ClInclude Include="Source\Events\EventTypes.h" />
+    <ClInclude Include="Source\Framework\Graphics\Window.h" />
+    <ClInclude Include="Source\TestsLib\ITestSuite.h" />
+    <ClInclude Include="Source\TestsLib\TestClass.h" />
+    <ClInclude Include="Source\TestsLib\TestMacros.h" />
+    <ClInclude Include="Source\TestsLib\TestRunner.h" />
+    <ClInclude Include="Source\TestsLib\Tests\EventTests.h" />
+    <ClInclude Include="Source\TestsLib\Tests\MemoryManagerTests.h" />
+    <ClInclude Include="Source\TestsLib\Tests\QueueTests.h" />
+    <ClInclude Include="Source\TestsLib\Tests\UniqueHandleTests.h" />
+    <ClInclude Include="Source\TestsLib\Tests\VectorTests.h" />
+    <ClInclude Include="Source\TestsLib\Tests\WeakHandleTests.h" />
+    <ClInclude Include="Source\UtilsLib\CommonTypes.h" />
+    <ClInclude Include="Source\UtilsLib\Containers\Queue.h" />
+    <ClInclude Include="Source\UtilsLib\Containers\Vector.h" />
+    <ClInclude Include="Source\UtilsLib\Logger.h" />
+    <ClInclude Include="Source\UtilsLib\Macros.h" />
+    <ClInclude Include="Source\UtilsLib\Memory\MemoryManager.h" />
+    <ClInclude Include="Source\UtilsLib\Memory\WeakHandle.h" />
+    <ClInclude Include="Source\UtilsLib\Memory\UniqueHandle.h" />
+    <ClInclude Include="Source\UtilsLib\Timer.h" />
+    <ClInclude Include="Vendor\glad\include\glad\glad.h" />
+    <ClInclude Include="Vendor\glad\include\KHR\khrplatform.h" />
+    <ClInclude Include="Vendor\glfw\include\GLFW\glfw3.h" />
+    <ClInclude Include="Vendor\glfw\include\GLFW\glfw3native.h" />
   </ItemGroup>
 </Project>

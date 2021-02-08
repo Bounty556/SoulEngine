@@ -5,7 +5,6 @@ Entry point for the Client side of this app.
 */
 
 #include <Events/EventBus.h>
-#include <Framework/Graphics/Window.h>
 #include <UtilsLib/CommonTypes.h>
 #include <UtilsLib/Macros.h>
 #include <UtilsLib/Memory/MemoryManager.h>
@@ -14,6 +13,8 @@ Entry point for the Client side of this app.
 #include <UtilsLib/Timer.h>
 
 #include <TestsLib/TestRunner.h>
+
+#include <Framework/Graphics/Window.h>
 
 void StartUp();
 void ShutDown();

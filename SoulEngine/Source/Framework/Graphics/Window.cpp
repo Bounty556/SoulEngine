@@ -11,6 +11,7 @@ Singleton class that manages the Engine's main window.
 #include <UtilsLib/Macros.h>
 
 void WindowResizeCallback(WindowPtr poWindow, Int32 iWidth, Int32 iHeight);
+void WindowErrorCallback(Int32 iErrorCode, const char* zDescription);
 
 namespace Soul
 {
@@ -28,9 +29,11 @@ namespace Soul
 			SoulLogError("Failed to initialize GLFW.");
 			return false;
 		}
+
+		glfwSetErrorCallback(WindowErrorCallback);
 		
-		glfwWindowHint(GLFW_VERSION_MAJOR, 3);
-		glfwWindowHint(GLFW_VERSION_MINOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 		_poWindow = glfwCreateWindow(iXResolution, iYResolution, zTitle, NULL, NULL);
@@ -106,4 +109,9 @@ namespace Soul
 void WindowResizeCallback(WindowPtr poWindow, Int32 iWidth, Int32 iHeight)
 {
 	glViewport(0, 0, iWidth, iHeight);
+}
+
+void WindowErrorCallback(Int32 iErrorCode, const char* zDescription)
+{
+	SoulLogError("(GLFW %d) %s", iErrorCode, zDescription);
 }
