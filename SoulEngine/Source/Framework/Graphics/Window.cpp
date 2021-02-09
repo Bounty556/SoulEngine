@@ -43,6 +43,8 @@ namespace Soul
 			glfwTerminate();
 			return false;
 		}
+		glfwMakeContextCurrent(_poWindow);
+		glfwSetFramebufferSizeCallback(_poWindow, WindowResizeCallback);
 
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
@@ -51,7 +53,6 @@ namespace Soul
 		}
 
 		glViewport(0, 0, iXResolution, iYResolution);
-		glfwSetFramebufferSizeCallback(_poWindow, WindowResizeCallback);
 
 		_bIsSetup = true;
 
