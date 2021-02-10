@@ -35,19 +35,22 @@ namespace Soul
 
 		static void SetWindowMode(WindowMode eMode);
 
-		static void SetResizable(bool bIsResizable);
-
 		static bool ShouldWindowClose();
 
-		static void PrepWindowForRendering();
+		static void PrepareForRendering();
 
-		static void Render();
+		static void Draw();
+
+		static void FinalizeRender();
 
 		Window() = delete;
 
 	private:
 		static WindowPtr _poWindow;
 		static WindowMode _eWindowMode;
+		static const char* _zTitle;
+		static Int32 _iXResolution;
+		static Int32 _iYResolution;
 		static bool _bIsResizable;
 		static bool _bIsSetup;
 	};

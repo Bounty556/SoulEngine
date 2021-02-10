@@ -19,6 +19,9 @@ namespace Soul
 	WindowMode Window::_eWindowMode = WindowMode::Windowed;
 	bool Window::_bIsResizable = true;
 	bool Window::_bIsSetup = false;
+	const char* Window::_zTitle;
+	Int32 Window::_iXResolution;
+	Int32 Window::_iYResolution;
 
 	bool Window::StartUp(Int32 iXResolution, Int32 iYResolution, const char* zTitle, WindowMode eMode)
 	{
@@ -36,7 +39,11 @@ namespace Soul
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-		_poWindow = glfwCreateWindow(iXResolution, iYResolution, zTitle, NULL, NULL);
+		_zTitle = zTitle;
+		_iXResolution = iXResolution;
+		_iYResolution = iYResolution;
+
+		_poWindow = glfwCreateWindow(_iXResolution, _iYResolution, _zTitle, NULL, NULL);
 		if (_poWindow == NULL)
 		{
 			SoulLogError("Failed to create GLFW window.");
@@ -63,6 +70,8 @@ namespace Soul
 	{
 		Assert(_bIsSetup);
 
+		_bIsSetup = false;
+
 		glfwTerminate();
 	}
 
@@ -73,16 +82,48 @@ namespace Soul
 		if (_eWindowMode != eMode)
 		{
 			_eWindowMode = eMode;
-			// TODO: Made the window mode actually effect the window
+
+			glfwDestroyWindow(_poWindow);
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+			glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+			switch (_eWindowMode)
+			{
+				case WindowMode::Fullscreen:
+				{
+					_poWindow = glfwCreateWindow(_iXResolution, _iYResolution,
+						"My Title", glfwGetPrimaryMonitor(), NULL);
+				} break;
+
+				case WindowMode::Borderless:
+				{
+					const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+
+					glfwWindowHint(GLFW_RED_BITS, mode->redBits);
+					glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
+					glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
+					glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
+
+					_poWindow = glfwCreateWindow(mode->width, mode->height,
+						"My Title", glfwGetPrimaryMonitor(), NULL);
+				} break;
+
+				case WindowMode::Windowed:
+				{
+					_poWindow = glfwCreateWindow(_iXResolution, _iYResolution,
+						_zTitle, NULL, NULL);
+					glfwSetFramebufferSizeCallback(_poWindow, WindowResizeCallback);
+				} break;
+			}
+		
+			if (_poWindow == NULL)
+			{
+				SoulLogError("Failed to create GLFW window.");
+				glfwTerminate();
+			}
+			glfwMakeContextCurrent(_poWindow);
 		}
-	}
-
-	void Window::SetResizable(bool bIsResizable)
-	{
-		Assert(_bIsSetup);
-
-		_bIsResizable = bIsResizable;
-		// TODO: Make window resizable or not
 	}
 
 	bool Window::ShouldWindowClose()
@@ -92,19 +133,23 @@ namespace Soul
 		return glfwWindowShouldClose(_poWindow);
 	}
 
-	void Window::PrepWindowForRendering()
+	void Window::PrepareForRendering()
+	{
+		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+	}
+
+	void Window::Draw()
+	{
+	}
+
+	void Window::FinalizeRender()
 	{
 		Assert(_bIsSetup);
 
 		glfwSwapBuffers(_poWindow);
 		glfwPollEvents();
 	}
-
-	void Window::Render()
-	{
-
-	}
-
 }
 
 void WindowResizeCallback(WindowPtr poWindow, Int32 iWidth, Int32 iHeight)

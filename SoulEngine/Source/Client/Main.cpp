@@ -28,11 +28,25 @@ int main()
 
 	Soul::TestRunner::RunAllTestSuites();
 
-	ShutDown();
-
+	// Measure time taken to startup and test
 	oTimer.Stop();
 	SoulLogInfo("Time taken:\n\tSeconds: %llf\n\tMillis: %llf\n\tMicros: %llf",
 		oTimer.GetElapsedSeconds(), oTimer.GetElapsedMilliseconds(), oTimer.GetElapsedMicroseconds());
+
+	// Main game loop
+	while (!Soul::Window::ShouldWindowClose())
+	{
+		// TODO: Add input manager
+
+		Soul::Window::PrepareForRendering();
+
+		// Draw calls
+
+		Soul::Window::FinalizeRender();
+	}
+
+	// Clean up
+	ShutDown();
 
 	return 0;
 }
