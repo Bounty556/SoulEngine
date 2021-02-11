@@ -21,7 +21,8 @@ namespace Soul
 	{
 		Fullscreen,
 		Borderless,
-		Windowed
+		Windowed,
+		None
 	};
 
 	class Window
@@ -33,7 +34,8 @@ namespace Soul
 
 		static void ShutDown();
 
-		static void SetWindowMode(WindowMode eMode);
+		static void SetWindowOptions(Int32 iXResolution, Int32 iYResolution, const char* zTitle,
+			WindowMode eMode);
 
 		static bool ShouldWindowClose();
 
@@ -43,7 +45,18 @@ namespace Soul
 
 		static void FinalizeRender();
 
+		static const char* GetTitle();
+
+		static WindowMode GetWindowMode();
+
+		static Int32 GetXResolution();
+
+		static Int32 GetYResolution();
+
 		Window() = delete;
+
+	private:
+		static void InitializeNewWindow();
 
 	private:
 		static WindowPtr _poWindow;
