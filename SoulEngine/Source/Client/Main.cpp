@@ -15,6 +15,7 @@ Entry point for the Client side of this app.
 #include <TestsLib/TestRunner.h>
 
 #include <Framework/Graphics/Window.h>
+#include <Framework/Graphics/Renderer.h>
 
 void StartUp();
 void ShutDown();
@@ -41,6 +42,7 @@ int main()
 		Soul::Window::PrepareForRendering();
 
 		// Draw calls
+		Soul::Renderer::RenderTriangle();
 
 		Soul::Window::FinalizeRender();
 	}
@@ -56,10 +58,12 @@ void StartUp()
 	Soul::MemoryManager::StartUp(Gigabytes(1), Megabytes(8));
 	Soul::EventBus::StartUp(32);
 	Soul::Window::StartUp(640, 480, "SoulEngine", Soul::WindowMode::Windowed);
+	Soul::Renderer::StartUp();
 }
 
 void ShutDown()
 {
+	Soul::Renderer::ShutDown();
 	Soul::Window::ShutDown();
 	Soul::EventBus::Shutdown();
 
