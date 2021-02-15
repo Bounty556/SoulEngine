@@ -2,7 +2,7 @@
 Singleton class that manages the Engine's main window.
 @file Window.cpp
 @author Jacob Peterson
-@edited 2/8/2021
+@edited 2/15/2021
 */
 
 #include "Window.h"
@@ -90,10 +90,6 @@ namespace Soul
 	{
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-	}
-
-	void Window::Draw()
-	{
 	}
 
 	void Window::FinalizeRender()

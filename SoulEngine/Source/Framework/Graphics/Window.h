@@ -2,7 +2,7 @@
 Singleton class that manages the Engine's main window.
 @file Window.h
 @author Jacob Peterson
-@edited 2/8/2021
+@edited 2/15/2021
 */
 
 #pragma once
@@ -102,11 +102,6 @@ namespace Soul
 		Sets the window up to be rendered to.
 		*/
 		static void PrepareForRendering();
-
-		/*
-		Temporary draw function.
-		*/
-		static void Draw();
 
 		/*
 		Swaps the draw buffers, rendering this frame's final image to the
