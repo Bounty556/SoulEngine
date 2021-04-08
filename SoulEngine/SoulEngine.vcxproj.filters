@@ -17,7 +17,6 @@
     <ClCompile Include="Source\UtilsLib\Memory\MemoryManager.cpp" />
     <ClCompile Include="Source\UtilsLib\Timer.cpp" />
     <ClCompile Include="Vendor\glad\src\glad.c" />
-    <ClCompile Include="Source\Framework\Graphics\Renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Events\EventBus.h" />
@@ -47,6 +46,5 @@
     <ClInclude Include="Vendor\glad\include\KHR\khrplatform.h" />
     <ClInclude Include="Vendor\glfw\include\GLFW\glfw3.h" />
     <ClInclude Include="Vendor\glfw\include\GLFW\glfw3native.h" />
-    <ClInclude Include="Source\Framework\Graphics\Renderer.h" />
   </ItemGroup>
 </Project>
