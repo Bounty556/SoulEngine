@@ -132,37 +132,37 @@ namespace Soul
 	template <class T>
 	T* UniqueHandle<T>::operator->()
 	{
-		return (T*)_hpHandle->pLocation;
+		return (T*)_hpHandle->location;
 	}
 
 	template <class T>
 	T& UniqueHandle<T>::operator*()
 	{
-		return *((T*)(_hpHandle->pLocation));
+		return *((T*)(_hpHandle->location));
 	}
 
 	template <class T>
 	T& UniqueHandle<T>::operator[](ArraySize uiIndex)
 	{
-		return ((T*)_hpHandle->pLocation)[uiIndex];
+		return ((T*)_hpHandle->location)[uiIndex];
 	}
 
 	template <class T>
 	const T* UniqueHandle<T>::operator->() const
 	{
-		return (T*)_hpHandle->pLocation;
+		return (T*)_hpHandle->location;
 	}
 
 	template <class T>
 	const T& UniqueHandle<T>::operator*() const
 	{
-		return *((T*)(_hpHandle->pLocation));
+		return *((T*)(_hpHandle->location));
 	}
 
 	template <class T>
 	const T& UniqueHandle<T>::operator[](ArraySize uiIndex) const
 	{
-		return ((T*)_hpHandle->pLocation)[uiIndex];
+		return ((T*)_hpHandle->location)[uiIndex];
 	}
 
 	template <class T>
@@ -206,6 +206,6 @@ namespace Soul
 	template <class T>
 	T* UniqueHandle<T>::GetMemory()
 	{
-		return (T*)_hpHandle->pLocation;
+		return (T*)_hpHandle->location;
 	}
 }

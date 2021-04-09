@@ -12,135 +12,135 @@ Reserves an initial amount of memory for the engine to be allocated as needed.
 
 namespace Soul
 {
-	Byte* MemoryManager::_suipMemoryStart;
-	Byte* MemoryManager::_suipAddressableMemoryStart;
-	Byte* MemoryManager::_suipMemoryEnd;
-	ByteCount MemoryManager::_suiMemorySize;
-	UInt32 MemoryManager::_suiHandleTableLength = 512;
-	Handle* MemoryManager::_sopHandleTableStart;
-	Handle* MemoryManager::_sopFirstHandle;
-	Byte* MemoryManager::_suipVolatileMemoryStart;
-	Byte* MemoryManager::_suipVolatileMemoryEnd; 
-	ByteCount MemoryManager::_suiVolatileMemorySize;
-	Byte* MemoryManager::_suipVolatileNext;
-	UInt8 MemoryManager::_suiFrameCounter;
-	bool MemoryManager::_sbIsSetup = false;
+	Byte* MemoryManager::m_MemoryStart;
+	Byte* MemoryManager::m_AddressableMemoryStart;
+	Byte* MemoryManager::m_MemoryEnd;
+	ByteCount MemoryManager::m_MemorySize;
+	UInt32 MemoryManager::m_HandleTableLength = 512;
+	Handle* MemoryManager::m_HandleTableStart;
+	Handle* MemoryManager::m_FirstHandle;
+	Byte* MemoryManager::m_VolatileMemoryStart;
+	Byte* MemoryManager::m_VolatileMemoryEnd; 
+	ByteCount MemoryManager::m_VolatileMemorySize;
+	Byte* MemoryManager::m_VolatileNext;
+	UInt8 MemoryManager::m_FrameCounter;
+	bool MemoryManager::m_IsSetup = false;
 
-	void MemoryManager::StartUp(ByteCount uiByteSize, ByteCount uiVolatileByteSize)
+	void MemoryManager::StartUp(ByteCount byteSize, ByteCount volatileByteSize)
 	{
-		Assert(!_sbIsSetup);
+		Assert(!m_IsSetup);
 
 		/*
 		Allocate main memory.
 		*/
-		_suiMemorySize = uiByteSize - sizeof(Handle) * _suiHandleTableLength;
-		_suipMemoryStart = (Byte*)malloc(_suiMemorySize);
-		_suipMemoryEnd = _suipMemoryStart + _suiMemorySize;
-		_sopHandleTableStart = (Handle*)_suipMemoryStart;
-		_sopFirstHandle = nullptr;
-		_suipAddressableMemoryStart = (Byte*)(_sopHandleTableStart + _suiHandleTableLength);
+		m_MemorySize = byteSize - sizeof(Handle) * m_HandleTableLength;
+		m_MemoryStart = (Byte*)malloc(m_MemorySize);
+		m_MemoryEnd = m_MemoryStart + m_MemorySize;
+		m_HandleTableStart = (Handle*)m_MemoryStart;
+		m_FirstHandle = nullptr;
+		m_AddressableMemoryStart = (Byte*)(m_HandleTableStart + m_HandleTableLength);
 
 		/*
 		Allocate volatile storage.
 		*/
-		_suiVolatileMemorySize = uiVolatileByteSize;
-		_suipVolatileMemoryStart = (Byte*)malloc(_suiVolatileMemorySize);
-		_suipVolatileMemoryEnd = _suipVolatileMemoryStart + _suiVolatileMemorySize;
-		_suipVolatileNext = _suipVolatileMemoryStart;
-		_suiFrameCounter = 0;
+		m_VolatileMemorySize = volatileByteSize;
+		m_VolatileMemoryStart = (Byte*)malloc(m_VolatileMemorySize);
+		m_VolatileMemoryEnd = m_VolatileMemoryStart + m_VolatileMemorySize;
+		m_VolatileNext = m_VolatileMemoryStart;
+		m_FrameCounter = 0;
 
-		_sbIsSetup = true;
+		m_IsSetup = true;
 
-		memset(_sopHandleTableStart, 0, sizeof(Handle) * _suiHandleTableLength);
-		memset(_suipVolatileMemoryStart, 0, _suiVolatileMemorySize);
+		memset(m_HandleTableStart, 0, sizeof(Handle) * m_HandleTableLength);
+		memset(m_VolatileMemoryStart, 0, m_VolatileMemorySize);
 	}
 
 	void MemoryManager::Shutdown()
 	{
-		Assert(_sbIsSetup);
-		free(_suipMemoryStart);
-		_suipMemoryStart = nullptr;
-		_suipAddressableMemoryStart = nullptr;
-		_suipMemoryEnd = nullptr;
-		_suiMemorySize = 0;
-		_sopHandleTableStart = nullptr; 
-		_sopFirstHandle = nullptr;
-		_sbIsSetup = false;
+		Assert(m_IsSetup);
+		free(m_MemoryStart);
+		m_MemoryStart = nullptr;
+		m_AddressableMemoryStart = nullptr;
+		m_MemoryEnd = nullptr;
+		m_MemorySize = 0;
+		m_HandleTableStart = nullptr; 
+		m_FirstHandle = nullptr;
+		m_IsSetup = false;
 	}
 
 	void MemoryManager::IncrementFrameCounter()
 	{
-		if (++_suiFrameCounter >= 2)
+		if (++m_FrameCounter >= 2)
 		{
-			_suiFrameCounter = 0;
-			memset(_suipVolatileMemoryStart, 0, _suiVolatileMemorySize);
-			_suipVolatileNext = _suipVolatileMemoryStart;
+			m_FrameCounter = 0;
+			memset(m_VolatileMemoryStart, 0, m_VolatileMemorySize);
+			m_VolatileNext = m_VolatileMemoryStart;
 		}
 	}
 
-	void MemoryManager::Defragment(UInt8 uiBlockCount)
+	void MemoryManager::Defragment(UInt8 blockCount)
 	{
-		Assert(_sbIsSetup);
+		Assert(m_IsSetup);
 
 		/*
 		Find the first N gaps, move the memory blocks over to fill the gaps.
 		*/
-		Byte* uipPreviousBlockEnd = _suipAddressableMemoryStart;
-		Handle* opCurrentHandle = _sopFirstHandle;
-		UInt8 uiMovedBlocks = 0;
-		while (opCurrentHandle && uiMovedBlocks < uiBlockCount)
+		Byte* previousBlockEnd = m_AddressableMemoryStart;
+		Handle* currentHandle = m_FirstHandle;
+		UInt8 movedBlocks = 0;
+		while (currentHandle && movedBlocks < blockCount)
 		{
 			ByteCount uiDistance =
-				ByteDistance(uipPreviousBlockEnd, opCurrentHandle->pLocation);
+				ByteDistance(previousBlockEnd, currentHandle->location);
 			if (uiDistance > 0)
 			{
-				MoveHandle(opCurrentHandle, uipPreviousBlockEnd);
-				++uiMovedBlocks;
+				MoveHandle(currentHandle, previousBlockEnd);
+				++movedBlocks;
 			}
 
-			uipPreviousBlockEnd =
-				(Byte*)opCurrentHandle->pLocation + opCurrentHandle->uiByteSize;
-			opCurrentHandle = opCurrentHandle->opNextHandle;
+			previousBlockEnd =
+				(Byte*)currentHandle->location + currentHandle->byteSize;
+			currentHandle = currentHandle->nextHandle;
 		}
 	}
 
 	ByteCount MemoryManager::GetTotalAllocatedBytes()
 	{
-		Assert(_sbIsSetup);
+		Assert(m_IsSetup);
 
-		ByteCount uiTotalBytes = 0;
-		Handle* opCurrentHandle = _sopFirstHandle;
-		while (opCurrentHandle)
+		ByteCount totalBytes = 0;
+		Handle* currentHandle = m_FirstHandle;
+		while (currentHandle)
 		{
-			uiTotalBytes += opCurrentHandle->uiByteSize;
-			opCurrentHandle = opCurrentHandle->opNextHandle;
+			totalBytes += currentHandle->byteSize;
+			currentHandle = currentHandle->nextHandle;
 		}
-		return uiTotalBytes;
+		return totalBytes;
 	}
 
 	ByteCount MemoryManager::GetTotalFreeBytes()
 	{
-		Assert(_sbIsSetup);
-		return _suiMemorySize - GetTotalAllocatedBytes();
+		Assert(m_IsSetup);
+		return m_MemorySize - GetTotalAllocatedBytes();
 	}
 
 	void MemoryManager::PrintMemory()
 	{
-		Assert(_sbIsSetup);
+		Assert(m_IsSetup);
 
 		SoulLogInfo("\n\tNodes: %d\n\tFree Bytes: %lld\n\tAllocated Bytes: %lld\n\tFragments: %d", GetNodeCount(), GetTotalFreeBytes(), GetTotalAllocatedBytes(), CountFragments());
 	}
 
 	HandleTableSize MemoryManager::GetNodeCount()
 	{
-		Handle* opCurrentHandle = _sopFirstHandle;
-		UInt32 uiHandleCount = 0;
-		while (opCurrentHandle)
+		Handle* currentHandle = m_FirstHandle;
+		UInt32 handleCount = 0;
+		while (currentHandle)
 		{
-			++uiHandleCount;
-			opCurrentHandle = opCurrentHandle->opNextHandle;
+			++handleCount;
+			currentHandle = currentHandle->nextHandle;
 		}
-		return uiHandleCount;
+		return handleCount;
 	}
 
 	HandleTableSize MemoryManager::CountFragments()
@@ -148,86 +148,86 @@ namespace Soul
 		/*
 		Find the memory gaps.
 		*/
-		Byte* uipPreviousBlockEnd = _suipAddressableMemoryStart;
-		Handle* opCurrentHandle = _sopFirstHandle;
-		HandleTableSize uiMemoryFragments = 0;
-		while (opCurrentHandle)
+		Byte* previousBlockEnd = m_AddressableMemoryStart;
+		Handle* currentHandle = m_FirstHandle;
+		HandleTableSize memoryFragments = 0;
+		while (currentHandle)
 		{
 			ByteCount uiDistance =
-				ByteDistance(uipPreviousBlockEnd, opCurrentHandle->pLocation);
+				ByteDistance(previousBlockEnd, currentHandle->location);
 			if (uiDistance > 0)
 			{
-				++uiMemoryFragments;
+				++memoryFragments;
 			}
 
-			uipPreviousBlockEnd =
-				(Byte*)opCurrentHandle->pLocation + opCurrentHandle->uiByteSize;
-			opCurrentHandle = opCurrentHandle->opNextHandle;
+			previousBlockEnd =
+				(Byte*)currentHandle->location + currentHandle->byteSize;
+			currentHandle = currentHandle->nextHandle;
 		}
 
-		return uiMemoryFragments;
+		return memoryFragments;
 	}
 
-	void MemoryManager::DeleteHandle(Handle* opHandle)
+	void MemoryManager::DeleteHandle(Handle* handlePointer)
 	{
-		if (opHandle == _sopFirstHandle)
+		if (handlePointer == m_FirstHandle)
 		{
-			_sopFirstHandle = opHandle->opNextHandle;
+			m_FirstHandle = handlePointer->nextHandle;
 		}
 		else
 		{
 			/*
 			Find the handle just before the provided handle.
 			*/
-			Handle* opCurrentHandle = _sopFirstHandle;
+			Handle* currentHandle = m_FirstHandle;
 
-			while (opCurrentHandle->opNextHandle != opHandle)
+			while (currentHandle->nextHandle != handlePointer)
 			{
-				opCurrentHandle = opCurrentHandle->opNextHandle;
+				currentHandle = currentHandle->nextHandle;
 			}
 
 			/*
 			Patch the list around the removed handle.
 			*/
-			opCurrentHandle->opNextHandle = opCurrentHandle->opNextHandle->opNextHandle;
+			currentHandle->nextHandle = currentHandle->nextHandle->nextHandle;
 		}
 		
 		/*
 		Free the handle
 		*/
-		memset(opHandle, 0, sizeof(Handle));
+		memset(handlePointer, 0, sizeof(Handle));
 	}
 
-	void* MemoryManager::FindFirstFreeMemoryBlock(ByteCount uiRequestedSize,
-		Handle** opPreviousHandleOut)
+	void* MemoryManager::FindFirstFreeMemoryBlock(ByteCount requestedSize,
+		Handle** previousHandleOut)
 	{
 		/*
 		If there are no handles yet, don't go through the process.
 		*/
-		if (!_sopFirstHandle)
+		if (!m_FirstHandle)
 		{
-			return _suipAddressableMemoryStart;
+			return m_AddressableMemoryStart;
 		}
 
-		Handle* opCurrentHandle = _sopFirstHandle;
-		Handle* opNextHandle = opCurrentHandle->opNextHandle;
+		Handle* currentHandle = m_FirstHandle;
+		Handle* nextHandle = currentHandle->nextHandle;
 
-		while (opNextHandle)
+		while (nextHandle)
 		{
 			/*
 			Check the space between this handle and the next
 			*/
-			Byte* uipEndOfBlock =
-				(Byte*)opCurrentHandle->pLocation + opCurrentHandle->uiByteSize;
-			if (ByteDistance(uipEndOfBlock, opNextHandle->pLocation) >= uiRequestedSize)
+			Byte* endOfBlock =
+				(Byte*)currentHandle->location + currentHandle->byteSize;
+			if (ByteDistance(endOfBlock, nextHandle->location) >= requestedSize)
 			{
-				(*opPreviousHandleOut) = opCurrentHandle;
-				return uipEndOfBlock;
+				(*previousHandleOut) = currentHandle;
+				return endOfBlock;
 			}
 			else
 			{
-				opCurrentHandle = opNextHandle;
-				opNextHandle = opNextHandle->opNextHandle;
+				currentHandle = nextHandle;
+				nextHandle = nextHandle->nextHandle;
 			}
 		}
 
@@ -235,12 +235,12 @@ namespace Soul
 		There must be space between this last handle and the end of the
 		allocated memory, otherwise we have run out of memory and we will crash.
 		*/
-		Byte* uipEndOfBlock =
-			(Byte*)opCurrentHandle->pLocation + opCurrentHandle->uiByteSize;
-		if (ByteDistance(uipEndOfBlock, _suipMemoryEnd) >= uiRequestedSize)
+		Byte* endOfBlock =
+			(Byte*)currentHandle->location + currentHandle->byteSize;
+		if (ByteDistance(endOfBlock, m_MemoryEnd) >= requestedSize)
 		{
-			(*opPreviousHandleOut) = opCurrentHandle;
-			return uipEndOfBlock;
+			(*previousHandleOut) = currentHandle;
+			return endOfBlock;
 		}
 		else
 		{
@@ -250,9 +250,9 @@ namespace Soul
 		}
 	}
 
-	void MemoryManager::MoveHandle(Handle* opHandle, void* pNewLocation)
+	void MemoryManager::MoveHandle(Handle* handle, void* newLocation)
 	{
-		memcpy(pNewLocation, opHandle->pLocation, opHandle->uiByteSize);
-		opHandle->pLocation = pNewLocation;
+		memcpy(newLocation, handle->location, handle->byteSize);
+		handle->location = newLocation;
 	}
 }

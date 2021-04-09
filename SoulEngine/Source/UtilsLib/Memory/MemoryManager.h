@@ -2,7 +2,7 @@
 Reserves an initial amount of memory for the engine to be allocated as needed.
 @file MemoryManager.h
 @author Jacob Peterson
-@edited 12/26/20
+@edited 4/8/21
 */
 
 #pragma once
@@ -27,11 +27,11 @@ namespace Soul
 	*/
 	struct Handle
 	{
-		Handle* opNextHandle; // The handle closest to this one.
-		void* pLocation; // Location that this handle points to in the memory arena.
-		ByteCount uiByteSize; // Size of the memory block that this handle points to.
-		ArraySize uiElementCount; // Number of elements allocated in the memory block.
-		bool bIsUsed; // Whether this handle is currently in use.
+		Handle* nextHandle; // The handle closest to this one.
+		void* location; // Location that this handle points to in the memory arena.
+		ByteCount byteSize; // Size of the memory block that this handle points to.
+		ArraySize elementCount; // Number of elements allocated in the memory block.
+		bool isUsed; // Whether this handle is currently in use.
 	};
 
 	/*
@@ -56,12 +56,12 @@ namespace Soul
 		/*
 		Initializes the MemoryManager's memory and sets up the Handle table.
 
-		@param uiByteSize - The number of bytes to reserve for this MemoryManager.
+		@param byteSize - The number of bytes to reserve for this MemoryManager.
 
-		@param uiVolatileByteSize - The number of bytes to reserve for the
+		@param volatileByteSize - The number of bytes to reserve for the
 		                            the volatile memory storage.
 		*/
-		static void StartUp(ByteCount uiByteSize, ByteCount uiVolatileByteSize);
+		static void StartUp(ByteCount byteSize, ByteCount volatileByteSize);
 
 		/*
 		Shuts down the MemoryManager and frees all its memory.
@@ -71,45 +71,45 @@ namespace Soul
 		/*
 		Attempts to allocate memory for the provided object type.
 
-		@param oArgs - The arguments to initialize the object with.
+		@param args - The arguments to initialize the object with.
 
 		@return UniqueHandle<T> containing the handle that points to the newly
 		                        allocated memory.
 		*/
 		template <class T, class... Args>
-		static UniqueHandle<T> Allocate(Args&&... oArgs);
+		static UniqueHandle<T> Allocate(Args&&... args);
 
 		/*
 		Attempts to allocate the provided amount of memory in the arena.
 
-		@param uiCount - The number of elements to reserve memory for in the
+		@param count - The number of elements to reserve memory for in the
 		                 array.
 
 		@return UniqueHandle<T> containing the handle that points to the newly
 								allocated memory.
 		*/
 		template <class T>
-		static UniqueHandle<T> AllocateArray(ArraySize uiCount);
+		static UniqueHandle<T> AllocateArray(ArraySize count);
 
 		/*
 		Allocates memory in the volatile memory arena. This memory gets cleared
 		every other frame.
 
-		@param uiCount - Number of elements to allocate.
+		@param count - Number of elements to allocate.
 
 		@return Pointer to the newly allocated memory.
 		*/
 		template <class T>
-		static T* AllocateVolatile(ArraySize uiCount = 1);
+		static T* AllocateVolatile(ArraySize count = 1);
 
 		/*
 		Calls the destructor and frees the memory for every object allocated to
 		the provided handle.
 
-		@param oHandle - The handle whose memory needs to be freed.
+		@param handle - The handle whose memory needs to be freed.
 		*/
 		template <class T>
-		static void Deallocate(Handle& oHandle);
+		static void Deallocate(Handle& handle);
 
 		/*
 		Increases the frame memory counter. Once the frame memory counter
@@ -121,9 +121,9 @@ namespace Soul
 		Attempts to defragment the provided number of blocks to keep memory
 		contiguous and cache-friendly.
 
-		@param uiBlockCount - The number of memory blocks to attempt to defrag.
+		@param blockCount - The number of memory blocks to attempt to defrag.
 		*/
-		static void Defragment(UInt8 uiBlockCount);
+		static void Defragment(UInt8 blockCount);
 
 		/*
 		Returns the total number of bytes that have been allocated by the
@@ -172,130 +172,130 @@ namespace Soul
 		requested amount of memory. If this is not meant for an array, the
 		element can be constructed in place with the passed arguments.
 
-		@param uiCount - The number of elements to reserve space for at the
+		@param count - The number of elements to reserve space for at the
 		                 new block of memory.
 
-		@param oArgs - The arguments to be passed to the elements constructor
+		@param args - The arguments to be passed to the elements constructor
 		               if this is not an array allocation.
 		*/
 		template <class T>
-		static Handle* SetupNewHandle(ArraySize uiCount);
+		static Handle* SetupNewHandle(ArraySize count);
 
 		/*
 		Deletes the provided handle and patches the handle table around it.
 
-		@param opHandle - Pointer to the handle to be deleted.
+		@param handle - Pointer to the handle to be deleted.
 		*/
-		static void DeleteHandle(Handle* opHandle);
+		static void DeleteHandle(Handle* handle);
 
 		/*
 		Finds the first available memory block that can accomodate the
 		requested byte size.
 
-		@param uiRequestedSize - The number of bytes requested to be reserved.
+		@param requestedSize - The number of bytes requested to be reserved.
 
-		@param opPreviousHandleOut - The handle just before the new block.
+		@param previousHandleOut - The handle just before the new block.
 
 		*/
-		static void* FindFirstFreeMemoryBlock(ByteCount uiRequestedSize,
-			Handle** opPreviousHandleOut);
+		static void* FindFirstFreeMemoryBlock(ByteCount requestedSize,
+			Handle** previousHandleOut);
 
 		/*
 		Moves the memory pointed to by the provided handle to the new location.
 
-		@param opHandle - The handle whose memory needs to be moved.
+		@param handle - The handle whose memory needs to be moved.
 
-		@param pNewLocation - Pointer to the new location to move the memory to.
+		@param newLocation - Pointer to the new location to move the memory to.
 		*/
-		static void MoveHandle(Handle* opHandle, void* pNewLocation);
+		static void MoveHandle(Handle* handle, void* newLocation);
 	
 	private:
-		static Byte* _suipMemoryStart; // Start of partitioned memory.
-		static Byte* _suipAddressableMemoryStart; // Start of memory that can be allocated to.
-		static Byte* _suipMemoryEnd; // End of addressable memory.
-		static ByteCount _suiMemorySize; // Size of total reserved memory.
-		static HandleTableSize _suiHandleTableLength; // Maximum amount of handles that can be created.
-		static Handle* _sopHandleTableStart; // Start address of handle table.
-		static Handle* _sopFirstHandle; // Address to the starting handle of the table.
+		static Byte* m_MemoryStart; // Start of partitioned memory.
+		static Byte* m_AddressableMemoryStart; // Start of memory that can be allocated to.
+		static Byte* m_MemoryEnd; // End of addressable memory.
+		static ByteCount m_MemorySize; // Size of total reserved memory.
+		static HandleTableSize m_HandleTableLength; // Maximum amount of handles that can be created.
+		static Handle* m_HandleTableStart; // Start address of handle table.
+		static Handle* m_FirstHandle; // Address to the starting handle of the table.
 
-		static Byte* _suipVolatileMemoryStart; // Start of volatile partitioned memory.
-		static Byte* _suipVolatileMemoryEnd; // End of volatile partitioned memory.
-		static ByteCount _suiVolatileMemorySize; // Size of volatile memory.
-		static Byte* _suipVolatileNext; // The next address to allocate volatile memory to.
-		static UInt8 _suiFrameCounter; // Number of frames since last volatile memory clear.
+		static Byte* m_VolatileMemoryStart; // Start of volatile partitioned memory.
+		static Byte* m_VolatileMemoryEnd; // End of volatile partitioned memory.
+		static ByteCount m_VolatileMemorySize; // Size of volatile memory.
+		static Byte* m_VolatileNext; // The next address to allocate volatile memory to.
+		static UInt8 m_FrameCounter; // Number of frames since last volatile memory clear.
 
-		static bool _sbIsSetup; // Whether this MemoryManager has been initialized yet.
+		static bool m_IsSetup; // Whether this MemoryManager has been initialized yet.
 	};
 
 	template <class T, class... Args>
-	UniqueHandle<T> MemoryManager::Allocate(Args&&... oArgs)
+	UniqueHandle<T> MemoryManager::Allocate(Args&&... args)
 	{
-		Assert(_sbIsSetup);
+		Assert(m_IsSetup);
 
-		Handle* opNewHandle = SetupNewHandle<T>(1);
-		new (opNewHandle->pLocation) T(std::forward<Args>(oArgs)...);
-		UniqueHandle<T> oUniqueHandle(opNewHandle);
-		return std::move(oUniqueHandle);
+		Handle* newHandle = SetupNewHandle<T>(1);
+		new (newHandle->location) T(std::forward<Args>(args)...);
+		UniqueHandle<T> uniqueHandle(newHandle);
+		return std::move(uniqueHandle);
 	}
 
 	template <class T>
-	UniqueHandle<T> MemoryManager::AllocateArray(ArraySize uiCount)
+	UniqueHandle<T> MemoryManager::AllocateArray(ArraySize count)
 	{
-		Assert(_sbIsSetup);
+		Assert(m_IsSetup);
 
-		Handle* opNewHandle = SetupNewHandle<T>(uiCount);
-		UniqueHandle<T> oUniqueHandle(opNewHandle);
-		return std::move(oUniqueHandle);
+		Handle* newHandle = SetupNewHandle<T>(count);
+		UniqueHandle<T> uniqueHandle(newHandle);
+		return std::move(uniqueHandle);
 	}
 
 	template <class T>
-	static T* MemoryManager::AllocateVolatile(ArraySize uiCount /*=1*/)
+	static T* MemoryManager::AllocateVolatile(ArraySize count /*=1*/)
 	{
-		Assert(_suipVolatileNext + uiCount * sizeof(T) <= _suipVolatileMemoryEnd);
+		Assert(m_VolatileNext + count * sizeof(T) <= m_VolatileMemoryEnd);
 
-		T* pMemory = (T*)_suipVolatileNext;
-		_suipVolatileNext += uiCount * sizeof(T);
+		T* memory = (T*)m_VolatileNext;
+		m_VolatileNext += count * sizeof(T);
 
-		return pMemory;
+		return memory;
 	}
 
 	template <class T>
-	void MemoryManager::Deallocate(Handle& oHandle)
+	void MemoryManager::Deallocate(Handle& handle)
 	{
-		Assert(_sbIsSetup);
+		Assert(m_IsSetup);
 
 		/*
 		Destruct all elements at the given block
 		*/
-		T* pCurrentElement = (T*)oHandle.pLocation;
-		for (UInt32 i = 0; i < oHandle.uiElementCount; ++i)
+		T* currentElement = (T*)handle.location;
+		for (UInt32 i = 0; i < handle.elementCount; ++i)
 		{
-			pCurrentElement->~T();
-			++pCurrentElement;
+			currentElement->~T();
+			++currentElement;
 		}
 
-		DeleteHandle(&oHandle);
+		DeleteHandle(&handle);
 	}
 
 	template <class T>
-	Handle* MemoryManager::SetupNewHandle(ArraySize uiCount)
+	Handle* MemoryManager::SetupNewHandle(ArraySize count)
 	{
 		// TODO: Move FindFirstFreeMemoryBlock call onto a separate thread.
 		/*
 		Find the first available memory slot that can accomodate this memory
 		block.
 		*/
-		Handle* opPreviousHandle = nullptr;
-		void* pAvailableBlock =
-			FindFirstFreeMemoryBlock(uiCount * sizeof(T), &opPreviousHandle);
+		Handle* previousHandle = nullptr;
+		void* availableBlock =
+			FindFirstFreeMemoryBlock(count * sizeof(T), &previousHandle);
 
 		/*
 		Find the first available Handle.
 		*/
-		Handle* opCurrentHandle = _sopHandleTableStart;
-		while (opCurrentHandle->bIsUsed)
+		Handle* currentHandle = m_HandleTableStart;
+		while (currentHandle->isUsed)
 		{
-			++opCurrentHandle;
+			++currentHandle;
 		}
 
 		/*
@@ -303,22 +303,22 @@ namespace Soul
 		object if we are not allocating for an array. If we're not allocating
 		an array, just set the memory to 0.
 		*/
-		memset(pAvailableBlock, 0, uiCount * sizeof(T));
-		if (opPreviousHandle)
+		memset(availableBlock, 0, count * sizeof(T));
+		if (previousHandle)
 		{
-			opCurrentHandle->opNextHandle = opPreviousHandle->opNextHandle;
-			opPreviousHandle->opNextHandle = opCurrentHandle;
+			currentHandle->nextHandle = previousHandle->nextHandle;
+			previousHandle->nextHandle = currentHandle;
 		}
 		else
 		{
 			// This is the first handle of the table
-			_sopFirstHandle = opCurrentHandle;
+			m_FirstHandle = currentHandle;
 		}
-		opCurrentHandle->pLocation = pAvailableBlock;
-		opCurrentHandle->uiByteSize = uiCount * sizeof(T);
-		opCurrentHandle->uiElementCount = uiCount;
-		opCurrentHandle->bIsUsed = true;
+		currentHandle->location = availableBlock;
+		currentHandle->byteSize = count * sizeof(T);
+		currentHandle->elementCount = count;
+		currentHandle->isUsed = true;
 
-		return opCurrentHandle;
+		return currentHandle;
 	}
 }

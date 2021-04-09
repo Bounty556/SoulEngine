@@ -131,37 +131,37 @@ namespace Soul
 	template <class T>
 	T* WeakHandle<T>::operator->()
 	{
-		return (T*)_hpHandle->pLocation;
+		return (T*)_hpHandle->location;
 	}
 
 	template <class T>
 	T& WeakHandle<T>::operator*()
 	{
-		return *((T*)(_hpHandle->pLocation));
+		return *((T*)(_hpHandle->location));
 	}
 
 	template <class T>
 	T& WeakHandle<T>::operator[](ArraySize uiIndex)
 	{
-		return ((T*)_hpHandle->pLocation)[uiIndex];
+		return ((T*)_hpHandle->location)[uiIndex];
 	}
 
 	template <class T>
 	const T* WeakHandle<T>::operator->() const
 	{
-		return (T*)_hpHandle->pLocation;
+		return (T*)_hpHandle->location;
 	}
 
 	template <class T>
 	const T& WeakHandle<T>::operator*() const
 	{
-		return *((T*)(_hpHandle->pLocation));
+		return *((T*)(_hpHandle->location));
 	}
 
 	template <class T>
 	const T& WeakHandle<T>::operator[](ArraySize uiIndex) const
 	{
-		return ((T*)_hpHandle->pLocation)[uiIndex];
+		return ((T*)_hpHandle->location)[uiIndex];
 	}
 
 	template <class T>
@@ -195,6 +195,6 @@ namespace Soul
 	template <class T>
 	T* WeakHandle<T>::GetMemory()
 	{
-		return (T*)_hpHandle->pLocation;
+		return (T*)_hpHandle->location;
 	}
 }
