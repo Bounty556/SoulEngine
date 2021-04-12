@@ -22,23 +22,23 @@ namespace Soul
 	{
 	public:
 		WeakHandle();
-		WeakHandle(Handle* oHandle);
-		WeakHandle(const UniqueHandle<T>& oOtherHandle);
-		WeakHandle(const WeakHandle& oOtherHandle);
-		WeakHandle(WeakHandle&& oOtherHandle);
+		WeakHandle(Handle* handle);
+		WeakHandle(const UniqueHandle<T>& otherHandle);
+		WeakHandle(const WeakHandle& otherHandle);
+		WeakHandle(WeakHandle&& otherHandle);
 
-		WeakHandle<T>& operator=(const WeakHandle& oOtherHandle);
-		WeakHandle<T>& operator=(WeakHandle&& oOtherHandle);
+		WeakHandle<T>& operator=(const WeakHandle& otherHandle);
+		WeakHandle<T>& operator=(WeakHandle&& otherHandle);
 
 		T* operator->();
 		T& operator*();
-		T& operator[](ArraySize uiIndex);
+		T& operator[](ArraySize index);
 		const T* operator->() const;
 		const T& operator*() const;
-		const T& operator[](ArraySize uiIndex) const;
+		const T& operator[](ArraySize index) const;
 
-		bool operator==(const WeakHandle& oOther) const;
-		bool operator!=(const WeakHandle& oOther) const;
+		bool operator==(const WeakHandle& other) const;
+		bool operator!=(const WeakHandle& other) const;
 
 		/*
 		Returns whether this WeakHandle is active and usable.
@@ -63,67 +63,67 @@ namespace Soul
 		T* GetMemory();
 
 	private:
-		Handle* _hpHandle; // Pointer to this WeakHandle's Handle.
-		bool _bIsValid; // Whether this WeakHandle is active and usable.
+		Handle* m_Handle; // Pointer to this WeakHandle's Handle.
+		bool m_IsValid; // Whether this WeakHandle is active and usable.
 	};
 
 	template <class T>
 	WeakHandle<T>::WeakHandle() :
-		_hpHandle(nullptr),
-		_bIsValid(false)
+		m_Handle(nullptr),
+		m_IsValid(false)
 	{
 
 	}
 
 	template <class T>
-	WeakHandle<T>::WeakHandle(const WeakHandle& oOtherHandle) :
-		_hpHandle(oOtherHandle._hpHandle),
-		_bIsValid(oOtherHandle._bIsValid)
+	WeakHandle<T>::WeakHandle(const WeakHandle& otherHandle) :
+		m_Handle(otherHandle.m_Handle),
+		m_IsValid(otherHandle.m_IsValid)
 	{
 
 	}
 
 	template <class T>
-	WeakHandle<T>::WeakHandle(Handle* oHandle) :
-		_hpHandle(oHandle),
-		_bIsValid(true)
+	WeakHandle<T>::WeakHandle(Handle* handle) :
+		m_Handle(handle),
+		m_IsValid(true)
 	{
 
 	}
 
 	template <class T>
-	WeakHandle<T>::WeakHandle(const UniqueHandle<T>& oOtherHandle) :
-		_hpHandle(oOtherHandle._hpHandle),
-		_bIsValid(oOtherHandle._bIsValid)
+	WeakHandle<T>::WeakHandle(const UniqueHandle<T>& otherHandle) :
+		m_Handle(otherHandle._hpHandle),
+		m_IsValid(otherHandle._bIsValid)
 	{
 
 	}
 
 	template <class T>
-	WeakHandle<T>::WeakHandle(WeakHandle&& oOtherHandle) :
-		_hpHandle(oOtherHandle._hpHandle),
-		_bIsValid(oOtherHandle._bIsValid)
+	WeakHandle<T>::WeakHandle(WeakHandle&& otherHandle) :
+		m_Handle(otherHandle.m_Handle),
+		m_IsValid(otherHandle.m_IsValid)
 	{
-		oOtherHandle._hpHandle = nullptr;
-		oOtherHandle._bIsValid = false;
+		otherHandle.m_Handle = nullptr;
+		otherHandle.m_IsValid = false;
 	}
 
 	template <class T>
-	WeakHandle<T>& WeakHandle<T>::operator=(const WeakHandle& oOtherHandle)
+	WeakHandle<T>& WeakHandle<T>::operator=(const WeakHandle& otherHandle)
 	{
-		_hpHandle = oOtherHandle._hpHandle;
-		_bIsValid = oOtherHandle._bIsValid;
+		m_Handle = otherHandle.m_Handle;
+		m_IsValid = otherHandle.m_IsValid;
 
 		return *this;
 	}
 
 	template <class T>
-	WeakHandle<T>& WeakHandle<T>::operator=(WeakHandle&& oOtherHandle)
+	WeakHandle<T>& WeakHandle<T>::operator=(WeakHandle&& otherHandle)
 	{
-		_hpHandle = oOtherHandle._hpHandle;
-		_bIsValid = oOtherHandle._bIsValid;
-		oOtherHandle._hpHandle = nullptr;
-		oOtherHandle._bIsValid = false;
+		m_Handle = otherHandle.m_Handle;
+		m_IsValid = otherHandle.m_IsValid;
+		otherHandle.m_Handle = nullptr;
+		otherHandle.m_IsValid = false;
 
 		return *this;
 	}
@@ -131,70 +131,70 @@ namespace Soul
 	template <class T>
 	T* WeakHandle<T>::operator->()
 	{
-		return (T*)_hpHandle->location;
+		return (T*)m_Handle->location;
 	}
 
 	template <class T>
 	T& WeakHandle<T>::operator*()
 	{
-		return *((T*)(_hpHandle->location));
+		return *((T*)(m_Handle->location));
 	}
 
 	template <class T>
-	T& WeakHandle<T>::operator[](ArraySize uiIndex)
+	T& WeakHandle<T>::operator[](ArraySize index)
 	{
-		return ((T*)_hpHandle->location)[uiIndex];
+		return ((T*)m_Handle->location)[index];
 	}
 
 	template <class T>
 	const T* WeakHandle<T>::operator->() const
 	{
-		return (T*)_hpHandle->location;
+		return (T*)m_Handle->location;
 	}
 
 	template <class T>
 	const T& WeakHandle<T>::operator*() const
 	{
-		return *((T*)(_hpHandle->location));
+		return *((T*)(m_Handle->location));
 	}
 
 	template <class T>
-	const T& WeakHandle<T>::operator[](ArraySize uiIndex) const
+	const T& WeakHandle<T>::operator[](ArraySize index) const
 	{
-		return ((T*)_hpHandle->location)[uiIndex];
+		return ((T*)m_Handle->location)[index];
 	}
 
 	template <class T>
-	bool WeakHandle<T>::operator==(const WeakHandle& oOther) const
+	bool WeakHandle<T>::operator==(const WeakHandle& other) const
 	{
-		return _hpHandle == oOther._hpHandle;
+		return m_Handle == other.m_Handle;
 	}
 
 	template <class T>
-	bool WeakHandle<T>::operator!=(const WeakHandle& oOther) const
+	bool WeakHandle<T>::operator!=(const WeakHandle& other) const
 	{
-		return _hpHandle != oOther._hpHandle;
+		return m_Handle != other.m_Handle;
 	}
 
 	template <class T>
 	bool WeakHandle<T>::IsValid() const
 	{
-		return _bIsValid;
+		return m_IsValid;
 	}
 
 	template <class T>
 	Handle* WeakHandle<T>::Detach()
 	{
-		Handle* opHandle = _hpHandle;
-		_hpHandle = nullptr;
-		_bIsValid = false;
+		Handle* handle = m_Handle;
+		m_Handle = nullptr;
+		m_IsValid = false;
 
-		return opHandle;
+		return handle;
 	}
 
 	template <class T>
 	T* WeakHandle<T>::GetMemory()
 	{
-		return (T*)_hpHandle->location;
+		return (T*)m_Handle->location;
 	}
 }

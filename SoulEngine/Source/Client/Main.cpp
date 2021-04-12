@@ -14,8 +14,6 @@ Entry point for the Client side of this app.
 
 #include <TestsLib/TestRunner.h>
 
-#include <Framework/Graphics/Window.h>
-
 void StartUp();
 void ShutDown();
 
@@ -33,19 +31,6 @@ int main()
 	SoulLogInfo("Time taken:\n\tSeconds: %llf\n\tMillis: %llf\n\tMicros: %llf",
 		oTimer.GetElapsedSeconds(), oTimer.GetElapsedMilliseconds(), oTimer.GetElapsedMicroseconds());
 
-	// Main game loop
-	while (!Soul::Window::ShouldWindowClose())
-	{
-		// TODO: Add input manager
-
-		Soul::Window::PrepareForRendering();
-
-		// Draw calls
-		// TODO
-
-		Soul::Window::FinalizeRender();
-	}
-
 	// Clean up
 	ShutDown();
 
@@ -56,12 +41,10 @@ void StartUp()
 {
 	Soul::MemoryManager::StartUp(Gigabytes(1), Megabytes(8));
 	Soul::EventBus::StartUp(32);
-	Soul::Window::StartUp(640, 480, "SoulEngine", Soul::WindowMode::Windowed);
 }
 
 void ShutDown()
 {
-	Soul::Window::ShutDown();
 	Soul::EventBus::Shutdown();
 
 	Assert(Soul::MemoryManager::GetTotalAllocatedBytes() == 0);

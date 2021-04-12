@@ -14,7 +14,6 @@
     <ClCompile Include="Source\Client\Main.cpp" />
     <ClCompile Include="Source\Events\EventBus.cpp" />
     <ClCompile Include="Source\Events\EventListener.cpp" />
-    <ClCompile Include="Source\Framework\Graphics\Window.cpp" />
     <ClCompile Include="Source\TestsLib\TestClass.cpp" />
     <ClCompile Include="Source\TestsLib\TestRunner.cpp" />
     <ClCompile Include="Source\TestsLib\Tests\EventTests.cpp" />
@@ -26,13 +25,11 @@
     <ClCompile Include="Source\UtilsLib\Logger.cpp" />
     <ClCompile Include="Source\UtilsLib\Memory\MemoryManager.cpp" />
     <ClCompile Include="Source\UtilsLib\Timer.cpp" />
-    <ClCompile Include="Vendor\glad\src\glad.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Events\EventBus.h" />
     <ClInclude Include="Source\Events\EventListener.h" />
     <ClInclude Include="Source\Events\EventTypes.h" />
-    <ClInclude Include="Source\Framework\Graphics\Window.h" />
     <ClInclude Include="Source\TestsLib\ITestSuite.h" />
     <ClInclude Include="Source\TestsLib\TestClass.h" />
     <ClInclude Include="Source\TestsLib\TestMacros.h" />
@@ -52,10 +49,6 @@
     <ClInclude Include="Source\UtilsLib\Memory\WeakHandle.h" />
     <ClInclude Include="Source\UtilsLib\Memory\UniqueHandle.h" />
     <ClInclude Include="Source\UtilsLib\Timer.h" />
-    <ClInclude Include="Vendor\glad\include\glad\glad.h" />
-    <ClInclude Include="Vendor\glad\include\KHR\khrplatform.h" />
-    <ClInclude Include="Vendor\glfw\include\GLFW\glfw3.h" />
-    <ClInclude Include="Vendor\glfw\include\GLFW\glfw3native.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -95,14 +88,14 @@
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin-int\$(Configuration)-$(Platform)\</IntDir>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)SoulEngine\Source\;$(SolutionDir)SoulEngine\Vendor\glfw\include\;$(SolutionDir)SoulEngine\Vendor\glad\include\</IncludePath>
-    <LibraryPath>$(SolutionDir)SoulEngine\Vendor\glfw\lib\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin-int\$(Configuration)-$(Platform)\</IntDir>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)SoulEngine\Source\;$(SolutionDir)SoulEngine\Vendor\glfw\include\;$(SolutionDir)SoulEngine\Vendor\glad\include\</IncludePath>
-    <LibraryPath>$(SolutionDir)SoulEngine\Vendor\glfw\lib\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)</OutDir>
@@ -123,7 +116,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glfw3dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>
       </AdditionalLibraryDirectories>
     </Link>
@@ -145,7 +138,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glfw3dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>
       </AdditionalLibraryDirectories>
     </Link>
