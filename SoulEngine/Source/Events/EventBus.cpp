@@ -2,92 +2,92 @@
 Transfers events to all registered event listeners in queue order.
 @file EventBus.h
 @author Jacob Peterson
-@edited 12/26/2020
+@edited 4/21/21
 */
 
 #include "EventBus.h"
 
 namespace Soul
 {
-	UniqueHandle<Queue<Event>> EventBus::_shEventQueue;
-	UniqueHandle<Vector<Callback>> EventBus::_shRegisteredCallbacks;
-	CallbackId EventBus::_uiCallbackCount = 0;
-	bool EventBus::_bIsSetup = false;
+	UniqueHandle<Queue<Event>> EventBus::m_EventQueue;
+	UniqueHandle<Vector<Callback>> EventBus::m_RegisteredCallbacks;
+	CallbackId EventBus::m_CallbackCount = 0;
+	bool EventBus::m_IsSetup = false;
 
-	void EventBus::StartUp(ArraySize uiEventCount)
+	void EventBus::StartUp(ArraySize eventCount)
 	{
-		Assert(!_bIsSetup);
-		_shEventQueue = MemoryManager::Allocate<Queue<Event>>(uiEventCount);
-		_shRegisteredCallbacks =
+		Assert(!m_IsSetup);
+		m_EventQueue = MemoryManager::Allocate<Queue<Event>>(eventCount);
+		m_RegisteredCallbacks =
 			MemoryManager::AllocateArray<Vector<Callback>>((ArraySize)Events::EventTotal);
 
 		for (ArraySize i = 0; i < (ArraySize)Events::EventTotal; ++i)
 		{
-			Vector<Callback> oVec(4);
-			_shRegisteredCallbacks[i] = std::move(oVec);
+			Vector<Callback> vec(4);
+			m_RegisteredCallbacks[i] = std::move(vec);
 		}
 
-		_bIsSetup = true;
+		m_IsSetup = true;
 	}
 
 	void EventBus::Shutdown()
 	{
-		Assert(_bIsSetup);
-		_shEventQueue.Deallocate();
-		_shRegisteredCallbacks.Deallocate();
-		_bIsSetup = false;
+		Assert(m_IsSetup);
+		m_EventQueue.Deallocate();
+		m_RegisteredCallbacks.Deallocate();
+		m_IsSetup = false;
 	}
 
-	void EventBus::QueueEvent(Events eEventType, void* pData)
+	void EventBus::QueueEvent(Events eventType, void* data)
 	{
-		Event oEvent{ eEventType, pData };
-		_shEventQueue->Push(oEvent);
+		Event oEvent{ eventType, data };
+		m_EventQueue->Push(oEvent);
 	}
 
 	void EventBus::DispatchEvents()
 	{
 		/*
-		Dispatch up to the first "uiEventCount" events to all registered
+		Dispatch up to the first "eventCount" events to all registered
 		callbacks for that event.
 		*/
-		while (_shEventQueue->GetLength() > 0)
+		while (m_EventQueue->GetLength() > 0)
 		{
-			Event oEvent = _shEventQueue->Pop();
-			Vector<Callback>& oEventCallbacks =
-				_shRegisteredCallbacks[(ArraySize)oEvent.eEventType];
-			for (ArraySize j = 0; j < oEventCallbacks.Length(); ++j)
+			Event currentEvent = m_EventQueue->Pop();
+			Vector<Callback>& eventCallbacks =
+				m_RegisteredCallbacks[(ArraySize)currentEvent.eventType];
+			for (ArraySize j = 0; j < eventCallbacks.Length(); ++j)
 			{
-				oEventCallbacks[j].fnCallback(oEvent.pData);
+				eventCallbacks[j].callbackFunction(currentEvent.pointerToData);
 			}
 		}
 	}
 
-	CallbackId EventBus::RegisterCallback(Events eEventType, EventCallback fnCallback)
+	CallbackId EventBus::RegisterCallback(Events eventType, EventCallback callback)
 	{
 		/*
 		Add new callback to registered callbacks vector and return the
 		CallbackId.
 		*/
-		Vector<Callback>& oEventCallbacks =
-			_shRegisteredCallbacks[(ArraySize)eEventType];
-		CallbackId uiCallbackId = _uiCallbackCount++;
-		Callback oCallback{ fnCallback, uiCallbackId };
-		oEventCallbacks.Push(oCallback);
-		return uiCallbackId;
+		Vector<Callback>& eventCallbacks =
+			m_RegisteredCallbacks[(ArraySize)eventType];
+		CallbackId callbackId = m_CallbackCount++;
+		Callback tempCallback{ callback, callbackId };
+		eventCallbacks.Push(tempCallback);
+		return callbackId;
 	}
 
-	void EventBus::UnregisterCallback(Events eEventType, CallbackId uiId)
+	void EventBus::UnregisterCallback(Events eventType, CallbackId Id)
 	{
 		/*
 		Find callback with given Id and remove from vector.
 		*/
-		Vector<Callback>& oEventCallbacks =
-			_shRegisteredCallbacks[(ArraySize)eEventType];
-		for (ArraySize i = 0; i < oEventCallbacks.Length(); ++i)
+		Vector<Callback>& eventCallbacks =
+			m_RegisteredCallbacks[(ArraySize)eventType];
+		for (ArraySize i = 0; i < eventCallbacks.Length(); ++i)
 		{
-			if (oEventCallbacks[i].uiCallbackId == uiId)
+			if (eventCallbacks[i].callbackId == Id)
 			{
-				oEventCallbacks.Remove(i);
+				eventCallbacks.Remove(i);
 				break;
 			}
 		}

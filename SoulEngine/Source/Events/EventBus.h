@@ -2,7 +2,7 @@
 Transfers events to all registered event listeners in queue order.
 @file EventBus.h
 @author Jacob Peterson
-@edited 12/26/2020
+@edited 4/12/21
 */
 
 #pragma once
@@ -22,14 +22,14 @@ namespace Soul
 {
 	struct Event
 	{
-		Events eEventType; // This Event's type
-		void* pData; // The data associated with this event, if any.
+		Events eventType; // This Event's type
+		void* pointerToData; // The data associated with this event, if any.
 	};
 
 	struct Callback
 	{
-		EventCallback fnCallback; // The actual callback.
-		CallbackId uiCallbackId; // The id of this callback.
+		EventCallback callbackFunction; // The actual callback.
+		CallbackId callbackId; // The id of this callback.
 	};
 
 	/*
@@ -47,9 +47,9 @@ namespace Soul
 		/*
 		Initializes this EventBus with the desired number of potential events.
 		
-		@param uiEventCount - How many events can be stored in this bus.
+		@param eventCount - How many events can be stored in this bus.
 		*/
-		static void StartUp(ArraySize uiEventCount);
+		static void StartUp(ArraySize eventCount);
 
 		/*
 		Shuts down and cleans up all necessary parts of this EventBus
@@ -59,7 +59,7 @@ namespace Soul
 		/*
 		Adds a new event to the end of event queue to be dispatched.
 		*/
-		static void QueueEvent(Events eEventType, void* pData);
+		static void QueueEvent(Events eventType, void* data);
 
 		/*
 		Dispatches all events to attached event listeners.
@@ -69,29 +69,29 @@ namespace Soul
 		/*
 		Adds a new callback to be called when the given event is triggered.
 
-		@param eEventType - The event to register the callback for.
+		@param eventType - The event to register the callback for.
 
-		@param fnCallback - The callback function to be registered.
+		@param callback - The callback function to be registered.
 
-		@return CallbackId containing the unique callback id.
+		@return callbackId containing the unique callback id.
 		*/
-		static CallbackId RegisterCallback(Events eEventType, EventCallback fnCallback);
+		static CallbackId RegisterCallback(Events eventType, EventCallback callback);
 
 		/*
 		Unregisters the callback with the given id from the given event.
 
-		@param eEventType - The event to unregister the callback from.
+		@param eventType - The event to unregister the callback from.
 
-		@param uiId - The id of the callback to unregister.
+		@param callbackId - The id of the callback to unregister.
 		*/
-		static void UnregisterCallback(Events eEventType, CallbackId uiId);
+		static void UnregisterCallback(Events eventType, CallbackId callbackId);
 
 		EventBus() = delete;
 
 	private:
-		static UniqueHandle<Queue<Event>> _shEventQueue; // Queue of events to be dispatched.
-		static UniqueHandle<Vector<Callback>> _shRegisteredCallbacks; // All registered callbacks
-		static CallbackId _uiCallbackCount; // Used for identifying unique callbacks.
-		static bool _bIsSetup; // Whether this EventBus has been initialized.
+		static UniqueHandle<Queue<Event>> m_EventQueue; // Queue of events to be dispatched.
+		static UniqueHandle<Vector<Callback>> m_RegisteredCallbacks; // All registered callbacks
+		static CallbackId m_CallbackCount; // Used for identifying unique callbacks.
+		static bool m_IsSetup; // Whether this EventBus has been initialized.
 	};
 }
