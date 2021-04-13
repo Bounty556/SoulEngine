@@ -2,7 +2,7 @@
 A self-resizing array that behaves similarly to the C Standard Library Vector.
 @file Vector.h
 @author Jacob Peterson
-@edited 12/23/2020
+@edited 4/12/21
 */
 
 #pragma once
@@ -21,26 +21,26 @@ namespace Soul
 	class Vector
 	{
 	public:
-		Vector(ArraySize uiCapacity);
-		Vector(Vector&& oOtherVector);
+		Vector(ArraySize capacity);
+		Vector(Vector&& otherVector);
 
-		Vector<T>& operator=(Vector&& oOtherVector);
-		T& operator[](ArraySize uiIndex);
-		const T& operator[](ArraySize uiIndex) const;
-
-		/*
-		Adds a new element to the end of this Vector.
-
-		@param oElement - The element to add to this Vector.
-		*/
-		void Push(const T& oElement);
+		Vector<T>& operator=(Vector&& otherVector);
+		T& operator[](ArraySize index);
+		const T& operator[](ArraySize index) const;
 
 		/*
 		Adds a new element to the end of this Vector.
 
-		@param oElement - The element to add to this Vector.
+		@param element - The element to add to this Vector.
 		*/
-		void Push(T&& oElement);
+		void Push(const T& element);
+
+		/*
+		Adds a new element to the end of this Vector.
+
+		@param element - The element to add to this Vector.
+		*/
+		void Push(T&& element);
 
 		/*
 		Removes and returns the element at the end of this Vector.
@@ -52,9 +52,9 @@ namespace Soul
 		/*
 		Removes the element at the given index.
 		
-		@param uiIndex - The index of the element to be removed.
+		@param index - The index of the element to be removed.
 		*/
-		void Remove(ArraySize uiIndex);
+		void Remove(ArraySize index);
 
 		/*
 		Gets the current number of elements in this Vector.
@@ -73,109 +73,109 @@ namespace Soul
 		void Resize();
 
 	private:
-		UniqueHandle<T> _hElements;
-		ArraySize _uiCapacity;
-		ArraySize _uiLength;
+		UniqueHandle<T> m_Elements;
+		ArraySize m_Capacity;
+		ArraySize m_Length;
 	};
 
 	template <class T>
-	Vector<T>::Vector(ArraySize uiCapacity) :
-		_hElements(MemoryManager::AllocateArray<T>(uiCapacity)),
-		_uiCapacity(uiCapacity),
-		_uiLength(0)
+	Vector<T>::Vector(ArraySize capacity) :
+		m_Elements(MemoryManager::AllocateArray<T>(capacity)),
+		m_Capacity(capacity),
+		m_Length(0)
 	{
 
 	}
 
 	template <class T>
-	Vector<T>::Vector(Vector&& oOtherVector) :
-		_hElements(std::move(oOtherVector._hElements)),
-		_uiCapacity(oOtherVector._uiCapacity),
-		_uiLength(oOtherVector._uiLength)
+	Vector<T>::Vector(Vector&& otherVector) :
+		m_Elements(std::move(otherVector.m_Elements)),
+		m_Capacity(otherVector.m_Capacity),
+		m_Length(otherVector.m_Length)
 	{
-		oOtherVector._uiCapacity = 0;
-		oOtherVector._uiLength = 0;
+		otherVector.m_Capacity = 0;
+		otherVector.m_Length = 0;
 	}
 
 	template <class T>
-	Vector<T>& Vector<T>::operator=(Vector&& oOtherVector)
+	Vector<T>& Vector<T>::operator=(Vector&& otherVector)
 	{
-		_hElements = std::move(oOtherVector._hElements);
-		_uiCapacity = oOtherVector._uiCapacity;
-		_uiLength = oOtherVector._uiLength;
-		oOtherVector._uiCapacity = 0;
-		oOtherVector._uiLength = 0;
+		m_Elements = std::move(otherVector.m_Elements);
+		m_Capacity = otherVector.m_Capacity;
+		m_Length = otherVector.m_Length;
+		otherVector.m_Capacity = 0;
+		otherVector.m_Length = 0;
 
 		return *this;
 	}
 
 	template <class T>
-	T& Vector<T>::operator[](ArraySize uiIndex)
+	T& Vector<T>::operator[](ArraySize index)
 	{
-		Assert(uiIndex >= 0);
-		Assert(uiIndex < _uiLength);
-		return _hElements[uiIndex];
+		Assert(index >= 0);
+		Assert(index < m_Length);
+		return m_Elements[index];
 	}
 
 	template <class T>
-	const T& Vector<T>::operator[](ArraySize uiIndex) const
+	const T& Vector<T>::operator[](ArraySize index) const
 	{
-		Assert(uiIndex >= 0);
-		Assert(uiIndex < _uiLength);
-		return _hElements[uiIndex];
+		Assert(index >= 0);
+		Assert(index < m_Length);
+		return m_Elements[index];
 	}
 
 	template <class T>
-	void Vector<T>::Push(const T& oElement)
+	void Vector<T>::Push(const T& element)
 	{
-		if (_uiLength == _uiCapacity)
+		if (m_Length == m_Capacity)
 		{
 			Resize();
 		}
 
-		_hElements[_uiLength++] = oElement;
+		m_Elements[m_Length++] = element;
 	}
 
 	template <class T>
-	void Vector<T>::Push(T&& oElement)
+	void Vector<T>::Push(T&& element)
 	{
-		if (_uiLength == _uiCapacity)
+		if (m_Length == m_Capacity)
 		{
 			Resize();
 		}
 
-		_hElements[_uiLength++] = std::move(oElement);
+		m_Elements[m_Length++] = std::move(element);
 	}
 
 	template <class T>
 	T Vector<T>::Pop()
 	{
-		Assert(_uiLength > 0);
+		Assert(m_Length > 0);
 		
-		return std::move(_hElements[--_uiLength]);
+		return std::move(m_Elements[--m_Length]);
 	}
 
 	template <class T>
-	void Vector<T>::Remove(ArraySize uiIndex)
+	void Vector<T>::Remove(ArraySize index)
 	{
-		Assert(uiIndex >= 0);
-		Assert(uiIndex < _uiLength);
-		_hElements[uiIndex].~T();
+		Assert(index >= 0);
+		Assert(index < m_Length);
+		m_Elements[index].~T();
 
 		/*
 		Move memory in front of this element over.
 		*/
-		ArraySize uiElementsToMove = _uiLength - (uiIndex + 1);
-		memcpy(&(_hElements[uiIndex]), &(_hElements[uiIndex + 1]),
+		ArraySize uiElementsToMove = m_Length - (index + 1);
+		memcpy(&(m_Elements[index]), &(m_Elements[index + 1]),
 			uiElementsToMove * sizeof(T));
-		--_uiLength;
-		memset(&(_hElements[_uiLength]), 0, sizeof(T));
+		--m_Length;
+		memset(&(m_Elements[m_Length]), 0, sizeof(T));
 	}
 
 	template <class T>
 	ArraySize Vector<T>::Length() const
 	{
-		return _uiLength;
+		return m_Length;
 	}
 
 	template <class T>
@@ -184,16 +184,16 @@ namespace Soul
 		/*
 		Request new memory for expanded capacity.
 		*/
-		ArraySize uiOldCapacity = _uiCapacity;
-		_uiCapacity = _uiCapacity * 2 + 1;
-		UniqueHandle<T> hNewMemory = MemoryManager::AllocateArray<T>(_uiCapacity);
+		ArraySize oldCapacity = m_Capacity;
+		m_Capacity = m_Capacity * 2 + 1;
+		UniqueHandle<T> newMemory = MemoryManager::AllocateArray<T>(m_Capacity);
 
 		/*
 		Move memory and deallocate old memory.
 		*/
-		memcpy(hNewMemory.GetMemory(), _hElements.GetMemory(),
-			sizeof(T) * uiOldCapacity);
-		memset(_hElements.GetMemory(), 0, sizeof(T) * uiOldCapacity);
-		_hElements = std::move(hNewMemory);
+		memcpy(newMemory.GetMemory(), m_Elements.GetMemory(),
+			sizeof(T) * oldCapacity);
+		memset(m_Elements.GetMemory(), 0, sizeof(T) * oldCapacity);
+		m_Elements = std::move(newMemory);
 	}
 }
