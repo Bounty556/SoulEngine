@@ -2,7 +2,7 @@
 FIFO container.
 @file Queue.h
 @author Jacob Peterson
-@edited 12/20/20
+@edited 4/12/21
 */
 
 #pragma once
@@ -23,7 +23,7 @@ namespace Soul
 	class Queue
 	{
 	public:
-		Queue(ArraySize uiCapacity);
+		Queue(ArraySize capacity);
 		Queue(Queue<T>&& otherQueue);
 
 		Queue<T>& operator=(Queue<T>&& otherQueue);
@@ -46,16 +46,16 @@ namespace Soul
 		/*
 		Adds the provided element to the back of the queue.
 
-		@param oElement - The element to be added to the front of the queue.
+		@param element - The element to be added to the front of the queue.
 		*/
-		void Push(const T& oElement);
+		void Push(const T& element);
 		
 		/*
 		Adds the provided element to the back of the queue.
 
-		@param oElement - The element to be added to the front of the queue.
+		@param element - The element to be added to the front of the queue.
 		*/
-		void Push(T&& oElement);
+		void Push(T&& element);
 
 		/*
 		Gets the maximum number of elements that can be stored in this queue.
@@ -76,49 +76,49 @@ namespace Soul
 		Queue<T>& operator=(const Queue<T>&) = delete;
 
 	private:
-		UniqueHandle<T> _hMemory; // Handle to the memory block this queue uses.
-		Index _uiHead; // The front of the queue.
-		Index _uiTail; // The element after the last element.
-		ArraySize _uiCapacity; // The maximum number of elements in the queue.
-		ArraySize _uiLength; // The current number of elements in the queue.
+		UniqueHandle<T> m_Memory; // Handle to the memory block this queue uses.
+		Index m_Head; // The front of the queue.
+		Index m_Tail; // The element after the last element.
+		ArraySize m_Capacity; // The maximum number of elements in the queue.
+		ArraySize m_Length; // The current number of elements in the queue.
 	};
 
 	template <class T>
-	Queue<T>::Queue(ArraySize uiCapacity) :
-		_hMemory(MemoryManager::AllocateArray<T>(uiCapacity)),
-		_uiHead(0),
-		_uiTail(0),
-		_uiCapacity(uiCapacity),
-		_uiLength(0)
+	Queue<T>::Queue(ArraySize capacity) :
+		m_Memory(MemoryManager::AllocateArray<T>(capacity)),
+		m_Head(0),
+		m_Tail(0),
+		m_Capacity(capacity),
+		m_Length(0)
 	{
 
 	}
 
 	template <class T>
 	Queue<T>::Queue(Queue<T>&& otherQueue) :
-		_hMemory(std::move(otherQueue._hMemory)),
-		_uiHead(otherQueue._uiHead),
-		_uiTail(otherQueue._uiTail),
-		_uiCapacity(otherQueue._uiCapacity),
-		_uiLength(otherQueue._uiLength)
+		m_Memory(std::move(otherQueue.m_Memory)),
+		m_Head(otherQueue.m_Head),
+		m_Tail(otherQueue.m_Tail),
+		m_Capacity(otherQueue.m_Capacity),
+		m_Length(otherQueue.m_Length)
 	{
-		otherQueue._uiHead = 0;
-		otherQueue._uiTail = 0;
-		otherQueue._uiLength = 0;
+		otherQueue.m_Head = 0;
+		otherQueue.m_Tail = 0;
+		otherQueue.m_Length = 0;
 	}
 
 	template <class T>
 	Queue<T>& Queue<T>::operator=(Queue<T>&& otherQueue)
 	{
-		_hMemory = std::move(otherQueue._hMemory);
-		_uiHead = otherQueue._uiHead;
-		_uiTail = otherQueue._uiTail;
-		_uiCapacity = otherQueue._uiCapacity;
-		_uiLength = otherQueue._uiLength;
+		m_Memory = std::move(otherQueue.m_Memory);
+		m_Head = otherQueue.m_Head;
+		m_Tail = otherQueue.m_Tail;
+		m_Capacity = otherQueue.m_Capacity;
+		m_Length = otherQueue.m_Length;
 
-		otherQueue._uiHead = 0;
-		otherQueue._uiTail = 0;
-		otherQueue._uiLength = 0;
+		otherQueue.m_Head = 0;
+		otherQueue.m_Tail = 0;
+		otherQueue.m_Length = 0;
 
 		return *this;
 	}
@@ -126,47 +126,47 @@ namespace Soul
 	template <class T>
 	const T& Queue<T>::Peek() const
 	{
-		Assert(_uiLength > 0);
-		return _hMemory[_uiHead];
+		Assert(m_Length > 0);
+		return m_Memory[m_Head];
 	}
 
 	template <class T>
 	T Queue<T>::Pop()
 	{
-		Assert(_uiLength > 0);
-		--_uiLength;
-		return std::move(_hMemory[_uiHead++]);
+		Assert(m_Length > 0);
+		--m_Length;
+		return std::move(m_Memory[m_Head++]);
 	}
 
 	template <class T>
-	void Queue<T>::Push(const T& oElement)
+	void Queue<T>::Push(const T& element)
 	{
-		Assert(_uiLength < _uiCapacity);
+		Assert(m_Length < m_Capacity);
 
-		_hMemory[_uiTail] = oElement;
-		++_uiLength;
-		_uiTail = (_uiTail + 1) % _uiCapacity;
+		m_Memory[m_Tail] = element;
+		++m_Length;
+		m_Tail = (m_Tail + 1) % m_Capacity;
 	}
 
 	template <class T>
-	void Queue<T>::Push(T&& oElement)
+	void Queue<T>::Push(T&& element)
 	{
-		Assert(_uiLength < _uiCapacity);
+		Assert(m_Length < m_Capacity);
 
-		_hMemory[_uiTail] = std::move(oElement);
-		++_uiLength;
-		_uiTail = (_uiTail + 1) % _uiCapacity;
+		m_Memory[m_Tail] = std::move(element);
+		++m_Length;
+		m_Tail = (m_Tail + 1) % m_Capacity;
 	}
 
 	template <class T>
 	const ArraySize& Queue<T>::GetCapacity() const
 	{
-		return _uiCapacity;
+		return m_Capacity;
 	}
 	
 	template <class T>
 	const ArraySize& Queue<T>::GetLength() const
 	{
-		return _uiLength;
+		return m_Length;
 	}
 }
