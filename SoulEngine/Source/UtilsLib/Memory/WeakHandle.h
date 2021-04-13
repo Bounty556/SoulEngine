@@ -4,7 +4,7 @@ within it. The MemoryManager returns UniqueHandles which can then be used to
 form weak pointers to memory.
 @file WeakHandle.h
 @author Jacob Peterson
-@edited 12/24/2020
+@edited 4/12/2020
 */
 
 #pragma once
@@ -93,8 +93,8 @@ namespace Soul
 
 	template <class T>
 	WeakHandle<T>::WeakHandle(const UniqueHandle<T>& otherHandle) :
-		m_Handle(otherHandle._hpHandle),
-		m_IsValid(otherHandle._bIsValid)
+		m_Handle(otherHandle.m_Handle),
+		m_IsValid(otherHandle.m_IsValid)
 	{
 
 	}

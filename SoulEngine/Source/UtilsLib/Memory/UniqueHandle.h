@@ -4,7 +4,7 @@ within it. The MemoryManager returns UniqueHandles which can then be used like
 normal pointers to memory.
 @file UniqueHandle.h
 @author Jacob Peterson
-@edited 12/23/2020
+@edited 4/12/2020
 */
 
 #pragma once
@@ -24,22 +24,22 @@ namespace Soul
 	{
 	public:
 		UniqueHandle();
-		UniqueHandle(Handle* oHandle);
-		UniqueHandle(UniqueHandle&& oOtherHandle);
+		UniqueHandle(Handle* handle);
+		UniqueHandle(UniqueHandle&& otherHandle);
 
 		~UniqueHandle();
 
-		UniqueHandle<T>& operator=(UniqueHandle&& oOtherHandle);
+		UniqueHandle<T>& operator=(UniqueHandle&& otherHandle);
 		
 		T* operator->();
 		T& operator*();
-		T& operator[](ArraySize uiIndex);
+		T& operator[](ArraySize index);
 		const T* operator->() const;
 		const T& operator*() const;
-		const T& operator[](ArraySize uiIndex) const;
+		const T& operator[](ArraySize index) const;
 
-		bool operator==(const UniqueHandle& oOther) const;
-		bool operator!=(const UniqueHandle& oOther) const;
+		bool operator==(const UniqueHandle& other) const;
+		bool operator!=(const UniqueHandle& other) const;
 
 		/*
 		Returns whether this UniqueHandle is active and usable.
@@ -73,58 +73,58 @@ namespace Soul
 		UniqueHandle<T>& operator=(const UniqueHandle&) = delete;
 
 	private:
-		Handle* _hpHandle; // Pointer to this UniqueHandle's Handle.
-		bool _bIsValid; // Whether this UniqueHandle is active and usable.
+		Handle* m_Handle; // Pointer to this UniqueHandle's Handle.
+		bool m_IsValid; // Whether this UniqueHandle is active and usable.
 
 		friend WeakHandle;
 	};
 
 	template <class T>
 	UniqueHandle<T>::UniqueHandle() :
-		_hpHandle(nullptr),
-		_bIsValid(false)
+		m_Handle(nullptr),
+		m_IsValid(false)
 	{
 
 	}
 
 	template <class T>
-	UniqueHandle<T>::UniqueHandle(Handle* oHandle) :
-		_hpHandle(oHandle),
-		_bIsValid(true)
+	UniqueHandle<T>::UniqueHandle(Handle* handle) :
+		m_Handle(handle),
+		m_IsValid(true)
 	{
 	
 	}
 
 	template <class T>
-	UniqueHandle<T>::UniqueHandle(UniqueHandle&& oOtherHandle) :
-		_hpHandle(oOtherHandle._hpHandle),
-		_bIsValid(oOtherHandle._bIsValid)
+	UniqueHandle<T>::UniqueHandle(UniqueHandle&& otherHandle) :
+		m_Handle(otherHandle.m_Handle),
+		m_IsValid(otherHandle.m_IsValid)
 	{
-		oOtherHandle._hpHandle = nullptr;
-		oOtherHandle._bIsValid = false;
+		otherHandle.m_Handle = nullptr;
+		otherHandle.m_IsValid = false;
 	}
 
 	template <class T>
 	UniqueHandle<T>::~UniqueHandle()
 	{
-		if (_bIsValid)
+		if (m_IsValid)
 		{
-			MemoryManager::Deallocate<T>(*_hpHandle);
+			MemoryManager::Deallocate<T>(*m_Handle);
 		}
 	}
 
 	template <class T>
-	UniqueHandle<T>& UniqueHandle<T>::operator=(UniqueHandle&& oOtherHandle)
+	UniqueHandle<T>& UniqueHandle<T>::operator=(UniqueHandle&& otherHandle)
 	{
-		if (_bIsValid)
+		if (m_IsValid)
 		{
-			MemoryManager::Deallocate<T>(*_hpHandle);
+			MemoryManager::Deallocate<T>(*m_Handle);
 		}
 
-		_hpHandle = oOtherHandle._hpHandle;
-		_bIsValid = oOtherHandle._bIsValid;
-		oOtherHandle._hpHandle = nullptr;
-		oOtherHandle._bIsValid = false;
+		m_Handle = otherHandle.m_Handle;
+		m_IsValid = otherHandle.m_IsValid;
+		otherHandle.m_Handle = nullptr;
+		otherHandle.m_IsValid = false;
 
 		return *this;
 	}
@@ -132,80 +132,80 @@ namespace Soul
 	template <class T>
 	T* UniqueHandle<T>::operator->()
 	{
-		return (T*)_hpHandle->location;
+		return (T*)m_Handle->location;
 	}
 
 	template <class T>
 	T& UniqueHandle<T>::operator*()
 	{
-		return *((T*)(_hpHandle->location));
+		return *((T*)(m_Handle->location));
 	}
 
 	template <class T>
-	T& UniqueHandle<T>::operator[](ArraySize uiIndex)
+	T& UniqueHandle<T>::operator[](ArraySize index)
 	{
-		return ((T*)_hpHandle->location)[uiIndex];
+		return ((T*)m_Handle->location)[index];
 	}
 
 	template <class T>
 	const T* UniqueHandle<T>::operator->() const
 	{
-		return (T*)_hpHandle->location;
+		return (T*)m_Handle->location;
 	}
 
 	template <class T>
 	const T& UniqueHandle<T>::operator*() const
 	{
-		return *((T*)(_hpHandle->location));
+		return *((T*)(m_Handle->location));
 	}
 
 	template <class T>
-	const T& UniqueHandle<T>::operator[](ArraySize uiIndex) const
+	const T& UniqueHandle<T>::operator[](ArraySize index) const
 	{
-		return ((T*)_hpHandle->location)[uiIndex];
+		return ((T*)m_Handle->location)[index];
 	}
 
 	template <class T>
-	bool UniqueHandle<T>::operator==(const UniqueHandle& oOther) const
+	bool UniqueHandle<T>::operator==(const UniqueHandle& other) const
 	{
-		return _hpHandle == oOther._hpHandle;
+		return m_Handle == other.m_Handle;
 	}
 
 	template <class T>
-	bool UniqueHandle<T>::operator!=(const UniqueHandle& oOther) const
+	bool UniqueHandle<T>::operator!=(const UniqueHandle& other) const
 	{
-		return _hpHandle != oOther._hpHandle;
+		return m_Handle != other.m_Handle;
 	}
 
 	template <class T>
 	bool UniqueHandle<T>::IsValid() const
 	{
-		return _bIsValid;
+		return m_IsValid;
 	}
 
 	template <class T>
 	Handle* UniqueHandle<T>::Detach()
 	{
-		Handle* opHandle = _hpHandle;
-		_hpHandle = nullptr;
-		_bIsValid = false;
+		Handle* handle = m_Handle;
+		m_Handle = nullptr;
+		m_IsValid = false;
 
-		return opHandle;
+		return handle;
 	}
 
 	template <class T>
 	void UniqueHandle<T>::Deallocate()
 	{
-		Assert(_bIsValid);
+		Assert(m_IsValid);
 
-		MemoryManager::Deallocate<T>(*_hpHandle);
-		_hpHandle = nullptr;
-		_bIsValid = false;
+		MemoryManager::Deallocate<T>(*m_Handle);
+		m_Handle = nullptr;
+		m_IsValid = false;
 	}
 
 	template <class T>
 	T* UniqueHandle<T>::GetMemory()
 	{
-		return (T*)_hpHandle->location;
+		return (T*)m_Handle->location;
 	}
 }

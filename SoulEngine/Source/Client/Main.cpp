@@ -19,17 +19,17 @@ void ShutDown();
 
 int main()
 {
-	Soul::Timer oTimer;
-	oTimer.Start();
+	Soul::Timer timer;
+	timer.Start();
 
 	StartUp();
 
 	Soul::TestRunner::RunAllTestSuites();
 
 	// Measure time taken to startup and test
-	oTimer.Stop();
+	timer.Stop();
 	SoulLogInfo("Time taken:\n\tSeconds: %llf\n\tMillis: %llf\n\tMicros: %llf",
-		oTimer.GetElapsedSeconds(), oTimer.GetElapsedMilliseconds(), oTimer.GetElapsedMicroseconds());
+		timer.GetElapsedSeconds(), timer.GetElapsedMilliseconds(), timer.GetElapsedMicroseconds());
 
 	// Clean up
 	ShutDown();
