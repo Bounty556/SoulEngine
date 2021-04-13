@@ -3,7 +3,7 @@ Manages adding and removing callbacks with the EventBus to provide a thin
 layer of abstraction and automation.
 @file EventListener.h
 @author Jacob Peterson
-@edited 12/26/2020
+@edited 4/13/21
 */
 
 #pragma once
@@ -14,8 +14,8 @@ namespace Soul
 {
 	struct RegisteredCallback
 	{
-		Events eEventType; // The event this callback is registered for.
-		CallbackId uiCallbackId; // The id of the associated callback.
+		Events eventType; // The event this callback is registered for.
+		CallbackId callbackId; // The id of the associated callback.
 	};
 
 	/*
@@ -29,42 +29,41 @@ namespace Soul
 	{
 	public:
 		EventListener();
-		EventListener(EventListener&& oOtherListener);
+		EventListener(EventListener&& otherListener);
 
 		~EventListener();
 
-		EventListener& operator=(EventListener&& oOtherListener);
+		EventListener& operator=(EventListener&& otherListener);
 
 		/*
 		Adds a new event to the end of event queue to be dispatched.
 		*/
-		void QueueEvent(Events eEventType, void* pData);
+		void QueueEvent(Events eventType, void* data);
 
 		/*
 		Adds a new callback to be called when the given event is triggered.
 
-		@param eEventType - The event to register the callback for.
+		@param eventType - The event to register the callback for.
 
-		@param fnCallback - The callback function to be registered.
+		@param callback - The callback function to be registered.
 
 		@return CallbackId containing the unique callback id.
 		*/
-		CallbackId RegisterCallback(Events eEventType, EventCallback fnCallback);
+		CallbackId RegisterCallback(Events eventType, EventCallback callback);
 
 		/*
 		Unregisters the callback with the given id from the given event.
 
-		@param eEventType - The event to unregister the callback from.
+		@param eventType - The event to unregister the callback from.
 
 		@param uiId - The id of the callback to unregister.
 		*/
-		void UnregisterCallback(Events eEventType);
+		void UnregisterCallback(Events eventType);
 
 		EventListener(const EventListener&) = delete;
 		EventListener& operator=(const EventListener&) = delete;
 
 	private:
-		Vector<RegisteredCallback> _hRegisteredCallbacks; // The callback Id for each registeredevent.
+		Vector<RegisteredCallback> m_RegisteredCallbacks; // The callback Id for each registeredevent.
 	};
-
 }
