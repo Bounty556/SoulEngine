@@ -3,7 +3,7 @@ Used for aggregating and running tests. Assumes that all necessary engine
 systems are currently running.
 @file TestRunner.h
 @author Jacob Peterson
-@edited 12/21/20
+@edited 4/14/21
 */
 
 #pragma once
@@ -31,8 +31,8 @@ namespace Soul
 		/*
 		Runs a single provided test suite.
 
-		@param oTestSuite - The test suite to be run.
+		@param testSuite - The test suite to be run.
 		*/
-		static void RunTestSuite(ITestSuite* coTestSuite);
+		static void RunTestSuite(ITestSuite* testSuite);
 	};
 }

@@ -3,7 +3,7 @@ Used for aggregating and running tests. Assumes that all necessary engine
 systems are currently running.
 @file TestRunner.cpp
 @author Jacob Peterson
-@edited 12/24/20
+@edited 4/14/21
 */
 
 #include "TestRunner.h"
@@ -31,8 +31,8 @@ namespace Soul
 		CreateTestSuite(WeakHandleTests);
 	}
 
-	void TestRunner::RunTestSuite(ITestSuite* coTestSuite)
+	void TestRunner::RunTestSuite(ITestSuite* testSuite)
 	{
-		coTestSuite->RunAllTests();
+		testSuite->RunAllTests();
 	}
 }
