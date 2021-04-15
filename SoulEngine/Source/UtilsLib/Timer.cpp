@@ -2,7 +2,7 @@
 Timer for profiling code, keeping frame times, etc.
 @file Timer.h
 @author Jacob Peterson
-@edited 12/22/2020
+@edited 4/14/21
 */
 
 #include "Timer.h"
@@ -12,44 +12,44 @@ Timer for profiling code, keeping frame times, etc.
 namespace Soul
 {
 	Timer::Timer() :
-		_uiElapsedPerformanceCounts(0),
-		_uiLastCounterCheckpoint(0),
-		_bIsRunning(false)
+		m_ElapsedPerformanceCounts(0),
+		m_LastCounterCheckpoint(0),
+		m_IsRunning(false)
 	{
 
 	}
 
 	void Timer::Start()
 	{
-		if (!_bIsRunning)
+		if (!m_IsRunning)
 		{
-			_bIsRunning = true;
+			m_IsRunning = true;
 
-			LARGE_INTEGER oPerformanceCount;
-			QueryPerformanceCounter(&oPerformanceCount);
-			_uiLastCounterCheckpoint = oPerformanceCount.QuadPart;
+			LARGE_INTEGER performanceCount;
+			QueryPerformanceCounter(&performanceCount);
+			m_LastCounterCheckpoint = performanceCount.QuadPart;
 		}
 	}
 
 	void Timer::Stop()
 	{
 		AddElapsedPerformanceCounts();
-		_bIsRunning = false;
+		m_IsRunning = false;
 	}
 
 	void Timer::Reset()
 	{
-		LARGE_INTEGER oPerformanceCount;
-		QueryPerformanceCounter(&oPerformanceCount);
-		_uiLastCounterCheckpoint = oPerformanceCount.QuadPart;
-		_uiElapsedPerformanceCounts = 0;
+		LARGE_INTEGER performanceCount;
+		QueryPerformanceCounter(&performanceCount);
+		m_LastCounterCheckpoint = performanceCount.QuadPart;
+		m_ElapsedPerformanceCounts = 0;
 	}
 
 	Float32 Timer::GetDeltaTime()
 	{
-		Float32 fMilliseconds = (Float32)GetElapsedTime(0.001);
+		Float32 milliseconds = (Float32)GetElapsedTime(0.001);
 		Reset();
-		return fMilliseconds;
+		return milliseconds;
 	}
 
 	Float64 Timer::GetElapsedMinutes()
@@ -74,28 +74,28 @@ namespace Soul
 
 	void Timer::AddElapsedPerformanceCounts()
 	{
-		if (_bIsRunning)
+		if (m_IsRunning)
 		{
-			LARGE_INTEGER oPerformanceCount;
-			QueryPerformanceCounter(&oPerformanceCount);
-			_uiElapsedPerformanceCounts +=
-				oPerformanceCount.QuadPart - _uiLastCounterCheckpoint;
-			_uiLastCounterCheckpoint = oPerformanceCount.QuadPart;
+			LARGE_INTEGER performanceCount;
+			QueryPerformanceCounter(&performanceCount);
+			m_ElapsedPerformanceCounts +=
+				performanceCount.QuadPart - m_LastCounterCheckpoint;
+			m_LastCounterCheckpoint = performanceCount.QuadPart;
 		}
 	}
 
-	Float64 Timer::GetPerformanceFrequency(Float64 fSecondParts)
+	Float64 Timer::GetPerformanceFrequency(Float64 secondParts)
 	{
-		LARGE_INTEGER oPerformanceFrequency;
-		QueryPerformanceFrequency(&oPerformanceFrequency);
-		Float64 fResult = oPerformanceFrequency.QuadPart * fSecondParts;
-		return fResult;
+		LARGE_INTEGER performanceFrequency;
+		QueryPerformanceFrequency(&performanceFrequency);
+		Float64 result = performanceFrequency.QuadPart * secondParts;
+		return result;
 	}
 
-	Float64 Timer::GetElapsedTime(Float64 fSecondParts)
+	Float64 Timer::GetElapsedTime(Float64 secondParts)
 	{
 		AddElapsedPerformanceCounts();
-		Float64 fMicrosecondPerformance = GetPerformanceFrequency(fSecondParts);
-		return _uiElapsedPerformanceCounts / fMicrosecondPerformance;
+		Float64 microsecondPerformance = GetPerformanceFrequency(secondParts);
+		return m_ElapsedPerformanceCounts / microsecondPerformance;
 	}
 }

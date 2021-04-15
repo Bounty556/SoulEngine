@@ -2,7 +2,7 @@
 Timer for profiling code, keeping frame times, etc.
 @file Timer.h
 @author Jacob Peterson
-@edited 12/22/2020
+@edited 4/14/21
 */
 
 #pragma once
@@ -83,33 +83,33 @@ namespace Soul
 		void AddElapsedPerformanceCounts();
 
 		/*
-		Queries the performance frequency and returns it in seconds / fSecondParts.
+		Queries the performance frequency and returns it in seconds / secondParts.
 		For example, to get the performance frequency in milliseconds, pass in
 		1/1000 or 0.001.
 
-		@param fSecondParts - What to multiply the performance frequency by so
+		@param secondParts - What to multiply the performance frequency by so
 		                      we get the correct time unit back.
 
 		@return Float64 containing the performance frequency in the desired
 		        time unit.
 		*/
-		Float64 GetPerformanceFrequency(Float64 fSecondParts);
+		Float64 GetPerformanceFrequency(Float64 secondParts);
 
 		/*
 		Returns the elapsed amount of time in the time units based on
-		fSecondParts. For example, to get the time in milliseconds, pass in
+		secondParts. For example, to get the time in milliseconds, pass in
 		1/1000 or 0.001.
 
-		@param fSecondParts - The resulting time unit to return the elapsed time
+		@param secondParts - The resulting time unit to return the elapsed time
 		                      in.
 
 		@return Float64 containing the elapsed time in the desired time unit.
 		*/
-		Float64 GetElapsedTime(Float64 fSecondParts);
+		Float64 GetElapsedTime(Float64 secondParts);
 
 	private:
-		UInt64 _uiElapsedPerformanceCounts; // Actual elapsed performance counts.
-		UInt64 _uiLastCounterCheckpoint; // Updated everytime we start, stop, or retrieve current time.
-		bool _bIsRunning; // Whether this timer is currently running.
+		UInt64 m_ElapsedPerformanceCounts; // Actual elapsed performance counts.
+		UInt64 m_LastCounterCheckpoint; // Updated everytime we start, stop, or retrieve current time.
+		bool m_IsRunning; // Whether this timer is currently running.
 	};
 }
