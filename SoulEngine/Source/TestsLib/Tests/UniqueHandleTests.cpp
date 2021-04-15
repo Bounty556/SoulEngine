@@ -2,7 +2,7 @@
 Tests for the UniqueHandle class.
 @file UniqueHandleTests.cpp
 @author Jacob Peterson
-@edited 12/26/2020
+@edited 4/14/21
 */
 
 #include "UniqueHandleTests.h"
@@ -27,21 +27,21 @@ namespace Soul
 
 	bool UniqueHandleTests::PrimitiveHandle()
 	{
-		ByteCount uiBytes = MemoryManager::GetTotalAllocatedBytes();
+		ByteCount initialBytes = MemoryManager::GetTotalAllocatedBytes();
 
 		{
-			UniqueHandle<UInt32> hInt = MemoryManager::Allocate<UInt32>(0);
+			UniqueHandle<UInt32> uniqueInt = MemoryManager::Allocate<UInt32>(0);
 
-			AssertEqual(*hInt, 0, "Handle dereferencing failed.");
+			AssertEqual(*uniqueInt, 0, "Handle dereferencing failed.");
 
-			UniqueHandle<UInt32> hInt2 = MemoryManager::Allocate<UInt32>(1);
+			UniqueHandle<UInt32> uniqueInt2 = MemoryManager::Allocate<UInt32>(1);
 			
-			hInt = std::move(hInt2);
+			uniqueInt = std::move(uniqueInt2);
 
-			AssertEqual(*hInt, 1, "Failed to move handle.");
+			AssertEqual(*uniqueInt, 1, "Failed to move handle.");
 		}
 
-		AssertEqual(uiBytes, MemoryManager::GetTotalAllocatedBytes(),
+		AssertEqual(initialBytes, MemoryManager::GetTotalAllocatedBytes(),
 			"Failed to deallocate primitives.");
 
 		return true;
@@ -49,24 +49,24 @@ namespace Soul
 
 	bool UniqueHandleTests::ObjectHandle()
 	{
-		ByteCount uiBytes = MemoryManager::GetTotalAllocatedBytes();
+		ByteCount initialBytes = MemoryManager::GetTotalAllocatedBytes();
 
-		TestClass oFake(1, 'u', 4.3f);
-		TestClass oFake2(0, 'y', 9.6f);
+		TestClass fakeClass(1, 'u', 4.3f);
+		TestClass fakeClass2(0, 'y', 9.6f);
 
 		{
-			UniqueHandle<TestClass> hFake = MemoryManager::Allocate<TestClass>(oFake);
+			UniqueHandle<TestClass> uniqueClass = MemoryManager::Allocate<TestClass>(fakeClass);
 
-			AssertEqual(*hFake, oFake, "Handle dereferencing failed.");
+			AssertEqual(*uniqueClass, fakeClass, "Handle dereferencing failed.");
 
-			UniqueHandle<TestClass> hFake2 = MemoryManager::Allocate<TestClass>(oFake2);
+			UniqueHandle<TestClass> uniqueClass2 = MemoryManager::Allocate<TestClass>(fakeClass2);
 
-			hFake = std::move(hFake2);
+			uniqueClass = std::move(uniqueClass2);
 
-			AssertEqual(*hFake, oFake2, "Failed to move handle.");
+			AssertEqual(*uniqueClass, fakeClass2, "Failed to move handle.");
 		}
 
-		AssertEqual(uiBytes, MemoryManager::GetTotalAllocatedBytes(),
+		AssertEqual(initialBytes, MemoryManager::GetTotalAllocatedBytes(),
 			"Failed to deallocate objects.");
 
 		return true;
@@ -74,23 +74,23 @@ namespace Soul
 
 	bool UniqueHandleTests::HandleHandle()
 	{
-		ByteCount uiBytes = MemoryManager::GetTotalAllocatedBytes();
+		ByteCount initialBytes = MemoryManager::GetTotalAllocatedBytes();
 
 		{
-			UniqueHandle<UniqueHandle<UInt32>> hHandle =
+			UniqueHandle<UniqueHandle<UInt32>> handleToUniqueInt =
 				MemoryManager::Allocate<UniqueHandle<UInt32>>(MemoryManager::Allocate<UInt32>(0));
 
-			AssertEqual(**hHandle, 0, "Handle dereferencing failed.");
+			AssertEqual(**handleToUniqueInt, 0, "Handle dereferencing failed.");
 
-			UniqueHandle<UniqueHandle<UInt32>> hHandle2 =
+			UniqueHandle<UniqueHandle<UInt32>> handleToUniqueInt2 =
 				MemoryManager::Allocate<UniqueHandle<UInt32>>(MemoryManager::Allocate<UInt32>(1));
 
-			hHandle = std::move(hHandle2);
+			handleToUniqueInt = std::move(handleToUniqueInt2);
 
-			AssertEqual(**hHandle, 1, "Failed to move handle.");
+			AssertEqual(**handleToUniqueInt, 1, "Failed to move handle.");
 		}
 
-		AssertEqual(uiBytes, MemoryManager::GetTotalAllocatedBytes(),
+		AssertEqual(initialBytes, MemoryManager::GetTotalAllocatedBytes(),
 			"Failed to deallocate handles.");
 
 		return true;
@@ -98,31 +98,31 @@ namespace Soul
 
 	bool UniqueHandleTests::PrimitiveArrayHandle()
 	{
-		ByteCount uiBytes = MemoryManager::GetTotalAllocatedBytes();
+		ByteCount initialBytes = MemoryManager::GetTotalAllocatedBytes();
 
 		{
-			UniqueHandle<UInt32> hArray = MemoryManager::AllocateArray<UInt32>(100);
+			UniqueHandle<UInt32> uniqueArray = MemoryManager::AllocateArray<UInt32>(100);
 
 			for (UInt8 i = 0; i < 100; ++i)
 			{
-				hArray[i] = i;
+				uniqueArray[i] = i;
 			}
 
-			AssertEqual(hArray[0], 0, "Primitive array indexing failed.");
+			AssertEqual(uniqueArray[0], 0, "Primitive array indexing failed.");
 
-			UniqueHandle<UInt32> hArray2 = MemoryManager::AllocateArray<UInt32>(100);
+			UniqueHandle<UInt32> uniqueArray2 = MemoryManager::AllocateArray<UInt32>(100);
 
 			for (UInt8 i = 0; i < 100; ++i)
 			{
-				hArray2[i] = i + 1;
+				uniqueArray2[i] = i + 1;
 			}
 
-			hArray = std::move(hArray2);
+			uniqueArray = std::move(uniqueArray2);
 
-			AssertEqual(hArray[0], 1, "Primitive array moving failed.");
+			AssertEqual(uniqueArray[0], 1, "Primitive array moving failed.");
 		}
 
-		AssertEqual(uiBytes, MemoryManager::GetTotalAllocatedBytes(),
+		AssertEqual(initialBytes, MemoryManager::GetTotalAllocatedBytes(),
 			"Failed to deallocate primitive arrays.");
 
 		return true;
@@ -130,34 +130,34 @@ namespace Soul
 
 	bool UniqueHandleTests::ObjectArrayHandle()
 	{
-		ByteCount uiBytes = MemoryManager::GetTotalAllocatedBytes();
+		ByteCount initialBytes = MemoryManager::GetTotalAllocatedBytes();
 
-		TestClass oFake(1, 'u', 4.3f);
-		TestClass oFake2(0, 'y', 9.6f);
+		TestClass fakeClass(1, 'u', 4.3f);
+		TestClass fakeClass2(0, 'y', 9.6f);
 
 		{
-			UniqueHandle<TestClass> hArray = MemoryManager::AllocateArray<TestClass>(100);
+			UniqueHandle<TestClass> uniqueArray = MemoryManager::AllocateArray<TestClass>(100);
 
 			for (UInt8 i = 0; i < 100; ++i)
 			{
-				hArray[i] = oFake;
+				uniqueArray[i] = fakeClass;
 			}
 
-			AssertEqual(hArray[0], oFake, "Object array indexing failed.");
+			AssertEqual(uniqueArray[0], fakeClass, "Object array indexing failed.");
 
-			UniqueHandle<TestClass> hArray2 = MemoryManager::AllocateArray<TestClass>(100);
+			UniqueHandle<TestClass> uniqueArray2 = MemoryManager::AllocateArray<TestClass>(100);
 
 			for (UInt8 i = 0; i < 100; ++i)
 			{
-				hArray2[i] = oFake2;
+				uniqueArray2[i] = fakeClass2;
 			}
 
-			hArray = std::move(hArray2);
+			uniqueArray = std::move(uniqueArray2);
 
-			AssertEqual(hArray[0], oFake2, "Object array moving failed.");
+			AssertEqual(uniqueArray[0], fakeClass2, "Object array moving failed.");
 		}
 
-		AssertEqual(uiBytes, MemoryManager::GetTotalAllocatedBytes(),
+		AssertEqual(initialBytes, MemoryManager::GetTotalAllocatedBytes(),
 			"Failed to deallocate object arrays.");
 
 		return true;
@@ -165,31 +165,31 @@ namespace Soul
 
 	bool UniqueHandleTests::HandleArrayHandle()
 	{
-		ByteCount uiBytes = MemoryManager::GetTotalAllocatedBytes();
+		ByteCount initialBytes = MemoryManager::GetTotalAllocatedBytes();
 
 		{
-			UniqueHandle<UniqueHandle<UInt32>> hArray = MemoryManager::AllocateArray<UniqueHandle<UInt32>>(100);
+			UniqueHandle<UniqueHandle<UInt32>> handleToUniqueArray = MemoryManager::AllocateArray<UniqueHandle<UInt32>>(100);
 
 			for (UInt8 i = 0; i < 100; ++i)
 			{
-				hArray[i] = MemoryManager::Allocate<UInt32>(0);
+				handleToUniqueArray[i] = MemoryManager::Allocate<UInt32>(0);
 			}
 
-			AssertEqual(*(hArray[0]), 0, "Handle array indexing failed.");
+			AssertEqual(*(handleToUniqueArray[0]), 0, "Handle array indexing failed.");
 
-			UniqueHandle<UniqueHandle<UInt32>> hArray2 = MemoryManager::AllocateArray<UniqueHandle<UInt32>>(100);
+			UniqueHandle<UniqueHandle<UInt32>> handleToUniqueArray2 = MemoryManager::AllocateArray<UniqueHandle<UInt32>>(100);
 
 			for (UInt8 i = 0; i < 100; ++i)
 			{
-				hArray2[i] = MemoryManager::Allocate<UInt32>(1);
+				handleToUniqueArray2[i] = MemoryManager::Allocate<UInt32>(1);
 			}
 
-			hArray = std::move(hArray2);
+			handleToUniqueArray = std::move(handleToUniqueArray2);
 
-			AssertEqual(*(hArray[0]), 1, "Handle array moving failed.");
+			AssertEqual(*(handleToUniqueArray[0]), 1, "Handle array moving failed.");
 		}
 
-		AssertEqual(uiBytes, MemoryManager::GetTotalAllocatedBytes(),
+		AssertEqual(initialBytes, MemoryManager::GetTotalAllocatedBytes(),
 			"Failed to deallocate handle arrays.");
 
 		return true;
@@ -197,17 +197,17 @@ namespace Soul
 
 	bool UniqueHandleTests::Detach()
 	{
-		ByteCount uiBytes = MemoryManager::GetTotalAllocatedBytes();
+		ByteCount initialBytes = MemoryManager::GetTotalAllocatedBytes();
 
 		{
-			UniqueHandle<UInt32> hInt1 = MemoryManager::Allocate<UInt32>(1);
-			UniqueHandle<UInt32> hInt2 = hInt1.Detach();
+			UniqueHandle<UInt32> uniqueInt = MemoryManager::Allocate<UInt32>(1);
+			UniqueHandle<UInt32> uniqueInt2 = uniqueInt.Detach();
 
-			AssertEqual(hInt1.IsValid(), false, "Failed to detach handle.");
-			AssertEqual(*hInt2, 1, "Failed to reassign handle.");
+			AssertEqual(uniqueInt.IsValid(), false, "Failed to detach handle.");
+			AssertEqual(*uniqueInt2, 1, "Failed to reassign handle.");
 		}
 
-		AssertEqual(uiBytes, MemoryManager::GetTotalAllocatedBytes(),
+		AssertEqual(initialBytes, MemoryManager::GetTotalAllocatedBytes(),
 			"Failed to deallocate detached handle.");
 
 		return true;
@@ -215,17 +215,17 @@ namespace Soul
 
 	bool UniqueHandleTests::Deallocate()
 	{
-		ByteCount uiBytes = MemoryManager::GetTotalAllocatedBytes();
+		ByteCount initialBytes = MemoryManager::GetTotalAllocatedBytes();
 
 		{
-			UniqueHandle<UInt32> hInt1 = MemoryManager::Allocate<UInt32>();
+			UniqueHandle<UInt32> uniqueInt = MemoryManager::Allocate<UInt32>();
 
-			AssertEqual(uiBytes, MemoryManager::GetTotalAllocatedBytes() - 4,
+			AssertEqual(initialBytes, MemoryManager::GetTotalAllocatedBytes() - 4,
 				"Failed to allocate handle.");
 
-			hInt1.Deallocate();
+			uniqueInt.Deallocate();
 
-			AssertEqual(uiBytes, MemoryManager::GetTotalAllocatedBytes(),
+			AssertEqual(initialBytes, MemoryManager::GetTotalAllocatedBytes(),
 				"Failed to deallocate handle.");
 		}
 
