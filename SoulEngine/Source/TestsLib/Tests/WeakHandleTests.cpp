@@ -2,7 +2,7 @@
 Tests for the WeakHandle class.
 @file WeakHandleTests.cpp
 @author Jacob Peterson
-@edited 12/26/2020
+@edited 4/14/21
 */
 
 #include "WeakHandleTests.h"
@@ -22,18 +22,18 @@ namespace Soul
 
 	bool WeakHandleTests::PrimitiveHandle()
 	{
-		ByteCount uiInitialBytes = MemoryManager::GetTotalAllocatedBytes();
+		ByteCount initialBytes = MemoryManager::GetTotalAllocatedBytes();
 
 		{
-			UniqueHandle<int> hUniqueInt = MemoryManager::Allocate<int>(0);
+			UniqueHandle<int> uniqueInt = MemoryManager::Allocate<int>(0);
 			{
-				WeakHandle<int> hInt(hUniqueInt);
-				AssertEqual(*hInt, 0, "Failed to assign to WeakHandle.");
+				WeakHandle<int> weakInt(uniqueInt);
+				AssertEqual(*weakInt, 0, "Failed to assign to WeakHandle.");
 			}
-			AssertEqual(*hUniqueInt, 0, "Handle deleted.");
+			AssertEqual(*uniqueInt, 0, "Handle deleted.");
 		}
 
-		AssertEqual(MemoryManager::GetTotalAllocatedBytes(), uiInitialBytes,
+		AssertEqual(MemoryManager::GetTotalAllocatedBytes(), initialBytes,
 			"Failed to deallocate primitives.");
 
 		return true;
@@ -41,21 +41,21 @@ namespace Soul
 
 	bool WeakHandleTests::ObjectHandle()
 	{
-		ByteCount uiInitialBytes = MemoryManager::GetTotalAllocatedBytes();
+		ByteCount initialBytes = MemoryManager::GetTotalAllocatedBytes();
 
-		TestClass oFake = { 1, 'a', 3.24f };
+		TestClass fakeClass = { 1, 'a', 3.24f };
 
 		{
-			UniqueHandle<TestClass> hUniqueObj =
-				MemoryManager::Allocate<TestClass>(oFake);
+			UniqueHandle<TestClass> uniqueObj =
+				MemoryManager::Allocate<TestClass>(fakeClass);
 			{
-				WeakHandle<TestClass> hObj(hUniqueObj);
-				AssertEqual(*hObj, oFake, "Failed to assign to WeakHandle.");
+				WeakHandle<TestClass> weakObj(uniqueObj);
+				AssertEqual(*weakObj, fakeClass, "Failed to assign to WeakHandle.");
 			}
-			AssertEqual(*hUniqueObj, oFake, "Handle deleted.");
+			AssertEqual(*uniqueObj, fakeClass, "Handle deleted.");
 		}
 
-		AssertEqual(MemoryManager::GetTotalAllocatedBytes(), uiInitialBytes,
+		AssertEqual(MemoryManager::GetTotalAllocatedBytes(), initialBytes,
 			"Failed to deallocate object.");
 
 		return true;
