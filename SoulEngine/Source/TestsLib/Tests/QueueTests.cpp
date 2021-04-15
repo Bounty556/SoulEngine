@@ -2,7 +2,7 @@
 Tests for the Queue class.
 @file QueueTests.cpp
 @author Jacob Peterson
-@edited 12/26/2020
+@edited 4/14/21
 */
 
 #include "QueueTests.h"
@@ -23,39 +23,39 @@ namespace Soul
 
 	bool QueueTests::PrimitiveQueue()
 	{
-		ByteCount uiBytes = MemoryManager::GetTotalAllocatedBytes();
+		ByteCount initialBytes = MemoryManager::GetTotalAllocatedBytes();
 		
 		{
-			Queue<UInt32> oQueue(100);
+			Queue<UInt32> intQueue(100);
 
 			for (UInt32 i = 0; i < 100; ++i)
 			{
-				oQueue.Push(i);
+				intQueue.Push(i);
 			}
 
 			for (UInt32 i = 0; i < 100; ++i)
 			{
-				AssertEqual(oQueue.Pop(), i,
+				AssertEqual(intQueue.Pop(), i,
 					"Queue did not store primitive correctly.");
 			}
 
-			Queue<UInt32> oQueue2(100);
+			Queue<UInt32> intQueue2(100);
 
 			for (UInt32 i = 0; i < 100; ++i)
 			{
-				oQueue2.Push(i + 1);
+				intQueue2.Push(i + 1);
 			}
 
-			oQueue = std::move(oQueue2);
+			intQueue = std::move(intQueue2);
 
 			for (UInt32 i = 0; i < 100; ++i)
 			{
-				AssertEqual(oQueue.Pop(), i + 1, 
+				AssertEqual(intQueue.Pop(), i + 1, 
 					"Primitive queue was not moved.");
 			}
 		}
 
-		AssertEqual(uiBytes, MemoryManager::GetTotalAllocatedBytes(),
+		AssertEqual(initialBytes, MemoryManager::GetTotalAllocatedBytes(),
 			"Primitive queue was not properly deallocated.");
 
 		return true;
@@ -63,42 +63,42 @@ namespace Soul
 
 	bool QueueTests::ObjectQueue()
 	{
-		ByteCount uiBytes = MemoryManager::GetTotalAllocatedBytes();
+		ByteCount initialBytes = MemoryManager::GetTotalAllocatedBytes();
 
-		TestClass oFake(0, 'a', 2.0f);
-		TestClass oFake2(1, 'b', 3.0f);
+		TestClass fakeClass(0, 'a', 2.0f);
+		TestClass fakeClass2(1, 'b', 3.0f);
 
 		{
-			Queue<TestClass> oQueue(100);
+			Queue<TestClass> classQueue(100);
 
 			for (UInt32 i = 0; i < 100; ++i)
 			{
-				oQueue.Push(oFake);
+				classQueue.Push(fakeClass);
 			}
 
 			for (UInt32 i = 0; i < 100; ++i)
 			{
-				AssertEqual(oQueue.Pop(), oFake,
+				AssertEqual(classQueue.Pop(), fakeClass,
 					"Queue did not store object correctly.");
 			}
 
-			Queue<TestClass> oQueue2(100);
+			Queue<TestClass> classQueue2(100);
 
 			for (UInt32 i = 0; i < 100; ++i)
 			{
-				oQueue2.Push(oFake2);
+				classQueue2.Push(fakeClass2);
 			}
 
-			oQueue = std::move(oQueue2);
+			classQueue = std::move(classQueue2);
 
 			for (UInt32 i = 0; i < 100; ++i)
 			{
-				AssertEqual(oQueue.Pop(), oFake2,
+				AssertEqual(classQueue.Pop(), fakeClass2,
 					"Object queue was not moved.");
 			}
 		}
 
-		AssertEqual(uiBytes, MemoryManager::GetTotalAllocatedBytes(),
+		AssertEqual(initialBytes, MemoryManager::GetTotalAllocatedBytes(),
 			"Object queue was not properly deallocated.");
 
 		return true;
@@ -106,57 +106,57 @@ namespace Soul
 
 	bool QueueTests::QueueQueue()
 	{
-		ByteCount uiBytes = MemoryManager::GetTotalAllocatedBytes();
+		ByteCount initialBytes = MemoryManager::GetTotalAllocatedBytes();
 
 		{
-			Queue<Queue<int>> oQueue(100);
+			Queue<Queue<int>> queueOfIntQueues(100);
 
 			for (UInt32 i = 0; i < 100; ++i)
 			{
-				Queue<int> oTempQueue(50);
+				Queue<int> tempQueue(50);
 
 				for (UInt32 j = 0; j < 50; ++j)
 				{
-					oTempQueue.Push(j);
+					tempQueue.Push(j);
 				}
 
-				oQueue.Push(std::move(oTempQueue));
+				queueOfIntQueues.Push(std::move(tempQueue));
 			}
 
 			for (UInt32 i = 0; i < 100; ++i)
 			{
-				Queue<int> oTempQueue = oQueue.Pop();
+				Queue<int> tempQueue = queueOfIntQueues.Pop();
 
-				AssertEqual(oTempQueue.Pop(), 0,
+				AssertEqual(tempQueue.Pop(), 0,
 					"Queue did not store queue correctly.");
 			}
 
-			Queue<Queue<int>> oQueue2(100);
+			Queue<Queue<int>> queueOfIntQueues2(100);
 
 			for (UInt32 i = 0; i < 100; ++i)
 			{
-				Queue<int> oTempQueue(50);
+				Queue<int> tempQueue(50);
 
 				for (UInt32 j = 0; j < 50; ++j)
 				{
-					oTempQueue.Push(j + 1);
+					tempQueue.Push(j + 1);
 				}
 
-				oQueue2.Push(std::move(oTempQueue));
+				queueOfIntQueues2.Push(std::move(tempQueue));
 			}
 
-			oQueue = std::move(oQueue2);
+			queueOfIntQueues = std::move(queueOfIntQueues2);
 
 			for (UInt32 i = 0; i < 100; ++i)
 			{
-				Queue<int> oTempQueue = oQueue.Pop();
+				Queue<int> tempQueue = queueOfIntQueues.Pop();
 
-				AssertEqual(oTempQueue.Pop(), 1,
+				AssertEqual(tempQueue.Pop(), 1,
 					"Queue queue was not moved.");
 			}
 		}
 
-		AssertEqual(uiBytes, MemoryManager::GetTotalAllocatedBytes(),
+		AssertEqual(initialBytes, MemoryManager::GetTotalAllocatedBytes(),
 			"Queue queue was not properly deallocated.");
 
 		return true;
