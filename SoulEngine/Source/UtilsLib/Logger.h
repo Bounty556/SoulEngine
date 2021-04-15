@@ -2,7 +2,7 @@
 Prints info to the console using three different logging levels.
 @file Logger.h
 @author Jacob Peterson
-@edited 12/27/20
+@edited 4/14/21
 */
 
 #pragma once
@@ -46,56 +46,56 @@ namespace Soul
 		Logs an error to the console, with red text for
 		distinguishability.
 
-		@param zMessage - Formatted C-String that gets printed to the console.
+		@param message - Formatted C-String that gets printed to the console.
 
 		@param ... - Parameters to pass to the formatted string to be printed.
 		*/
-		static void LogError(const char* zMessage, ...);
+		static void LogError(const char* message, ...);
 
 		/*
 		Logs a warning to the console, with yellow text for
 		distinguishability.
 
-		@param zMessage - Formatted C-String that gets printed to the console.
+		@param message - Formatted C-String that gets printed to the console.
 
 		@param ... - Parameters to pass to the formatted string to be printed.
 		*/
-		static void LogWarning(const char* zMessage, ...);
+		static void LogWarning(const char* message, ...);
 
 		/*
 		Logs a warning to the console, with green text for
 		distinguishability.
 
-		@param zMessage - Formatted C-String that gets printed to the console.
+		@param message - Formatted C-String that gets printed to the console.
 
 		@param ... - Parameters to pass to the formatted string to be printed.
 		*/
-		static void LogEvent(const char* zMessage, ...);
+		static void LogEvent(const char* message, ...);
 
 		/*
 		Logs info to the console, with white text for
 		distinguishability.
 
-		@param zMessage - Formatted C-String that gets printed to the console.
+		@param message - Formatted C-String that gets printed to the console.
 
 		@param ... - Parameters to pass to the formatted string to be printed.
 		*/
-		static void LogInfo(const char* zMessage, ...);
+		static void LogInfo(const char* message, ...);
 
 		/*
 		Sets which messages the log will output to the console, and
 		which messages will be ignored.
 
-		@param eLevel - LogLevel enum for what the console should print/ignore.
+		@param level - LogLevel enum for what the console should print/ignore.
 		*/
-		static void SetLogLevel(LogLevel eLevel);
+		static void SetLogLevel(LogLevel level);
 
 		// Deleted Functions ///////////////////////////////////////////////////
 
 		Logger() = delete;
 
 	private:
-		static LogLevel _seLogLevel; // The current LogLevel the console prints.
+		static LogLevel m_LogLevel; // The current LogLevel the console prints.
 	};
 }
 
