@@ -2,7 +2,7 @@
 Tests for the MemoryManager class.
 @file MemoryManagerTests.h
 @author Jacob Peterson
-@edited 12/26/2020
+@edited 4/14/21
 */
 
 #include "MemoryManagerTests.h"
@@ -24,17 +24,17 @@ namespace Soul
 
 	bool MemoryManagerTests::BasicAllocation()
 	{
-		ByteCount uiBytes = MemoryManager::GetTotalAllocatedBytes();
+		ByteCount initialBytes = MemoryManager::GetTotalAllocatedBytes();
 		
 		for (UInt8 i = 0; i < 255; ++i)
 		{
-			ByteCount uiBeforeAllocation = MemoryManager::GetTotalAllocatedBytes();
-			UniqueHandle<UInt32> hIntHandle = MemoryManager::Allocate<UInt32>(3);
-			AssertEqual(uiBeforeAllocation, MemoryManager::GetTotalAllocatedBytes() - 4,
+			ByteCount bytesBeforeAlloc = MemoryManager::GetTotalAllocatedBytes();
+			UniqueHandle<UInt32> uniqueInt = MemoryManager::Allocate<UInt32>(3);
+			AssertEqual(bytesBeforeAlloc, MemoryManager::GetTotalAllocatedBytes() - 4,
 				"Incorrect allocation of primitive.");
 		}
 
-		AssertEqual(uiBytes, MemoryManager::GetTotalAllocatedBytes(),
+		AssertEqual(initialBytes, MemoryManager::GetTotalAllocatedBytes(),
 			"Incorrect deallocation of arrays.");
 	
 		return true;
@@ -42,17 +42,17 @@ namespace Soul
 
 	bool MemoryManagerTests::ArrayAllocation()
 	{
-		ByteCount uiBytes = MemoryManager::GetTotalAllocatedBytes();
+		ByteCount initialBytes = MemoryManager::GetTotalAllocatedBytes();
 
 		for (UInt8 i = 0; i < 255; ++i)
 		{
-			ByteCount uiBeforeAllocation = MemoryManager::GetTotalAllocatedBytes();
-			UniqueHandle<UInt32> hIntHandle = MemoryManager::AllocateArray<UInt32>(1000);
-			AssertEqual(uiBeforeAllocation, MemoryManager::GetTotalAllocatedBytes() - 4000,
+			ByteCount bytesBeforeAlloc = MemoryManager::GetTotalAllocatedBytes();
+			UniqueHandle<UInt32> uniqueIntArray = MemoryManager::AllocateArray<UInt32>(1000);
+			AssertEqual(bytesBeforeAlloc, MemoryManager::GetTotalAllocatedBytes() - 4000,
 				"Incorrect allocation of array.");
 		}
 
-		AssertEqual(uiBytes, MemoryManager::GetTotalAllocatedBytes(),
+		AssertEqual(initialBytes, MemoryManager::GetTotalAllocatedBytes(),
 			"Incorrect deallocation of arrays.");
 
 		return true;
@@ -60,23 +60,23 @@ namespace Soul
 
 	bool MemoryManagerTests::VolatileAllocation()
 	{
-		UInt32* uiInt = MemoryManager::AllocateVolatile<UInt32>();
-		*uiInt = 50;
+		UInt32* volatileInt = MemoryManager::AllocateVolatile<UInt32>();
+		*volatileInt = 50;
 
-		AssertEqual(*uiInt, 50, "Failed to set Volatile memory.");
-
-		MemoryManager::IncrementFrameCounter();
-
-		UInt32* uiInt2 = MemoryManager::AllocateVolatile<UInt32>();
-
-		AssertNotEqual(uiInt, uiInt2, "Cleared Volatile memory too early.");
-		AssertEqual(uiInt + 1, uiInt2, "Incorrect allocation of Volatile memory.");
+		AssertEqual(*volatileInt, 50, "Failed to set Volatile memory.");
 
 		MemoryManager::IncrementFrameCounter();
 
-		uiInt2 = MemoryManager::AllocateVolatile<UInt32>();
+		UInt32* volatileInt2 = MemoryManager::AllocateVolatile<UInt32>();
 
-		AssertEqual(uiInt, uiInt2, "Failed to clear Volatile memory.");
+		AssertNotEqual(volatileInt, volatileInt2, "Cleared Volatile memory too early.");
+		AssertEqual(volatileInt + 1, volatileInt2, "Incorrect allocation of Volatile memory.");
+
+		MemoryManager::IncrementFrameCounter();
+
+		volatileInt2 = MemoryManager::AllocateVolatile<UInt32>();
+
+		AssertEqual(volatileInt, volatileInt2, "Failed to clear Volatile memory.");
 
 		return true;
 	}
