@@ -2,7 +2,7 @@
 Tests for the Vector class.
 @file VectorTests.h
 @author Jacob Peterson
-@edited 12/26/2020
+@edited 4/14/21
 */
 
 #include "VectorTests.h"
@@ -25,43 +25,43 @@ namespace Soul
 
 	bool VectorTests::PrimitiveVector()
 	{
-		ByteCount uiBytes = MemoryManager::GetTotalAllocatedBytes();
+		ByteCount initialBytes = MemoryManager::GetTotalAllocatedBytes();
 
 		{
-			Vector<UInt32> oIntVector(255);
+			Vector<UInt32> intVector(255);
 
 			for (UInt8 i = 0; i < 255; ++i)
 			{
-				oIntVector.Push(i);
+				intVector.Push(i);
 			}
 
-			AssertEqual(oIntVector.Length(), 255, "Incorrect Vector length.");
+			AssertEqual(intVector.Length(), 255, "Incorrect Vector length.");
 
 			for (UInt8 i = 0; i < 255; ++i)
 			{
-				AssertEqual(oIntVector.Pop(), 254 - i,
+				AssertEqual(intVector.Pop(), 254 - i,
 					"Failed to store primitive in Vector.");
 			}
 
-			Vector<UInt32> oIntVector2(255);
+			Vector<UInt32> intVector2(255);
 
 			for (UInt8 i = 0; i < 255; ++i)
 			{
-				oIntVector2.Push(i + 1);
+				intVector2.Push(i + 1);
 			}
 
-			oIntVector = std::move(oIntVector2);
+			intVector = std::move(intVector2);
 
-			AssertEqual(oIntVector.Length(), 255, "Incorrect Vector length.");
+			AssertEqual(intVector.Length(), 255, "Incorrect Vector length.");
 
 			for (UInt8 i = 0; i < 255; ++i)
 			{
-				AssertEqual(oIntVector.Pop(), 255 - i,
+				AssertEqual(intVector.Pop(), 255 - i,
 					"Failed to move primitive Vector.");
 			}
 		}
 
-		AssertEqual(uiBytes, MemoryManager::GetTotalAllocatedBytes(),
+		AssertEqual(initialBytes, MemoryManager::GetTotalAllocatedBytes(),
 			"Failed to deallocate primitive Vectors.");
 
 		return true;
@@ -69,46 +69,46 @@ namespace Soul
 
 	bool VectorTests::ObjectVector()
 	{
-		ByteCount uiBytes = MemoryManager::GetTotalAllocatedBytes();
+		ByteCount initialBytes = MemoryManager::GetTotalAllocatedBytes();
 
-		TestClass oFake = { 0, 'a', 1.5f };
-		TestClass oFake2 = { 1, 'b', 1.8f };
+		TestClass fakeClass = { 0, 'a', 1.5f };
+		TestClass fakeClass2 = { 1, 'b', 1.8f };
 
 		{
-			Vector<TestClass> oVector(255);
+			Vector<TestClass> classVector(255);
 
 			for (UInt8 i = 0; i < 255; ++i)
 			{
-				oVector.Push(oFake);
+				classVector.Push(fakeClass);
 			}
 
-			AssertEqual(oVector.Length(), 255, "Incorrect Vector length.");
+			AssertEqual(classVector.Length(), 255, "Incorrect Vector length.");
 
 			for (UInt8 i = 0; i < 255; ++i)
 			{
-				AssertEqual(oVector.Pop(), oFake,
+				AssertEqual(classVector.Pop(), fakeClass,
 					"Failed to store object in Vector.");
 			}
 
-			Vector<TestClass> oVector2(255);
+			Vector<TestClass> classVector2(255);
 
 			for (UInt8 i = 0; i < 255; ++i)
 			{
-				oVector2.Push(oFake2);
+				classVector2.Push(fakeClass2);
 			}
 
-			oVector = std::move(oVector2);
+			classVector = std::move(classVector2);
 
-			AssertEqual(oVector.Length(), 255, "Incorrect Vector length.");
+			AssertEqual(classVector.Length(), 255, "Incorrect Vector length.");
 
 			for (UInt8 i = 0; i < 255; ++i)
 			{
-				AssertEqual(oVector.Pop(), oFake2,
+				AssertEqual(classVector.Pop(), fakeClass2,
 					"Failed to move object Vector.");
 			}
 		}
 
-		AssertEqual(uiBytes, MemoryManager::GetTotalAllocatedBytes(),
+		AssertEqual(initialBytes, MemoryManager::GetTotalAllocatedBytes(),
 			"Failed to deallocate object Vectors.");
 
 		return true;
@@ -116,55 +116,55 @@ namespace Soul
 
 	bool VectorTests::VectorVector()
 	{
-		ByteCount uiBytes = MemoryManager::GetTotalAllocatedBytes();
+		ByteCount initialBytes = MemoryManager::GetTotalAllocatedBytes();
 
 		{
-			Vector<Vector<int>> oVector(255);
+			Vector<Vector<int>> intVectorVector(255);
 
 			for (UInt8 i = 0; i < 255; ++i)
 			{
-				Vector<int> oTemp(255);
+				Vector<int> tempIntVector(255);
 
 				for (UInt8 j = 0; j < 255; ++j)
 				{
-					oTemp.Push(j);
+					tempIntVector.Push(j);
 				}
 
-				oVector.Push(std::move(oTemp));
+				intVectorVector.Push(std::move(tempIntVector));
 			}
 
-			AssertEqual(oVector.Length(), 255, "Incorrect Vector length.");
+			AssertEqual(intVectorVector.Length(), 255, "Incorrect Vector length.");
 
-			Vector<int> oTemp(oVector.Pop());
+			Vector<int> tempIntVector(intVectorVector.Pop());
 
-			AssertEqual(oTemp.Length(), 255, "Incorrect Vector length.");
+			AssertEqual(tempIntVector.Length(), 255, "Incorrect Vector length.");
 
-			AssertEqual(oTemp.Pop(), 254,
+			AssertEqual(tempIntVector.Pop(), 254,
 				"Failed to store Vector in Vector.");
 
-			Vector<Vector<int>> oVector2(255);
+			Vector<Vector<int>> intVectorVector2(255);
 
 			for (UInt8 i = 0; i < 255; ++i)
 			{
-				Vector<int> oTemp(255);
+				Vector<int> innerTempVector(255);
 
 				for (UInt8 j = 0; j < 255; ++j)
 				{
-					oTemp.Push(j + 1);
+					innerTempVector.Push(j + 1);
 				}
 
-				oVector2.Push(std::move(oTemp));
+				intVectorVector2.Push(std::move(innerTempVector));
 			}
 
-			oVector = std::move(oVector2);
+			intVectorVector = std::move(intVectorVector2);
 
-			oTemp = std::move(oVector.Pop());
+			tempIntVector = std::move(intVectorVector.Pop());
 
-			AssertEqual(oTemp.Pop(), 255,
+			AssertEqual(tempIntVector.Pop(), 255,
 				"Failed to move Vector of Vectors.");
 		}
 
-		AssertEqual(uiBytes, MemoryManager::GetTotalAllocatedBytes(),
+		AssertEqual(initialBytes, MemoryManager::GetTotalAllocatedBytes(),
 			"Failed to deallocate Vectors of Vectors.");
 
 		return true;
@@ -172,57 +172,57 @@ namespace Soul
 
 	bool VectorTests::ResizeVector()
 	{
-		ByteCount uiBytes = MemoryManager::GetTotalAllocatedBytes();
+		ByteCount initialBytes = MemoryManager::GetTotalAllocatedBytes();
 
 		{
-			Vector<UInt8> oSmallVector(3);
+			Vector<UInt8> smallVector(3);
 
 			for (UInt8 i = 0; i < 255; ++i)
 			{
-				oSmallVector.Push(i);
+				smallVector.Push(i);
 			}
-			AssertEqual(oSmallVector.Length(), 255, "Could not resize Vector");
+			AssertEqual(smallVector.Length(), 255, "Could not resize Vector");
 
 			for (UInt8 i = 0; i < 255; ++i)
 			{
-				AssertEqual(oSmallVector.Pop(), 254 - i,
+				AssertEqual(smallVector.Pop(), 254 - i,
 					"Incorrect values in resized Vector.");
 			}
 
-			Vector<TestClass> oSmallVector2(3);
-			TestClass oFake = {1, 'a', 1.3f};
+			Vector<TestClass> smallVector2(3);
+			TestClass fakeClass = {1, 'a', 1.3f};
 
 			for (UInt8 i = 0; i < 255; ++i)
 			{
-				oSmallVector2.Push(oFake);
+				smallVector2.Push(fakeClass);
 			}
 			for (UInt8 i = 0; i < 255; ++i)
 			{
-				AssertEqual(oSmallVector2.Pop(), oFake,
+				AssertEqual(smallVector2.Pop(), fakeClass,
 					"Failed to resize Vector of objects.");
 			}
 
-			Vector<Vector<int>> oSmallVector3(3);
+			Vector<Vector<int>> smallVector3(3);
 
 			for (UInt8 i = 0; i < 255; ++i)
 			{
-				Vector<int> oTemp(3);
+				Vector<int> tempVector(3);
 
 				for (UInt8 i = 0; i < 255; ++i)
 				{
-					oTemp.Push(i);
+					tempVector.Push(i);
 				}
-				oSmallVector3.Push(std::move(oTemp));
+				smallVector3.Push(std::move(tempVector));
 			}
 			for (UInt8 i = 0; i < 255; ++i)
 			{
-				Vector<int> oTemp(oSmallVector3.Pop());
-				AssertEqual(oTemp.Pop(), 254,
+				Vector<int> tempVector(smallVector3.Pop());
+				AssertEqual(tempVector.Pop(), 254,
 					"Failed to resize Vector of Vectors");
 			}
 		}
 
-		AssertEqual(uiBytes, MemoryManager::GetTotalAllocatedBytes(),
+		AssertEqual(initialBytes, MemoryManager::GetTotalAllocatedBytes(),
 			"Failed to deallocate resized Vector.");
 
 		return true;
@@ -230,77 +230,77 @@ namespace Soul
 
 	bool VectorTests::RemoveElements()
 	{
-		ByteCount uiBytes = MemoryManager::GetTotalAllocatedBytes();
+		ByteCount initialBytes = MemoryManager::GetTotalAllocatedBytes();
 
 		{
 			/*
 			Test with primitives.
 			*/
-			Vector<int> oSmallVector(5);
+			Vector<int> smallVector(5);
 
 			for (UInt8 i = 0; i < 5; ++i)
 			{
-				oSmallVector.Push(i);
+				smallVector.Push(i);
 			}
 
-			oSmallVector.Remove(0);
-			oSmallVector.Remove(3);
+			smallVector.Remove(0);
+			smallVector.Remove(3);
 
-			AssertEqual(oSmallVector.Length(), 3,
+			AssertEqual(smallVector.Length(), 3,
 				"Incorrect Vector length after removing elements.");
 
-			AssertEqual(oSmallVector.Pop(), 3, "Incorrect element in Vector.");
-			AssertEqual(oSmallVector.Pop(), 2, "Incorrect element in Vector.");
-			AssertEqual(oSmallVector.Pop(), 1, "Incorrect element in Vector.");
+			AssertEqual(smallVector.Pop(), 3, "Incorrect element in Vector.");
+			AssertEqual(smallVector.Pop(), 2, "Incorrect element in Vector.");
+			AssertEqual(smallVector.Pop(), 1, "Incorrect element in Vector.");
 
 			/*
 			Test with basic objects.
 			*/
-			Vector<TestClass> oSmallVector2(5);
+			Vector<TestClass> smallVector2(5);
 
-			TestClass oFake = { 1, 'a', 1.2f };
+			TestClass fakeClass = { 1, 'a', 1.2f };
 
 			for (UInt8 i = 0; i < 5; ++i)
 			{
-				oSmallVector2.Push(oFake);
+				smallVector2.Push(fakeClass);
 			}
 
-			oSmallVector2.Remove(0);
-			oSmallVector2.Remove(3);
+			smallVector2.Remove(0);
+			smallVector2.Remove(3);
 
-			AssertEqual(oSmallVector2.Pop(), oFake, "Incorrect object in Vector.");
-			AssertEqual(oSmallVector2.Pop(), oFake, "Incorrect object in Vector.");
-			AssertEqual(oSmallVector2.Pop(), oFake, "Incorrect object in Vector.");
+			AssertEqual(smallVector2.Pop(), fakeClass, "Incorrect object in Vector.");
+			AssertEqual(smallVector2.Pop(), fakeClass, "Incorrect object in Vector.");
+			AssertEqual(smallVector2.Pop(), fakeClass, "Incorrect object in Vector.");
 
 			/*
 			Test with other Vectors
 			*/
-			Vector<Vector<int>> oSmallVector3(5);
+			Vector<Vector<int>> smallVector3(5);
 
 			for (UInt8 i = 0; i < 5; ++i)
 			{
-				Vector<int> oTemp(5);
+				Vector<int> tempVector(5);
 
 				for (UInt8 i = 0; i < 5; ++i)
 				{
-					oTemp.Push(i);
+					tempVector.Push(i);
 				}
 
-				oTemp.Remove(i);
-				oSmallVector3.Push(std::move(oTemp));
+				tempVector.Remove(i);
+				smallVector3.Push(std::move(tempVector));
 			}
 
-			oSmallVector3.Remove(0);
-			oSmallVector3.Remove(3);
+			smallVector3.Remove(0);
+			smallVector3.Remove(3);
 
-			Vector<int> oTemp(oSmallVector3.Pop());
+			Vector<int> oTemp(smallVector3.Pop());
 			AssertEqual(oTemp.Pop(), 4, "Incorrect Vector removed.");
 			AssertEqual(oTemp.Pop(), 2, "Incorrect Vector removed.");
 			AssertEqual(oTemp.Pop(), 1, "Incorrect Vector removed.");
 			AssertEqual(oTemp.Pop(), 0, "Incorrect Vector removed.");
 		}
 
-		AssertEqual(uiBytes, MemoryManager::GetTotalAllocatedBytes(),
+		AssertEqual(initialBytes, MemoryManager::GetTotalAllocatedBytes(),
 			"Failed to deallocate Vectors with removed elements.");
 
 		return true;
