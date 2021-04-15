@@ -2,7 +2,7 @@
 Used as a fake object for unit testing other classes.
 @file TestClass.h
 @author Jacob Peterson
-@edited 12/24/20
+@edited 4/14/21
 */
 
 #pragma once
@@ -14,15 +14,15 @@ namespace Soul
 	class TestClass
 	{
 	public:
-		TestClass(UInt32 iX, UInt8 iY, Float32 fZ);
-		TestClass(const TestClass& oOther);
+		TestClass(UInt32 x, UInt8 y, Float32 z);
+		TestClass(const TestClass& other);
 
-		bool operator==(const TestClass& oOther) const;
-		bool operator!=(const TestClass& oOther) const;
+		bool operator==(const TestClass& other) const;
+		bool operator!=(const TestClass& other) const;
 
 	private:
-		UInt32 _iX;
-		UInt8 _iY;
-		Float32 _fZ;
+		UInt32 m_X;
+		UInt8 m_Y;
+		Float32 m_Z;
 	};
 }

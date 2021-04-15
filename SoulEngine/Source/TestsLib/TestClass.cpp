@@ -2,36 +2,36 @@
 Used as a fake object for unit testing other classes.
 @file TestClass.cpp
 @author Jacob Peterson
-@edited 12/24/20
+@edited 4/14/21
 */
 
 #include "TestClass.h"
 
 namespace Soul
 {
-	TestClass::TestClass(UInt32 iX, UInt8 iY, Float32 fZ) :
-		_iX(iX),
-		_iY(iY),
-		_fZ(fZ)
+	TestClass::TestClass(UInt32 x, UInt8 y, Float32 z) :
+		m_X(x),
+		m_Y(y),
+		m_Z(z)
 	{
 
 	}
 
-	TestClass::TestClass(const TestClass& oOther) :
-		_iX(oOther._iX),
-		_iY(oOther._iY),
-		_fZ(oOther._fZ)
+	TestClass::TestClass(const TestClass& other) :
+		m_X(other.m_X),
+		m_Y(other.m_Y),
+		m_Z(other.m_Z)
 	{
 	
 	}
 
-	bool TestClass::operator==(const TestClass& oOther) const
+	bool TestClass::operator==(const TestClass& other) const
 	{
-		return oOther._iX == _iX && oOther._iY == _iY && oOther._fZ == _fZ;
+		return other.m_X == m_X && other.m_Y == m_Y && other.m_Z == m_Z;
 	}
 
-	bool TestClass::operator!=(const TestClass& oOther) const
+	bool TestClass::operator!=(const TestClass& other) const
 	{
-		return oOther._iX != _iX || oOther._iY != _iY || oOther._fZ != _fZ;
+		return other.m_X != m_X || other.m_Y != m_Y || other.m_Z != m_Z;
 	}
 }

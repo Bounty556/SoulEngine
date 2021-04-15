@@ -2,7 +2,7 @@
 Macros used for running unit tests.
 @file TestMacros.h
 @author Jacob Peterson
-@edited 12/26/2020
+@edited 4/14/21
 */
 
 #pragma once
