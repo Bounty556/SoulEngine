@@ -2,7 +2,7 @@
 A self-resizing array that behaves similarly to the C Standard Library Vector.
 @file Vector.h
 @author Jacob Peterson
-@edited 4/12/21
+@edited 4/15/21
 */
 
 #pragma once
@@ -165,9 +165,9 @@ namespace Soul
 		/*
 		Move memory in front of this element over.
 		*/
-		ArraySize uiElementsToMove = m_Length - (index + 1);
+		ArraySize elementsToMove = m_Length - (index + 1);
 		memcpy(&(m_Elements[index]), &(m_Elements[index + 1]),
-			uiElementsToMove * sizeof(T));
+			elementsToMove * sizeof(T));
 		--m_Length;
 		memset(&(m_Elements[m_Length]), 0, sizeof(T));
 	}
@@ -187,13 +187,27 @@ namespace Soul
 		ArraySize oldCapacity = m_Capacity;
 		m_Capacity = m_Capacity * 2 + 1;
 		UniqueHandle<T> newMemory = MemoryManager::AllocateArray<T>(m_Capacity);
+		
+		// New method: Move every element over individually, clean up old memory
 
-		/*
-		Move memory and deallocate old memory.
-		*/
-		memcpy(newMemory.GetMemory(), m_Elements.GetMemory(),
-			sizeof(T) * oldCapacity);
+		for (ArraySize i = 0; i < oldCapacity; ++i)
+		{
+			newMemory[i] = std::move(m_Elements[i]);
+		}
 		memset(m_Elements.GetMemory(), 0, sizeof(T) * oldCapacity);
 		m_Elements = std::move(newMemory);
+
+		
+		// The following doesn't work. I assume this is because it's only doing a shallow
+		// memory copy, so when we actually try to do anything the memory we could get a bunch
+		// of errors because it's trying to reference deep data that couldn't be transferred
+
+		///*
+		//Move memory and deallocate old memory.
+		//*/
+		//memcpy(newMemory.GetMemory(), m_Elements.GetMemory(),
+		//	sizeof(T) * oldCapacity);
+		//memset(m_Elements.GetMemory(), 0, sizeof(T) * oldCapacity);
+		//m_Elements = std::move(newMemory);
 	}
 }

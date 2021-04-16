@@ -17,6 +17,8 @@ Entry point for the Client side of this app.
 void StartUp();
 void ShutDown();
 
+//TODO: Crash when cleaning up multiple eventcallbacks that are tied to the same event call
+
 int main()
 {
 	Soul::Timer timer;

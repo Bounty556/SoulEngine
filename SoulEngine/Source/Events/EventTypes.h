@@ -2,7 +2,7 @@
 Contains all event types that can be used in the EventBus.
 @file EventTypes.h
 @author Jacob Peterson
-@edited 12/24/2020
+@edited 4/14/21
 */
 
 #pragma once

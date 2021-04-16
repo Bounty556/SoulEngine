@@ -7,6 +7,8 @@ Transfers events to all registered event listeners in queue order.
 
 #include "EventBus.h"
 
+#include <UtilsLib/Logger.h>
+
 namespace Soul
 {
 	UniqueHandle<Queue<Event>> EventBus::m_EventQueue;
@@ -87,6 +89,8 @@ namespace Soul
 		{
 			if (eventCallbacks[i].callbackId == Id)
 			{
+				SoulLogInfo("Callback removed");
+
 				eventCallbacks.Remove(i);
 				break;
 			}

@@ -2,7 +2,7 @@
 Tests for the EventBus and EventListener classes.
 @file EventTests.h
 @author Jacob Peterson
-@edited 12/26/2020
+@edited 4/15/21
 */
 
 #pragma once
@@ -19,6 +19,7 @@ namespace Soul
 	private:
 		bool PrimitiveDataEvent();
 		bool ObjectDataEvent();
+		bool ExpandedCallbackVector();
 		bool SeveralEvents();
 	};
 }

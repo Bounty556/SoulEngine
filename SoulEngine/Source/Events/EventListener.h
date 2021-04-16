@@ -3,7 +3,7 @@ Manages adding and removing callbacks with the EventBus to provide a thin
 layer of abstraction and automation.
 @file EventListener.h
 @author Jacob Peterson
-@edited 4/13/21
+@edited 4/14/21
 */
 
 #pragma once
@@ -55,8 +55,6 @@ namespace Soul
 		Unregisters the callback with the given id from the given event.
 
 		@param eventType - The event to unregister the callback from.
-
-		@param uiId - The id of the callback to unregister.
 		*/
 		void UnregisterCallback(Events eventType);
 
