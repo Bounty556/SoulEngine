@@ -162,14 +162,27 @@ namespace Soul
 		Assert(index < m_Length);
 		m_Elements[index].~T();
 
-		/*
-		Move memory in front of this element over.
-		*/
+		// Move memory in front of this element over.
+		// New method: Move every element over individually, clean up old memory
+
 		ArraySize elementsToMove = m_Length - (index + 1);
-		memcpy(&(m_Elements[index]), &(m_Elements[index + 1]),
-			elementsToMove * sizeof(T));
+
+		for (ArraySize i = 0; i < m_Length - 1; ++i)
+		{
+			m_Elements[index] = std::move(m_Elements[index + 1]);
+		}
+
 		--m_Length;
 		memset(&(m_Elements[m_Length]), 0, sizeof(T));
+
+		// The following doesn't work. I assume this is because it's only doing a shallow
+		// memory copy, so when we actually try to do anything the memory we could get a bunch
+		// of errors because it's trying to reference deep data that couldn't be transferred
+
+		//memcpy(&(m_Elements[index]), &(m_Elements[index + 1]),
+		//	elementsToMove * sizeof(T));
+		//--m_Length;
+		//memset(&(m_Elements[m_Length]), 0, sizeof(T));
 	}
 
 	template <class T>

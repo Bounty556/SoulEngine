@@ -95,7 +95,7 @@ namespace Soul
 
 	bool EventTests::SeveralEvents()
 	{
-		/*EventListener eventListener;
+		EventListener eventListener;
 
 		EventCallback callback = [](void* data) {
 			UInt8* intPointer = (UInt8*)data;
@@ -144,7 +144,7 @@ namespace Soul
 		*intPointer = 12;
 		eventListener.QueueEvent(Events::EventTest, intPointer);
 
-		EventBus::DispatchEvents();*/
+		EventBus::DispatchEvents();
 
 		return true;
 	}
