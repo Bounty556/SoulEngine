@@ -2,7 +2,7 @@
 Tests for the MemoryManager class.
 @file MemoryManagerTests.h
 @author Jacob Peterson
-@edited 4/14/21
+@edited 4/18/21
 */
 
 #include "MemoryManagerTests.h"
@@ -20,6 +20,8 @@ namespace Soul
 		RunTest(BasicAllocation);
 		RunTest(ArrayAllocation);
 		RunTest(VolatileAllocation);
+		RunTest(ImmovableAllocation);
+		RunTest(MemoryDefragmentation);
 	}
 
 	bool MemoryManagerTests::BasicAllocation()
@@ -77,6 +79,48 @@ namespace Soul
 		volatileInt2 = MemoryManager::AllocateVolatile<UInt32>();
 
 		AssertEqual(volatileInt, volatileInt2, "Failed to clear Volatile memory.");
+
+		return true;
+	}
+
+	bool MemoryManagerTests::ImmovableAllocation()
+	{
+		UniqueHandle<Int8> uniqueInt1;
+
+		{
+			UniqueHandle<Int8> uniqueInt2 = MemoryManager::Allocate<Int8>(1);
+			UniqueHandle<Int8> uniqueInt3 = MemoryManager::Allocate<Int8>(1);
+
+			uniqueInt1 = MemoryManager::AllocateImmovable<Int8>(1);
+		}
+
+		AssertEqual(MemoryManager::CountFragments(), 1, "Incorrect deallocation of data.");
+
+		MemoryManager::Defragment(1);
+
+		AssertEqual(MemoryManager::CountFragments(), 1, "Immovable data moved.");
+
+		return true;
+	}
+
+	bool MemoryManagerTests::MemoryDefragmentation()
+	{
+		UniqueHandle<Int8> uniqueInt1;
+		
+		{
+			UniqueHandle<Int8> uniqueInt2 = MemoryManager::Allocate<Int8>(1);
+			UniqueHandle<Int8> uniqueInt3 = MemoryManager::Allocate<Int8>(1);
+
+			uniqueInt1 = MemoryManager::Allocate<Int8>(1);
+		}
+		
+		AssertEqual(MemoryManager::CountFragments(), 1, "Incorrect deallocation of data.");
+
+		MemoryManager::Defragment(1);
+
+		AssertEqual(MemoryManager::CountFragments(), 0, "Defragmentation failed.");
+
+		return true;
 
 		return true;
 	}

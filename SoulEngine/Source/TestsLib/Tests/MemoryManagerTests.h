@@ -2,7 +2,7 @@
 Tests for the MemoryManager class.
 @file MemoryManagerTests.h
 @author Jacob Peterson
-@edited 12/26/2020
+@edited 4/18/2020
 */
 
 #pragma once
@@ -23,5 +23,7 @@ namespace Soul
 		bool BasicAllocation();
 		bool ArrayAllocation();
 		bool VolatileAllocation();
+		bool ImmovableAllocation();
+		bool MemoryDefragmentation();
 	};
 }

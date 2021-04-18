@@ -133,18 +133,6 @@ namespace Soul
 		SoulLogInfo("\n\tNodes: %d\n\tFree Bytes: %lld\n\tAllocated Bytes: %lld\n\tFragments: %d", GetNodeCount(), GetTotalFreeBytes(), GetTotalAllocatedBytes(), CountFragments());
 	}
 
-	HandleTableSize MemoryManager::GetNodeCount()
-	{
-		Handle* currentHandle = m_FirstHandle;
-		UInt32 handleCount = 0;
-		while (currentHandle)
-		{
-			++handleCount;
-			currentHandle = currentHandle->nextHandle;
-		}
-		return handleCount;
-	}
-
 	HandleTableSize MemoryManager::CountFragments()
 	{
 		/*
@@ -168,6 +156,18 @@ namespace Soul
 		}
 
 		return memoryFragments;
+	}
+
+	HandleTableSize MemoryManager::GetNodeCount()
+	{
+		Handle* currentHandle = m_FirstHandle;
+		UInt32 handleCount = 0;
+		while (currentHandle)
+		{
+			++handleCount;
+			currentHandle = currentHandle->nextHandle;
+		}
+		return handleCount;
 	}
 
 	void MemoryManager::DeleteHandle(Handle* handlePointer)

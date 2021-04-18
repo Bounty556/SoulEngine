@@ -161,6 +161,14 @@ namespace Soul
 		*/
 		static void PrintMemory();
 
+		/*
+		Counts the total amount of empty blocks of memory that are between the
+		start of the addressable memory and the last block of memory.
+
+		@return The number of empty block fragments.
+		*/
+		static HandleTableSize CountFragments();
+
 	private:
 		MemoryManager() = delete;
 
@@ -172,14 +180,6 @@ namespace Soul
 		        in this MemoryManager.
 		*/
 		static HandleTableSize GetNodeCount();
-
-		/*
-		Counts the total amount of empty blocks of memory that are between the
-		start of the addressable memory and the last block of memory.
-
-		@return The number of empty block fragments.
-		*/
-		static HandleTableSize CountFragments();
 
 		/*
 		Creates a new handle pointing to a memory block that can hold the
