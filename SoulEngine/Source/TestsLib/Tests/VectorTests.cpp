@@ -2,7 +2,7 @@
 Tests for the Vector class.
 @file VectorTests.h
 @author Jacob Peterson
-@edited 4/14/21
+@edited 4/18/21
 */
 
 #include "VectorTests.h"

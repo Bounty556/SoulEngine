@@ -2,7 +2,7 @@
 Transfers events to all registered event listeners in queue order.
 @file EventBus.h
 @author Jacob Peterson
-@edited 4/21/21
+@edited 4/18/21
 */
 
 #include "EventBus.h"
@@ -89,8 +89,6 @@ namespace Soul
 		{
 			if (eventCallbacks[i].callbackId == Id)
 			{
-				SoulLogInfo("Callback removed");
-
 				eventCallbacks.Remove(i);
 				break;
 			}

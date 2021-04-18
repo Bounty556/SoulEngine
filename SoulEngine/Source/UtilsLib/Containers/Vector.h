@@ -2,7 +2,7 @@
 A self-resizing array that behaves similarly to the C Standard Library Vector.
 @file Vector.h
 @author Jacob Peterson
-@edited 4/15/21
+@edited 4/18/21
 */
 
 #pragma once
@@ -163,13 +163,15 @@ namespace Soul
 		m_Elements[index].~T();
 
 		// Move memory in front of this element over.
-		// New method: Move every element over individually, clean up old memory
+		// New method: Move every element over individually with std::move
 
-		ArraySize elementsToMove = m_Length - (index + 1);
-
-		for (ArraySize i = 0; i < m_Length - 1; ++i)
+		for (ArraySize i = index; i < m_Length - 1; ++i)
 		{
-			m_Elements[index] = std::move(m_Elements[index + 1]);
+			// We have to set the memory for the current element to 0's so
+			// we're not calling the move assignment on data that's already
+			// dead
+			memset(&(m_Elements[i]), 0, sizeof(T));
+			m_Elements[i] = std::move(m_Elements[i + 1]);
 		}
 
 		--m_Length;
@@ -179,10 +181,11 @@ namespace Soul
 		// memory copy, so when we actually try to do anything the memory we could get a bunch
 		// of errors because it's trying to reference deep data that couldn't be transferred
 
-		//memcpy(&(m_Elements[index]), &(m_Elements[index + 1]),
-		//	elementsToMove * sizeof(T));
-		//--m_Length;
-		//memset(&(m_Elements[m_Length]), 0, sizeof(T));
+		/*ArraySize elementsToMove = m_Length - (index + 1);
+		memcpy(&(m_Elements[index]), &(m_Elements[index + 1]),
+			elementsToMove * sizeof(T));
+		--m_Length;
+		memset(&(m_Elements[m_Length]), 0, sizeof(T));*/
 	}
 
 	template <class T>

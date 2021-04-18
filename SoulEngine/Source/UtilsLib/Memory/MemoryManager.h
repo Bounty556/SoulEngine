@@ -2,7 +2,7 @@
 Reserves an initial amount of memory for the engine to be allocated as needed.
 @file MemoryManager.h
 @author Jacob Peterson
-@edited 4/8/21
+@edited 4/18/21
 */
 
 #pragma once
@@ -32,6 +32,7 @@ namespace Soul
 		ByteCount byteSize; // Size of the memory block that this handle points to.
 		ArraySize elementCount; // Number of elements allocated in the memory block.
 		bool isUsed; // Whether this handle is currently in use.
+		bool isCopyable; // Whether the data under this handle can be trivially copied.
 	};
 
 	/*
@@ -78,6 +79,19 @@ namespace Soul
 		*/
 		template <class T, class... Args>
 		static UniqueHandle<T> Allocate(Args&&... args);
+
+		/*
+		Attempts to allocate immovable memory for the provided object type. This
+		data will never attempt to be defragmented by the memory arena. Useful for
+		storing types that can't be trivially copied.
+
+		@param args - The arguments to initialize the object with.
+
+		@return UniqueHandle<T> containing the handle that points to the newly
+								allocated memory.
+		*/
+		template <class T, class... Args>
+		static UniqueHandle<T> AllocateImmovable(Args&&... args);
 
 		/*
 		Attempts to allocate the provided amount of memory in the arena.
@@ -175,11 +189,10 @@ namespace Soul
 		@param count - The number of elements to reserve space for at the
 		                 new block of memory.
 
-		@param args - The arguments to be passed to the elements constructor
-		               if this is not an array allocation.
+		@param copyable - Whether this memory is trivially copyable or not.
 		*/
 		template <class T>
-		static Handle* SetupNewHandle(ArraySize count);
+		static Handle* SetupNewHandle(ArraySize count, bool copyable);
 
 		/*
 		Deletes the provided handle and patches the handle table around it.
@@ -232,7 +245,18 @@ namespace Soul
 	{
 		Assert(m_IsSetup);
 
-		Handle* newHandle = SetupNewHandle<T>(1);
+		Handle* newHandle = SetupNewHandle<T>(1, true);
+		new (newHandle->location) T(std::forward<Args>(args)...);
+		UniqueHandle<T> uniqueHandle(newHandle);
+		return std::move(uniqueHandle);
+	}
+
+	template <class T, class... Args>
+	static UniqueHandle<T> MemoryManager::AllocateImmovable(Args&&... args)
+	{
+		Assert(m_IsSetup);
+
+		Handle* newHandle = SetupNewHandle<T>(1, false);
 		new (newHandle->location) T(std::forward<Args>(args)...);
 		UniqueHandle<T> uniqueHandle(newHandle);
 		return std::move(uniqueHandle);
@@ -243,7 +267,7 @@ namespace Soul
 	{
 		Assert(m_IsSetup);
 
-		Handle* newHandle = SetupNewHandle<T>(count);
+		Handle* newHandle = SetupNewHandle<T>(count, true);
 		UniqueHandle<T> uniqueHandle(newHandle);
 		return std::move(uniqueHandle);
 	}
@@ -278,7 +302,7 @@ namespace Soul
 	}
 
 	template <class T>
-	Handle* MemoryManager::SetupNewHandle(ArraySize count)
+	Handle* MemoryManager::SetupNewHandle(ArraySize count, bool copyable)
 	{
 		// TODO: Move FindFirstFreeMemoryBlock call onto a separate thread.
 		/*
@@ -318,6 +342,7 @@ namespace Soul
 		currentHandle->byteSize = count * sizeof(T);
 		currentHandle->elementCount = count;
 		currentHandle->isUsed = true;
+		currentHandle->isCopyable = copyable;
 
 		return currentHandle;
 	}

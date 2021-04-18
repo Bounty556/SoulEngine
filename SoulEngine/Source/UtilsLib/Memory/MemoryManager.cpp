@@ -2,7 +2,7 @@
 Reserves an initial amount of memory for the engine to be allocated as needed.
 @file MemoryManager.cpp
 @author Jacob Peterson
-@edited 4/8/21
+@edited 4/18/21
 */
 
 #include "MemoryManager.h"
@@ -92,7 +92,9 @@ namespace Soul
 		{
 			ByteCount uiDistance =
 				ByteDistance(previousBlockEnd, currentHandle->location);
-			if (uiDistance > 0)
+
+			// Only defrag this block if it is movable and can be moved.
+			if (uiDistance > 0 && currentHandle->isCopyable)
 			{
 				MoveHandle(currentHandle, previousBlockEnd);
 				++movedBlocks;
@@ -252,6 +254,8 @@ namespace Soul
 
 	void MemoryManager::MoveHandle(Handle* handle, void* newLocation)
 	{
+		Assert(handle->isCopyable);
+
 		memcpy(newLocation, handle->location, handle->byteSize);
 		handle->location = newLocation;
 	}
