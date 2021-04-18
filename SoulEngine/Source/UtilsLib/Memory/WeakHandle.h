@@ -4,7 +4,7 @@ within it. The MemoryManager returns UniqueHandles which can then be used to
 form weak pointers to memory.
 @file WeakHandle.h
 @author Jacob Peterson
-@edited 4/12/21
+@edited 4/18/21
 */
 
 #pragma once
@@ -61,6 +61,14 @@ namespace Soul
 		@return Pointer to the memory managed by this handle.
 		*/
 		T* GetMemory();
+
+		/*
+		Makes the data this WeakPointer points to unable to be defragmented
+		by the MemoryManager.
+
+		@param isImmovable - Whether the data is immovable or not.
+		*/
+		void SetImmovable(bool isImmovable);
 
 	private:
 		Handle* m_Handle; // Pointer to this WeakHandle's Handle.
@@ -196,5 +204,13 @@ namespace Soul
 	T* WeakHandle<T>::GetMemory()
 	{
 		return (T*)m_Handle->location;
+	}
+
+	template <class T>
+	void WeakHandle<T>::SetImmovable(bool isImmovable)
+	{
+		Assert(m_IsValid);
+
+		m_Handle->isCopyable = !isImmovable;
 	}
 }

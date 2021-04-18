@@ -4,7 +4,7 @@ within it. The MemoryManager returns UniqueHandles which can then be used like
 normal pointers to memory.
 @file UniqueHandle.h
 @author Jacob Peterson
-@edited 4/12/21
+@edited 4/18/21
 */
 
 #pragma once
@@ -68,6 +68,14 @@ namespace Soul
 		@return Pointer to the memory managed by this handle.
 		*/
 		T* GetMemory();
+
+		/*
+		Makes the data this UniquePointer points to unable to be defragmented
+		by the MemoryManager.
+
+		@param isImmovable - Whether the data is immovable or not.
+		*/
+		void SetImmovable(bool isImmovable);
 
 		UniqueHandle(const UniqueHandle&) = delete;
 		UniqueHandle<T>& operator=(const UniqueHandle&) = delete;
@@ -207,5 +215,13 @@ namespace Soul
 	T* UniqueHandle<T>::GetMemory()
 	{
 		return (T*)m_Handle->location;
+	}
+
+	template <class T>
+	void UniqueHandle<T>::SetImmovable(bool isImmovable)
+	{
+		Assert(m_IsValid);
+
+		m_Handle->isCopyable = !isImmovable;
 	}
 }

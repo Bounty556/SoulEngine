@@ -91,7 +91,8 @@ namespace Soul
 			UniqueHandle<Int8> uniqueInt2 = MemoryManager::Allocate<Int8>(1);
 			UniqueHandle<Int8> uniqueInt3 = MemoryManager::Allocate<Int8>(1);
 
-			uniqueInt1 = MemoryManager::AllocateImmovable<Int8>(1);
+			uniqueInt1 = MemoryManager::Allocate<Int8>(1);
+			uniqueInt1.SetImmovable(true);
 		}
 
 		AssertEqual(MemoryManager::CountFragments(), 1, "Incorrect deallocation of data.");
