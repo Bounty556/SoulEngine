@@ -17,8 +17,6 @@ Entry point for the Client side of this app.
 void StartUp();
 void ShutDown();
 
-// TODO: Test the new 'immovable' memory type
-
 int main()
 {
 	Soul::Timer timer;

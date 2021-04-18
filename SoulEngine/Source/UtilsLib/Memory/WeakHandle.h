@@ -70,6 +70,14 @@ namespace Soul
 		*/
 		void SetImmovable(bool isImmovable);
 
+		/*
+		Returns whether the data at the underlying handle can not be moved
+		trivially.
+
+		@return True if the underlying data can not be moved trivially.
+		*/
+		const bool IsImmovable() const;
+
 	private:
 		Handle* m_Handle; // Pointer to this WeakHandle's Handle.
 		bool m_IsValid; // Whether this WeakHandle is active and usable.
@@ -212,5 +220,13 @@ namespace Soul
 		Assert(m_IsValid);
 
 		m_Handle->isCopyable = !isImmovable;
+	}
+
+	template <class T>
+	const bool WeakHandle<T>::IsImmovable() const
+	{
+		Assert(m_IsValid);
+
+		return !m_Handle->isCopyable;
 	}
 }

@@ -21,7 +21,12 @@ namespace Soul
 	class Vector
 	{
 	public:
-		Vector(ArraySize capacity);
+		/*
+		@param capacity - Number of preallocated data slots.
+
+		@param copyable - Whether the data in this vector can be trivially copied.
+		*/
+		Vector(ArraySize capacity, bool copyable = true);
 		Vector(Vector&& otherVector);
 
 		Vector<T>& operator=(Vector&& otherVector);
@@ -79,12 +84,15 @@ namespace Soul
 	};
 
 	template <class T>
-	Vector<T>::Vector(ArraySize capacity) :
+	Vector<T>::Vector(ArraySize capacity, bool copyable) :
 		m_Elements(MemoryManager::AllocateArray<T>(capacity)),
 		m_Capacity(capacity),
 		m_Length(0)
 	{
-
+		if (!copyable)
+		{
+			m_Elements.SetImmovable(true);
+		}
 	}
 
 	template <class T>
@@ -203,6 +211,10 @@ namespace Soul
 		ArraySize oldCapacity = m_Capacity;
 		m_Capacity = m_Capacity * 2 + 1;
 		UniqueHandle<T> newMemory = MemoryManager::AllocateArray<T>(m_Capacity);
+		if (m_Elements.IsImmovable())
+		{
+			newMemory.SetImmovable(true);
+		}
 		
 		// New method: Move every element over individually, clean up old memory
 

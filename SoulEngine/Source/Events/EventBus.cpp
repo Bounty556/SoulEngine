@@ -22,6 +22,7 @@ namespace Soul
 		m_EventQueue = MemoryManager::Allocate<Queue<Event>>(eventCount);
 		m_RegisteredCallbacks =
 			MemoryManager::AllocateArray<Vector<Callback>>((ArraySize)Events::EventTotal);
+		m_RegisteredCallbacks.SetImmovable(true);
 
 		for (ArraySize i = 0; i < (ArraySize)Events::EventTotal; ++i)
 		{

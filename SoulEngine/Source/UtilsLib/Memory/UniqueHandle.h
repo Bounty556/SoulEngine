@@ -77,6 +77,14 @@ namespace Soul
 		*/
 		void SetImmovable(bool isImmovable);
 
+		/*
+		Returns whether the data at the underlying handle can not be moved
+		trivially.
+
+		@return True if the underlying data can not be moved trivially.
+		*/
+		const bool IsImmovable() const;
+
 		UniqueHandle(const UniqueHandle&) = delete;
 		UniqueHandle<T>& operator=(const UniqueHandle&) = delete;
 
@@ -223,5 +231,13 @@ namespace Soul
 		Assert(m_IsValid);
 
 		m_Handle->isCopyable = !isImmovable;
+	}
+
+	template <class T>
+	const bool UniqueHandle<T>::IsImmovable() const
+	{
+		Assert(m_IsValid);
+
+		return !m_Handle->isCopyable;
 	}
 }
