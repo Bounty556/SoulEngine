@@ -2,7 +2,7 @@
 Contains commonly used macros.
 @file Macros.h
 @author Jacob Peterson
-@edited 4/19/20
+@edited 4/19/21
 */
 
 #pragma once
