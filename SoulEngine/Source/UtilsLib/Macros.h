@@ -20,5 +20,3 @@ else {*((int*)0) = 0;}
 
 #define ToString(x) #x
 #define Stringify(x) ToString(x)
-
-#define ArrayLength(x) ((sizeof(x)/sizeof(0[x])) / ((size_t)(!(sizeof(x) % sizeof(0[x])))))

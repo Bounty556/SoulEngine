@@ -81,8 +81,8 @@ namespace Soul
 		static ArraySize StringLength(const char* string);
 
 	private:
-		UniqueHandle<char> m_CString; // Handle to the C-String
 		ArraySize m_Length; // Length of currently stored C-String
 		ArraySize m_Capacity; // Capacity of m_CString, including null terminator
+		UniqueHandle<char> m_CString; // Handle to the C-String
 	};
 }

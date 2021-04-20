@@ -8,32 +8,43 @@ such strings.
 
 #include "String.h"
 
+#include <cstring>
+
 #include <UtilsLib/Memory/MemoryManager.h>
+#include <UtilsLib/Macros.h>
 
 namespace Soul
 {
 	String::String() :
-		m_CString(MemoryManager::AllocateArray<char>(8)),
 		m_Length(0),
-		m_Capacity(8)
+		m_Capacity(8),
+		m_CString(MemoryManager::AllocateArray<char>(m_Capacity))
 	{
-
 	}
 
 	String::String(const char* string) :
-		m_CString(MemoryManager::AllocateArray<char>())
+		m_Length(strlen(string)),
+		m_Capacity(m_Length + 1),
+		m_CString(MemoryManager::AllocateArray<char>(m_Capacity))
 	{
-
+		memcpy(m_CString.GetMemory(), string, m_Capacity);
 	}
 
-	String::String(String&& otherString)
+	String::String(String&& otherString) :
+		m_Length(otherString.m_Length),
+		m_Capacity(otherString.m_Capacity),
+		m_CString(std::move(otherString.m_CString))
 	{
-
+		otherString.m_Length = 0;
+		otherString.m_Capacity = 8;
 	}
 
-	String::String(const String& otherString)
+	String::String(const String& otherString) :
+		m_Length(otherString.m_Length),
+		m_Capacity(otherString.m_Capacity),
+		m_CString(MemoryManager::AllocateArray<char>(m_Capacity))
 	{
-
+		//memcpy(m_CString.GetMemory(), otherString.m_CString.GetMemory())
 	}
 
 	String& String::operator=(const char* string)
