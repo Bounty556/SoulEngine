@@ -2,7 +2,7 @@
 Contains commonly used macros.
 @file Macros.h
 @author Jacob Peterson
-@edited 12/21/20
+@edited 4/19/20
 */
 
 #pragma once
@@ -20,3 +20,5 @@ else {*((int*)0) = 0;}
 
 #define ToString(x) #x
 #define Stringify(x) ToString(x)
+
+#define ArrayLength(x) ((sizeof(x)/sizeof(0[x])) / ((size_t)(!(sizeof(x) % sizeof(0[x])))))
