@@ -70,6 +70,13 @@ namespace Soul
 		T* GetMemory();
 
 		/*
+		USE CAUTIOUSLY!!! Gets the memory at pointed to by this handle.
+
+		@return Pointer to the memory managed by this handle.
+		*/
+		const T* GetMemory() const;
+
+		/*
 		Makes the data this UniquePointer points to unable to be defragmented
 		by the MemoryManager.
 
@@ -223,6 +230,12 @@ namespace Soul
 	T* UniqueHandle<T>::GetMemory()
 	{
 		return (T*)m_Handle->location;
+	}
+
+	template <class T>
+	const T* UniqueHandle<T>::GetMemory() const
+	{
+		return (const T*)m_Handle->location;
 	}
 
 	template <class T>

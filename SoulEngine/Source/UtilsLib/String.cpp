@@ -44,7 +44,7 @@ namespace Soul
 		m_Capacity(otherString.m_Capacity),
 		m_CString(MemoryManager::AllocateArray<char>(m_Capacity))
 	{
-		//memcpy(m_CString.GetMemory(), otherString.m_CString.GetMemory())
+		memcpy(m_CString.GetMemory(), otherString.m_CString.GetMemory(), m_Capacity);
 	}
 
 	String& String::operator=(const char* string)
