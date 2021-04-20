@@ -22,11 +22,16 @@ namespace Soul
 		String(const String& otherString);
 
 		String& operator=(const char* string);
-		String& operator=(const String& otherString);
 		String& operator=(String&& otherString);
-		String& operator+(const char* string);
-		String& operator+(const String& otherString);
-		char operator[](Index index);
+		String& operator=(const String& otherString);
+		String operator+(const char* string);
+		String operator+(const String& otherString);
+		bool operator==(const String& otherString);
+		bool operator==(const char* string);
+		bool operator!=(const String& otherString);
+		bool operator!=(const char* string);
+		char& operator[](Index index);
+		const char& operator[](Index index) const;
 		operator const char*() const;
 
 		/*
@@ -53,13 +58,14 @@ namespace Soul
 
 		/*
 		Returns the index of the first instance of the provided character in 
-		this String.
+		this String, or -1 if character isn't found.
 
 		@param findChar - The character to find in this String.
 
-		@return - Index of the first instance of the provided character.
+		@return - Index of the first instance of the provided character, or -1
+		          if the character isn't found.
 		*/
-		Index FindFirstOf(char findChar) const;
+		Int32 FindFirstOf(char findChar) const;
 
 		/*
 		Returns the length of this String.
@@ -74,11 +80,6 @@ namespace Soul
 		@return - Pointer to the underlying C-String.
 		*/
 		const char* GetCString() const;
-
-		/*
-		Returns the Length of the provided C-String.
-		*/
-		static ArraySize StringLength(const char* string);
 
 	private:
 		ArraySize m_Length; // Length of currently stored C-String
