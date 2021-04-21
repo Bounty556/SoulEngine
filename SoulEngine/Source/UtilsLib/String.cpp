@@ -187,9 +187,9 @@ namespace Soul
 		Assert(start >= 0 && start < m_Length && end > start && end <= m_Length);
 
 		String tempString;
-		tempString.m_Length = start - end;
-		tempString.m_Capacity = m_Length + 1;
-		tempString.m_CString = MemoryManager::AllocateArray<char>(m_Capacity);
+		tempString.m_Length = end - start;
+		tempString.m_Capacity = tempString.m_Length + 1;
+		tempString.m_CString = MemoryManager::AllocateArray<char>(tempString.m_Capacity);
 		memcpy(tempString.m_CString.GetMemory(), m_CString.GetMemory() + start,
 			tempString.m_Length);
 

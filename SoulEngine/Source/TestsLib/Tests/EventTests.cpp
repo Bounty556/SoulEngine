@@ -1,6 +1,6 @@
 /*
 Tests for the EventBus and EventListener classes.
-@file EventTests.cpp
+@file EventTests.h
 @author Jacob Peterson
 @edited 4/15/21
 */

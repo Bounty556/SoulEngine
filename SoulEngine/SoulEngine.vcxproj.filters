@@ -16,6 +16,7 @@
     <ClCompile Include="Source\UtilsLib\Memory\MemoryManager.cpp" />
     <ClCompile Include="Source\UtilsLib\Timer.cpp" />
     <ClCompile Include="Source\UtilsLib\String.cpp" />
+    <ClCompile Include="Source\TestsLib\Tests\StringTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Events\EventBus.h" />
@@ -41,5 +42,6 @@
     <ClInclude Include="Source\UtilsLib\Memory\UniqueHandle.h" />
     <ClInclude Include="Source\UtilsLib\Timer.h" />
     <ClInclude Include="Source\UtilsLib\String.h" />
+    <ClInclude Include="Source\TestsLib\Tests\StringTests.h" />
   </ItemGroup>
 </Project>
