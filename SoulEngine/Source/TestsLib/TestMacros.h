@@ -2,7 +2,7 @@
 Macros used for running unit tests.
 @file TestMacros.h
 @author Jacob Peterson
-@edited 4/14/21
+@edited 4/20/21
 */
 
 #pragma once
@@ -24,6 +24,16 @@ if (x()) \
 }
 
 #define AssertNotEqual(x, y, msg) if ((x) == (y)) \
+{ \
+	SoulLogError("Test failed on line " Stringify(__LINE__) ". " msg); \
+}
+
+#define AssertTrue(x, msg) if (!(x)) \
+{ \
+	SoulLogError("Test failed on line " Stringify(__LINE__) ". " msg); \
+}
+
+#define AssertFalse(x, msg) if ((x)) \
 { \
 	SoulLogError("Test failed on line " Stringify(__LINE__) ". " msg); \
 }
