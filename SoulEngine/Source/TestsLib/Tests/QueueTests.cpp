@@ -2,15 +2,15 @@
 Tests for the Queue class.
 @file QueueTests.cpp
 @author Jacob Peterson
-@edited 4/14/21
+@edited 4/21/21
 */
 
 #include "QueueTests.h"
 
+#include <Memory/MemoryManager.h>
 #include <TestsLib/TestMacros.h>
 #include <UtilsLib/CommonTypes.h>
 #include <UtilsLib/Containers/Queue.h>
-#include <UtilsLib/Memory/MemoryManager.h>
 
 namespace Soul
 {

@@ -2,14 +2,14 @@
 FIFO container.
 @file Queue.h
 @author Jacob Peterson
-@edited 4/12/21
+@edited 4/21/21
 */
 
 #pragma once
 
+#include <Memory/MemoryManager.h>
+#include <Memory/UniqueHandle.h>
 #include <UtilsLib/CommonTypes.h>
-#include <UtilsLib/Memory/MemoryManager.h>
-#include <UtilsLib/Memory/UniqueHandle.h>
 
 namespace Soul
 {

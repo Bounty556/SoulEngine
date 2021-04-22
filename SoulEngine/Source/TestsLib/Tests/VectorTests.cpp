@@ -2,15 +2,15 @@
 Tests for the Vector class.
 @file VectorTests.h
 @author Jacob Peterson
-@edited 4/18/21
+@edited 4/21/21
 */
 
 #include "VectorTests.h"
 
+#include <Memory/MemoryManager.h>
 #include <TestsLib/TestClass.h>
 #include <TestsLib/TestMacros.h>
 #include <UtilsLib/Containers/Vector.h>
-#include <UtilsLib/Memory/MemoryManager.h>
 
 namespace Soul
 {

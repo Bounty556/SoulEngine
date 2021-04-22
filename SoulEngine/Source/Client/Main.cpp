@@ -5,10 +5,10 @@ Entry point for the Client side of this app.
 */
 
 #include <Events/EventBus.h>
+#include <Memory/MemoryManager.h>
+#include <Memory/UniqueHandle.h>
 #include <UtilsLib/CommonTypes.h>
 #include <UtilsLib/Macros.h>
-#include <UtilsLib/Memory/MemoryManager.h>
-#include <UtilsLib/Memory/UniqueHandle.h>
 #include <UtilsLib/Logger.h>
 #include <UtilsLib/Timer.h>
 

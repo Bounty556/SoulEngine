@@ -4,12 +4,12 @@ within it. The MemoryManager returns UniqueHandles which can then be used like
 normal pointers to memory.
 @file UniqueHandle.h
 @author Jacob Peterson
-@edited 4/18/21
+@edited 4/21/21
 */
 
 #pragma once
 
-#include <UtilsLib/Memory/MemoryManager.h>
+#include <Memory/MemoryManager.h>
 
 namespace Soul
 {

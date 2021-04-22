@@ -2,16 +2,16 @@
 Tests for the MemoryManager class.
 @file MemoryManagerTests.h
 @author Jacob Peterson
-@edited 4/18/21
+@edited 4/21/21
 */
 
 #include "MemoryManagerTests.h"
 
+#include <Memory/MemoryManager.h>
+#include <Memory/UniqueHandle.h>
 #include <TestsLib/TestMacros.h>
 #include <UtilsLib/CommonTypes.h>
 #include <UtilsLib/Logger.h>
-#include <UtilsLib/Memory/MemoryManager.h>
-#include <UtilsLib/Memory/UniqueHandle.h>
 
 namespace Soul
 {

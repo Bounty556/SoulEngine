@@ -2,13 +2,13 @@
 Reserves an initial amount of memory for the engine to be allocated as needed.
 @file MemoryManager.cpp
 @author Jacob Peterson
-@edited 4/18/21
+@edited 4/21/21
 */
 
 #include "MemoryManager.h"
 
+#include <Memory/UniqueHandle.h>
 #include <UtilsLib/Logger.h>
-#include <UtilsLib/Memory/UniqueHandle.h>
 
 namespace Soul
 {

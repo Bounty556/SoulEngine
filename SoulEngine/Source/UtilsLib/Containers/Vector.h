@@ -2,14 +2,14 @@
 A self-resizing array that behaves similarly to the C Standard Library Vector.
 @file Vector.h
 @author Jacob Peterson
-@edited 4/18/21
+@edited 4/21/21
 */
 
 #pragma once
 
+#include <Memory/MemoryManager.h>
+#include <Memory/UniqueHandle.h>
 #include <UtilsLib/CommonTypes.h>
-#include <UtilsLib/Memory/MemoryManager.h>
-#include <UtilsLib/Memory/UniqueHandle.h>
 
 namespace Soul
 {

@@ -2,7 +2,7 @@
 Transfers events to all registered event listeners in queue order.
 @file EventBus.h
 @author Jacob Peterson
-@edited 4/12/21
+@edited 4/21/21
 */
 
 #pragma once
@@ -10,10 +10,10 @@ Transfers events to all registered event listeners in queue order.
 #include <functional>
 
 #include <Events/EventTypes.h>
+#include <Memory/MemoryManager.h>
 #include <UtilsLib/CommonTypes.h>
 #include <UtilsLib/Containers/Queue.h>
 #include <UtilsLib/Containers/Vector.h>
-#include <UtilsLib/Memory/MemoryManager.h>
 
 typedef std::function<void(void*)> EventCallback;
 typedef UInt64 CallbackId;

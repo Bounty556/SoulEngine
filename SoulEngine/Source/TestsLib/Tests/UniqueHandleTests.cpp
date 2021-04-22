@@ -2,14 +2,14 @@
 Tests for the UniqueHandle class.
 @file UniqueHandleTests.cpp
 @author Jacob Peterson
-@edited 4/14/21
+@edited 4/21/21
 */
 
 #include "UniqueHandleTests.h"
 
+#include <Memory/MemoryManager.h>
+#include <Memory/UniqueHandle.h>
 #include <TestsLib/TestMacros.h>
-#include <UtilsLib/Memory/MemoryManager.h>
-#include <UtilsLib/Memory/UniqueHandle.h>
 
 namespace Soul
 {

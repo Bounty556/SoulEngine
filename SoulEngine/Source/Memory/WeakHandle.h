@@ -4,13 +4,13 @@ within it. The MemoryManager returns UniqueHandles which can then be used to
 form weak pointers to memory.
 @file WeakHandle.h
 @author Jacob Peterson
-@edited 4/18/21
+@edited 4/21/21
 */
 
 #pragma once
 
-#include <UtilsLib/Memory/MemoryManager.h>
-#include <UtilsLib/Memory/UniqueHandle.h>
+#include <Memory/MemoryManager.h>
+#include <Memory/UniqueHandle.h>
 
 namespace Soul
 {

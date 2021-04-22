@@ -3,13 +3,13 @@ Used to manage C-Strings and provide utility functions and operations around
 such strings.
 @file String.h
 @author Jacob Peterson
-@edited 4/19/21
+@edited 4/21/21
 */
 
 #pragma once
 
+#include <Memory/UniqueHandle.h>
 #include <UtilsLib/CommonTypes.h>
-#include <UtilsLib/Memory/UniqueHandle.h>
 
 namespace Soul
 {

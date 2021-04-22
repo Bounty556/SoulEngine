@@ -2,15 +2,15 @@
 Tests for the WeakHandle class.
 @file WeakHandleTests.cpp
 @author Jacob Peterson
-@edited 4/14/21
+@edited 4/21/21
 */
 
 #include "WeakHandleTests.h"
 
+#include <Memory/MemoryManager.h>
+#include <Memory/UniqueHandle.h>
+#include <Memory/WeakHandle.h>
 #include <TestsLib/TestMacros.h>
-#include <UtilsLib/Memory/MemoryManager.h>
-#include <UtilsLib/Memory/UniqueHandle.h>
-#include <UtilsLib/Memory/WeakHandle.h>
 
 namespace Soul
 {

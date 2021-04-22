@@ -3,14 +3,14 @@ Used to manage C-Strings and provide utility functions and operations around
 such strings.
 @file String.cpp
 @author Jacob Peterson
-@edited 4/19/21
+@edited 4/21/21
 */
 
 #include "String.h"
 
 #include <cstring>
 
-#include <UtilsLib/Memory/MemoryManager.h>
+#include <Memory/MemoryManager.h>
 #include <UtilsLib/Macros.h>
 
 namespace Soul

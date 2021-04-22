@@ -24,7 +24,7 @@
     <ClCompile Include="Source\TestsLib\Tests\VectorTests.cpp" />
     <ClCompile Include="Source\TestsLib\Tests\WeakHandleTests.cpp" />
     <ClCompile Include="Source\UtilsLib\Logger.cpp" />
-    <ClCompile Include="Source\UtilsLib\Memory\MemoryManager.cpp" />
+    <ClCompile Include="Source\Memory\MemoryManager.cpp" />
     <ClCompile Include="Source\UtilsLib\String.cpp" />
     <ClCompile Include="Source\UtilsLib\Timer.cpp" />
   </ItemGroup>
@@ -48,9 +48,9 @@
     <ClInclude Include="Source\UtilsLib\Containers\Vector.h" />
     <ClInclude Include="Source\UtilsLib\Logger.h" />
     <ClInclude Include="Source\UtilsLib\Macros.h" />
-    <ClInclude Include="Source\UtilsLib\Memory\MemoryManager.h" />
-    <ClInclude Include="Source\UtilsLib\Memory\WeakHandle.h" />
-    <ClInclude Include="Source\UtilsLib\Memory\UniqueHandle.h" />
+    <ClInclude Include="Source\Memory\MemoryManager.h" />
+    <ClInclude Include="Source\Memory\WeakHandle.h" />
+    <ClInclude Include="Source\Memory\UniqueHandle.h" />
     <ClInclude Include="Source\UtilsLib\String.h" />
     <ClInclude Include="Source\UtilsLib\Timer.h" />
   </ItemGroup>
