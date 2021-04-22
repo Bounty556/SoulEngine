@@ -60,8 +60,8 @@ namespace Soul
 
 		DWORD bytesWritten;
 		// TODO: Provide alternative?
-		Assert(WriteFile(fileHandle, m_FileContents.GetCString(), m_FileContents.Length(),
-			&bytesWritten, 0));
+		Assert(WriteFile(fileHandle, m_FileContents.GetCString(),
+			(DWORD)m_FileContents.Length(), &bytesWritten, 0));
 
 		CloseHandle(fileHandle);
 	}

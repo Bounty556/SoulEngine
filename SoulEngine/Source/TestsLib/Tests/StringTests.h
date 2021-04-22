@@ -2,7 +2,7 @@
 Tests for the String class.
 @file StringTests.h
 @author Jacob Peterson
-@edited 4/20/21
+@edited 4/21/21
 */
 
 #pragma once
@@ -24,5 +24,6 @@ namespace Soul
 		bool CharCastString();
 		bool Substring();
 		bool IndexOfChar();
+		bool EditChar();
 	};
 }

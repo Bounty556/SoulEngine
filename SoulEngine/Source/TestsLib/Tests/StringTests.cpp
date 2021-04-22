@@ -2,7 +2,7 @@
 Tests for the String class.
 @file StringTests.cpp
 @author Jacob Peterson
-@edited 4/20/21
+@edited 4/21/21
 */
 
 #include "StringTests.h"
@@ -206,6 +206,24 @@ namespace Soul
 			AssertEqual(string.FindFirstOf('t'), 0, "Failed to find 't'.");
 			AssertEqual(string.FindFirstOf('i'), 4, "Failed to find 'i'.");
 			AssertEqual(string.FindFirstOf('x'), -1, "Found incorrect character.");
+		}
+
+		AssertEqual(initialBytes, MemoryManager::GetTotalAllocatedBytes(),
+			"Failed to deallocate Strings.");
+
+		return true;
+	}
+
+	bool StringTests::EditChar()
+	{
+		ByteCount initialBytes = MemoryManager::GetTotalAllocatedBytes();
+
+		{
+			String string("Testing");
+
+			string[0] = 'R';
+
+			AssertEqual(string[0], 'R', "Failed to edit character in string.");
 		}
 
 		AssertEqual(initialBytes, MemoryManager::GetTotalAllocatedBytes(),
