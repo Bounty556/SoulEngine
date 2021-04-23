@@ -32,6 +32,11 @@ namespace Soul
 		read.
 		*/
 		void WriteStringToFile();
+		
+		/*
+		Deletes the file at the currently loaded file path.
+		*/
+		void DeleteTextFile();
 
 		/*
 		Gets the underlying String that acts as the buffer for this file reader.

@@ -58,6 +58,9 @@
     <ClInclude Include="Source\UtilsLib\String.h" />
     <ClInclude Include="Source\UtilsLib\Timer.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Data\Test.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

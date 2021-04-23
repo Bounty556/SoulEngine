@@ -2,7 +2,7 @@
 Used to create, open, and edit text files from the OS.
 @file TextFile.cpp
 @author Jacob Peterson
-@edited 4/21/21
+@edited 4/23/21
 */
 
 #include "TextFile.h"
@@ -19,7 +19,7 @@ namespace Soul
 		m_FilePath(fileName),
 		m_FileContents()
 	{
-		HANDLE fileHandle = CreateFileA(m_FilePath, GENERIC_READ, 0, 0, OPEN_EXISTING,
+		HANDLE fileHandle = CreateFileA(m_FilePath, GENERIC_READ, 0, 0, OPEN_ALWAYS,
 			FILE_ATTRIBUTE_NORMAL, NULL);
 		
 		// TODO: Provide alternative?
@@ -64,6 +64,11 @@ namespace Soul
 			(DWORD)m_FileContents.Length(), &bytesWritten, 0));
 
 		CloseHandle(fileHandle);
+	}
+
+	void TextFile::DeleteTextFile()
+	{
+		DeleteFileA(m_FilePath);
 	}
 
 	String& TextFile::GetString()

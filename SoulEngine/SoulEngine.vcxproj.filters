@@ -48,4 +48,7 @@
     <ClInclude Include="Source\IO\TextFile.h" />
     <ClInclude Include="Source\TestsLib\Tests\TextFileTests.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Data\Test.txt" />
+  </ItemGroup>
 </Project>
