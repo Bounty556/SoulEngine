@@ -26,19 +26,23 @@ if (x()) \
 #define AssertNotEqual(x, y, msg) if ((x) == (y)) \
 { \
 	SoulLogError("Test failed on line " Stringify(__LINE__) ". " msg); \
+	return false; \
 }
 
 #define AssertTrue(x, msg) if (!(x)) \
 { \
 	SoulLogError("Test failed on line " Stringify(__LINE__) ". " msg); \
+	return false; \
 }
 
 #define AssertFalse(x, msg) if ((x)) \
 { \
 	SoulLogError("Test failed on line " Stringify(__LINE__) ". " msg); \
+	return false; \
 }
 
 #define AssertClose(x, y, thresh, msg) if ((x) - (y) > thresh) \
 { \
 	SoulLogError("Test failed on line " Stringify(__LINE__) ". " msg); \
+	return false; \
 }
