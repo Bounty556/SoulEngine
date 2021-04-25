@@ -19,6 +19,9 @@
     <ClCompile Include="Source\TestsLib\Tests\StringTests.cpp" />
     <ClCompile Include="Source\IO\TextFile.cpp" />
     <ClCompile Include="Source\TestsLib\Tests\TextFileTests.cpp" />
+    <ClCompile Include="Source\UtilsLib\Maths\Vector3D.cpp" />
+    <ClCompile Include="Source\TestsLib\Tests\MathTests\FunctionTests.cpp" />
+    <ClCompile Include="Source\UtilsLib\Maths\Functions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Events\EventBus.h" />
@@ -47,6 +50,9 @@
     <ClInclude Include="Source\TestsLib\Tests\StringTests.h" />
     <ClInclude Include="Source\IO\TextFile.h" />
     <ClInclude Include="Source\TestsLib\Tests\TextFileTests.h" />
+    <ClInclude Include="Source\UtilsLib\Maths\Vector3D.h" />
+    <ClInclude Include="Source\UtilsLib\Maths\Functions.h" />
+    <ClInclude Include="Source\TestsLib\Tests\MathTests\FunctionTests.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Data\Test.txt" />

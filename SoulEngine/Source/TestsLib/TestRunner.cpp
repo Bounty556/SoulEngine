@@ -3,13 +3,14 @@ Used for aggregating and running tests. Assumes that all necessary engine
 systems are currently running.
 @file TestRunner.cpp
 @author Jacob Peterson
-@edited 4/23/21
+@edited 4/25/21
 */
 
 #include "TestRunner.h"
 
 #include <TestsLib/TestMacros.h>
 #include <TestsLib/Tests/EventTests.h>
+#include <TestsLib/Tests/MathTests/FunctionTests.h>
 #include <TestsLib/Tests/MemoryManagerTests.h>
 #include <TestsLib/Tests/UniqueHandleTests.h>
 #include <TestsLib/Tests/QueueTests.h>
@@ -33,6 +34,7 @@ namespace Soul
 		CreateTestSuite(WeakHandleTests);
 		CreateTestSuite(StringTests);
 		CreateTestSuite(TextFileTests);
+		CreateTestSuite(FunctionTests);
 	}
 
 	void TestRunner::RunTestSuite(ITestSuite* testSuite)

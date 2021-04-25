@@ -14,9 +14,9 @@ namespace Soul
 	/*
 	Returns the square root of the provided float.
 
-	@param f - Float to take the square root of. Must be positive.
+	@param x - Float to take the square root of. Must be positive.
 
 	@return Float containing the resulting square root.
 	*/
-	Float32 SquareRoot(Float32 f);
+	Float32 SquareRoot(const Float32 x);
 }

@@ -34,7 +34,7 @@ namespace Soul
 		}
 
 		AssertEqual(initialBytes, MemoryManager::GetTotalAllocatedBytes(),
-			"Incorrect deallocation of FileReader.");
+			"Incorrect deallocation of TextFile.");
 
 		return true;
 	}
@@ -50,11 +50,11 @@ namespace Soul
 
 			String expected = "This is a test!";
 
-			AssertEqual(textFileString, expected, "Failed to read text file.");
+			AssertEqual(textFileString, expected, "Failed to move text file object.");
 		}
 
 		AssertEqual(initialBytes, MemoryManager::GetTotalAllocatedBytes(),
-			"Incorrect deallocation of FileReader.");
+			"Incorrect deallocation of TextFile.");
 
 		return true;
 	}
@@ -84,7 +84,7 @@ namespace Soul
 		}
 
 		AssertEqual(initialBytes, MemoryManager::GetTotalAllocatedBytes(),
-			"Incorrect deallocation of FileReader.");
+			"Incorrect deallocation of TextFile.");
 
 		return true;
 	}
