@@ -19,6 +19,7 @@
     <ClCompile Include="Source\TestsLib\TestRunner.cpp" />
     <ClCompile Include="Source\TestsLib\Tests\EventTests.cpp" />
     <ClCompile Include="Source\TestsLib\Tests\MathTests\FunctionTests.cpp" />
+    <ClCompile Include="Source\TestsLib\Tests\MathTests\Vector3DTests.cpp" />
     <ClCompile Include="Source\TestsLib\Tests\MemoryManagerTests.cpp" />
     <ClCompile Include="Source\TestsLib\Tests\QueueTests.cpp" />
     <ClCompile Include="Source\TestsLib\Tests\StringTests.cpp" />
@@ -44,6 +45,7 @@
     <ClInclude Include="Source\TestsLib\TestRunner.h" />
     <ClInclude Include="Source\TestsLib\Tests\EventTests.h" />
     <ClInclude Include="Source\TestsLib\Tests\MathTests\FunctionTests.h" />
+    <ClInclude Include="Source\TestsLib\Tests\MathTests\Vector3DTests.h" />
     <ClInclude Include="Source\TestsLib\Tests\MemoryManagerTests.h" />
     <ClInclude Include="Source\TestsLib\Tests\QueueTests.h" />
     <ClInclude Include="Source\TestsLib\Tests\StringTests.h" />

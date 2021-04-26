@@ -1,6 +1,6 @@
 /*
 Tests for the functions in Functions.h
-@file FunctionTests.h
+@file FunctionTests.cpp
 @author Jacob Peterson
 @edited 4/25/21
 */

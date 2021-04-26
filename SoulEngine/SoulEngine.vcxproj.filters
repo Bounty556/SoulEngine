@@ -22,6 +22,7 @@
     <ClCompile Include="Source\UtilsLib\Maths\Vector3D.cpp" />
     <ClCompile Include="Source\TestsLib\Tests\MathTests\FunctionTests.cpp" />
     <ClCompile Include="Source\UtilsLib\Maths\Functions.cpp" />
+    <ClCompile Include="Source\TestsLib\Tests\MathTests\Vector3DTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Events\EventBus.h" />
@@ -53,6 +54,7 @@
     <ClInclude Include="Source\UtilsLib\Maths\Vector3D.h" />
     <ClInclude Include="Source\UtilsLib\Maths\Functions.h" />
     <ClInclude Include="Source\TestsLib\Tests\MathTests\FunctionTests.h" />
+    <ClInclude Include="Source\TestsLib\Tests\MathTests\Vector3DTests.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Data\Test.txt" />

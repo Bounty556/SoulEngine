@@ -11,6 +11,7 @@ systems are currently running.
 #include <TestsLib/TestMacros.h>
 #include <TestsLib/Tests/EventTests.h>
 #include <TestsLib/Tests/MathTests/FunctionTests.h>
+#include <TestsLib/Tests/MathTests/Vector3DTests.h>
 #include <TestsLib/Tests/MemoryManagerTests.h>
 #include <TestsLib/Tests/UniqueHandleTests.h>
 #include <TestsLib/Tests/QueueTests.h>
@@ -35,6 +36,7 @@ namespace Soul
 		CreateTestSuite(StringTests);
 		CreateTestSuite(TextFileTests);
 		CreateTestSuite(FunctionTests);
+		CreateTestSuite(Vector3DTests);
 	}
 
 	void TestRunner::RunTestSuite(ITestSuite* testSuite)
